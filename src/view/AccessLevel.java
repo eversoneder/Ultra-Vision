@@ -1,9 +1,19 @@
 package view;
 
-public class AccessLevel {
+enum AccessLevel {
 
-	public AccessLevel() {
-		// TODO Auto-generated constructor stub
+		MUSICLOVER("ML"),
+		VIDEOLOVER("VL"),
+		TVLOVER("TV"),
+		PREMIUM("PR");
+	
+	private final String level;
+	
+	private AccessLevel(String level){
+		this.level = level;
 	}
-
+	
+	public String getLevel() {
+		return this.level;
+	}
 }
