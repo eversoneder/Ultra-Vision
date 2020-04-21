@@ -1,12 +1,5 @@
 package view;
 
-enum DiscFormat {
-
-	CD,
-	DVD,
-	BluRay;
-	
-	private DiscFormat() {
-		
-	}
+public enum DiscFormat {
+	CD, DVD, BluRay;
 }

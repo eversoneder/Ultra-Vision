@@ -1,9 +1,12 @@
 package view.customer;
 
-public class MembershipCard {
+public class MembershipCard extends DebitOrCreditAccount{
 
 	private int points;
-	private boolean freeRentAllowed;
+	private boolean hasFreeRent;
+	private int freeRents;
+	private int password;
+	private String accessLevel;
 
 	public void addPoints(int points) {
 		this.points += points;
@@ -11,28 +14,25 @@ public class MembershipCard {
 	}
 
 	public boolean availFreeRent() {
-		if (this.isfreeRentAllowed()) {
-			this.points -= 100;
-			setRentAllowed();
-			return true;
-		} else {
-			return false;
-		}
+		hasFreeRent = freeRents > 0 ? true : false;
+		return this.hasFreeRent;
 	}
 
 	private void setRentAllowed() {
-		if (this.points >= 100) {
-			this.freeRentAllowed = true;
-		} else {
-			this.freeRentAllowed = false;
-		}
+		int freeR = 0;
+		freeR = points >= 100 ? freeR += 1 : 0;
+		this.freeRents += freeR;
 	}
 
 	public int getPoints() {
-		return points;
+		return this.points;
 	}
-
-	public boolean isfreeRentAllowed() {
-		return freeRentAllowed;
+	
+	protected void setPassword(int pass) {
+		this.password = pass;
+	}
+	
+	public void setAccessLevel() {
+		
 	}
 }

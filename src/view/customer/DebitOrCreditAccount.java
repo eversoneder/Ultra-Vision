@@ -2,8 +2,6 @@ package view.customer;
 
 public class DebitOrCreditAccount {
 
-	public DebitOrCreditAccount() {
-		// TODO Auto-generated constructor stub
-	}
-
+	private int AccountNumber = 0;
+	
 }

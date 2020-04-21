@@ -1,30 +1,44 @@
 package view;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-
-import controller.Rent;
 
 public class TimeDate {
 
-	private Date currentDate; 
+	SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm a dd/MM/yyyy");;
+	private Date currentDate;
 	
-	public static void main(String[]args) {
-		new TimeDate();
-	}
-	
-	public TimeDate() {
-		String timenow = getNowHour();
-		System.out.println(timenow);
-	}
-
 	/**
 	 * @return String of now date
 	 */
-	public String getNowHour() {
-		SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm a");
-		currentDate = new Date();
-		String now = hourFormat.format(currentDate).toString();
-		return now;
+	public Date getNowDate() {
+		Calendar c = Calendar.getInstance();
+		currentDate = c.getTime();
+		hourFormat.format(currentDate).toString();
+		
+		return currentDate;
+	}
+
+//	public static void main(String[]args) {
+//		new TimeDate();
+//	}
+//	public TimeDate() {
+//
+//		Date a = new Date();
+//		a = getReturnDateOf(a);
+//		System.out.println(a);
+//	}
+
+	/**
+	 * @return String of three days later from now time
+	 */
+	public Date getReturnDateOf(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DAY_OF_MONTH, 3);
+
+		hourFormat.format(date = c.getTime());
+		return date;
 	}
 }
