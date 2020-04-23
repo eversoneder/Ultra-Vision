@@ -1,0 +1,14 @@
+package view;
+
+import java.awt.event.KeyListener;
+
+public class MainScreen {
+
+	private KeyController keyController;
+	
+	
+	public MainScreen() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

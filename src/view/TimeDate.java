@@ -6,7 +6,14 @@ import java.util.Date;
 
 public class TimeDate {
 
-	SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm a dd/MM/yyyy");;
+	/**
+	 * @hourFormat the format of hours, mins, day, month and year to show (hh:mm a dd/MM/yyyy)
+	 */
+	private SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm a dd/MM/yyyy");
+	
+	/**
+	 * @currentDate now date
+	 */
 	private Date currentDate;
 	
 	/**
@@ -19,16 +26,6 @@ public class TimeDate {
 		
 		return currentDate;
 	}
-
-//	public static void main(String[]args) {
-//		new TimeDate();
-//	}
-//	public TimeDate() {
-//
-//		Date a = new Date();
-//		a = getReturnDateOf(a);
-//		System.out.println(a);
-//	}
 
 	/**
 	 * @return String of three days later from now time

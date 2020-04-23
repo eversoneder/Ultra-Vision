@@ -1,58 +1,78 @@
 package view.customer;
 
-public class Customer {
+public class Customer extends DebitOrCreditAccount{
 
-	private int customer_id;
-	private String customer_name;
-	private int customer_phone;
-	private String customer_address;
-	
+	private int id;
+	private String name;
+	private int phone;
+	private String address;
+
 	public Customer() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Customer(int id, String name, int phone, String address) {
+		this.id = id;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.setAccountBalance(5000.00);
+	}
+
+	/**
+	 * @return the customer_id
+	 */
+	public int getCustomer_id() {
+		return id;
+	}
+
+	/**
+	 * @param customer_id the customer_id to set
+	 */
+	public void setCustomer_id(int customer_id) {
+		this.id = customer_id;
 	}
 
 	/**
 	 * @return the name
 	 */
-	public String getName() {
-		return customer_name;
+	public String getCustomer_name() {
+		return name;
 	}
 
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
-		this.customer_name = name;
+	public void setCustomer_name(String name) {
+		this.name = name;
 	}
 
 	/**
 	 * @return the phone
 	 */
-	public int getPhone() {
-		return customer_phone;
+	public int getCustomer_phone() {
+		return phone;
 	}
 
 	/**
 	 * @param phone the phone to set
 	 */
-	public void setPhone(int phone) {
-		this.customer_phone = phone;
+	public void setCustomer_phone(int phone) {
+		this.phone = phone;
 	}
 
 	/**
 	 * @return the address
 	 */
-	public String getAddress() {
-		return customer_address;
+	public String getCustomer_address() {
+		return address;
 	}
 
 	/**
 	 * @param address the address to set
 	 */
-	public void setAddress(String address) {
-		this.customer_address = address;
+	public void setCustomer_address(String address) {
+		this.address = address;
 	}
-	
-	
 
 }

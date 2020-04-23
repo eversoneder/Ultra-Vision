@@ -1,5 +1,8 @@
 package view;
 
-public enum DiscFormat {
-	CD, DVD, BluRay;
+public interface DiscFormat {
+	/**
+	 * @param discType the type of disc to set
+	 */
+	public abstract void setDiscFormat(Media discType);
 }

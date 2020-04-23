@@ -1,20 +1,13 @@
 package view;
 
-public enum AccessLevel {
-
-		MUSICLOVER("ML"),
-		MUSICVIDEO("ML"),
-		VIDEOLOVER("VL"),
-		TVLOVER("TV"),
-		PREMIUM("PR");
+public interface AccessLevel {
+	/**
+	 * the Access Level of title to set
+	 */
+	public abstract void setAccessLevel();
 	
-	private String level;
-	
-	public String getLevel() {
-		return this.level;
-	}
-	
-	private AccessLevel(String level){
-		this.level = level;
-	}
+	/**
+	 * get the Access Level of title
+	 */
+	public abstract Level getAccessLevel();
 }

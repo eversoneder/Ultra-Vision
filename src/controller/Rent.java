@@ -6,63 +6,95 @@ import java.util.Date;
 
 import view.TimeDate;
 import view.Title;
+import view.customer.MembershipCard;
 
-public class Rent {
+final class Rent {
 
-	TimeDate td;
-	private Date DateStart;
-	private Date DateReturn;
+	private TimeDate td;
+	private int rent_id;
 	
-	private Collection<Title> rentedTitle = new ArrayList<>();
-	private double totalPrice;
-	
-	public Rent() {
+	private Date rent_DateStart;
+	private Date rent_DateReturn;
+
+	private Collection<Title> rentingTitles = new ArrayList<>();
+	private double rent_TotalPrice;
+
+	protected Rent(Title title, MembershipCard mc) {
 		// TODO Auto-generated constructor stub
-		
-		setStartDate();
-		System.out.println(DateStart.toString());
+		setrent_StartDate();
+		System.out.println(rent_DateStart.toString());
+	}
+	
+	protected Rent(int id) {
+		this.rent_id = id;
 	}
 
-	public static void main(String[]args) {
-		new Rent();
+//	public static void main(String[] args) {
+//		new Rent();
+//	}
+
+	protected void removeTitleRent(Title delT) {
+		rentingTitles.remove(delT);
+		removeFromTotalPrice(delT);
 	}
 	
-	/**
-	 * @return double of total titles price 
-	 */
-	private double calculateTotalPrice() {
-		for(Title t : rentedTitle) {
-			totalPrice += t.getPrice();
-		}
-		return totalPrice;
-	}
-	
-	public double getTotalprice(){
-		return this.totalPrice;
-	}
-	
-	public void addNewTitleRent(Title t) {
-		rentedTitle.add(t);
+	private void removeFromTotalPrice(Title delTprice) {
+		this.rent_TotalPrice -= delTprice.getPrice();
 	}
 
 	/**
-	 * @return the date of rent start 
+	 * @param title to add in renting list
 	 */
-	public Date getStartDate() {
-		return this.DateStart;
+	protected void addNewTitleRent(Title title) {
+		rentingTitles.add(title);
+		appendTotalPrice(title.getPrice());
 	}
 	
 	/**
-	 * @return startDate
+	 * @param price to add to total price
 	 */
-	protected void setStartDate() {
+	private void appendTotalPrice(double priceToAppend) {
+		this.rent_TotalPrice += priceToAppend;
+	}
+	
+	/**
+	 * @return the rent_id
+	 */
+	protected int getRent_id() {
+		return rent_id;
+	}
+
+	/**
+	 * @param rent_id the rent_id to set
+	 */
+	protected void setRent_id(int rent_id) {
+		this.rent_id = rent_id;
+	}
+
+	protected double getrent_TotalPrice() {
+		return this.rent_TotalPrice;
+	}
+
+	/**
+	 * @return the date of rent start
+	 */
+	protected Date getrent_StartDate() {
+		return this.rent_DateStart;
+	}
+
+	/**
+	 * @param set now time to start renting
+	 */
+	protected void setrent_StartDate() {
 		td = new TimeDate();
-		this.DateStart = td.getNowDate();
-		getReturnDate();
+		this.rent_DateStart = td.getNowDate();
+		this.rent_DateReturn = td.getReturnDateOf(rent_DateStart);
 	}
-	
-	public Date getReturnDate() {
-		this.DateReturn = td.getReturnDateOf(DateStart);
-		return DateReturn;
+
+	/**
+	 * @return date of title return
+	 */
+	protected Date getrent_ReturnDate() {
+		return this.rent_DateReturn;
 	}
 }
