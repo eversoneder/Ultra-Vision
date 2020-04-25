@@ -3,26 +3,64 @@ package view.accesses;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import view.AccessLevel;
-import view.DiscFormat;
 import view.Level;
+import view.Media;
 import view.Title;
 
-public class MusicLover extends Title implements AccessLevel{
+public class MusicLover extends Title {
 
-	// general title attributes
-//	private int title_id;
-//	private String title_name;
-//	private DiscFormat title_format;
-//	private double title_price;
-//	private int title_available;
-//	private int title_yor;
-//	private String title_accessLevel;
-
-	// musical attributes
 	private String band;
-	private Level accessLevel;
-	private Collection<MusicLover> mlTitles = new ArrayList<>();
+	
+	private Collection<MusicLover> mlTitles;
+
+	public MusicLover() {
+		
+	}
+	
+	/**
+	 * New titles by user
+	 * @param name
+	 * @param price
+	 * @param format
+	 * @param band
+	 * @param genre
+	 * @param yor
+	 * @param available
+	 */
+	public MusicLover(String name, double price, Media format, String band, String genre, int yor, int available) {
+		super.setName(name);
+		super.setPrice(price);
+		super.setDiscFormat(format);
+		this.setBand(band);
+		super.setGenre(genre);
+		super.setYearOfRelease(yor);
+		super.setAccessLevel(Level.ML);
+		super.setAvailable(available);
+	}
+	
+	/**
+	 * Load titles from db
+	 * @param id
+	 * @param name
+	 * @param price
+	 * @param format
+	 * @param band
+	 * @param genre
+	 * @param yor
+	 * @param available
+	 */
+	public MusicLover(int id, String name, double price, String format, String accessLevel, int available, String band, String genre, int yor) {
+		super.setId(id);
+		super.setName(name);
+		super.setPrice(price);
+		super.setDiscFormat(format);
+		super.setAccessLevel(accessLevel);
+		this.setBand(band);
+		super.setGenre(genre);
+		super.setYearOfRelease(yor);
+		super.setAccessLevel(Level.ML);
+		super.setAvailable(available);
+	}
 
 	/**
 	 * @return the mlTitles
@@ -37,48 +75,22 @@ public class MusicLover extends Title implements AccessLevel{
 	public void setMLTitles(Collection<MusicLover> mlTitles) {
 		this.mlTitles = new ArrayList<>(mlTitles);
 	}
-
-	public static void main(String[] args) {
-		Title a = new MusicLover(1,"musica",1.25);
-		System.out.println(a);
-		
+	
+	public void addNewTitle(MusicLover ml) {
+		this.mlTitles.add(ml);
 	}
-
-	public MusicLover(String search, String filter) {
-		super(search, filter);
-	}
-
-	public MusicLover(int id, String name, double price) {
-		super(id, name, price);
-		setAccessLevel();
-	}
-
+	
 	/**
-	 * @return the title_band
+	 * @return the band
 	 */
-	public String getTitle_band() {
+	public String getBand() {
 		return band;
 	}
 
 	/**
-	 * @param title_band the title_band to set
+	 * @param band the band to set
 	 */
-	public void setTitle_band(String title_band) {
-		this.band = title_band;
-	}
-
-	@Override
-	public void setAccessLevel() {
-		this.accessLevel = Level.ML;
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return accessLevel;
-	}
-	
-	@Override
-	public String toString() {
-		return super.toString()+" Access Level: "+this.accessLevel+".";
+	public void setBand(String band) {
+		this.band = band;
 	}
 }

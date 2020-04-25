@@ -1,5 +1,8 @@
 package view.customer;
 
+/**
+ * Abstract class for each customer to extends
+ */
 public abstract class DebitOrCreditAccount {
 
 	private int AccountNumber;

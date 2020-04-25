@@ -1,101 +1,101 @@
 package view;
 
-public abstract class Title implements DiscFormat{
+import java.util.Collection;
 
-	//general title attributes
+import view.accesses.MusicLover;
+import view.accesses.TvLover;
+import view.accesses.VideoLover;
+
+public class Title implements DiscFormat, AccessLevel {
+
+	// general title attributes
 	private int id;
 	private String name;
-	private Media format;
 	private double price;
+	private String discFormat;
+	private String accessLevel;
 	private int available;
-	private int yearOfRelease;
 	private String genre;
-	
-	private String search;
-	private String filter;
-	
+	private int yearOfRelease;
+
+	private Collection<Title> titleList;
+	private MusicLover ml;
+	private VideoLover vl;
+
 	public Title() {
-		
+
 	}
-	
-	public Title(String search, String filter) {
-		this.search = search;
-		this.filter = filter;
-	}
-	
+
 	public Title(int id, String name, double price) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.available = 1;
 	}
-	
-//	public static void main(String[]args) { //testing
-//		new Title();
-//	}
-//	public Title() {
-//		AccessLevel a = AccessLevel.MUSICLOVER;
-//		setTitle_accessLevel(a);
-//		title_accessLevel = getTitle_accessLevel();
-//		System.out.println(title_accessLevel);
-//	}
-	
-	/**
-	 * @return the title genre
-	 */
-	public String getGenre() {
-		return genre;
-	}
 
 	/**
-	 * @param genre the title genre to set
+	 * DB load title
+	 * 
+	 * @param id          to set
+	 * @param name        to set
+	 * @param price       to set
+	 * @param format      to set
+	 * @param accessLevel to set
+	 * @param available   to set
+	 * @param band        to set
+	 * @param genre       to set
+	 * @param director    to set
+	 * @param yor         to set
 	 */
-	public void setGenre(String genre) {
+	public Title(int id, String name, double price, String format, String accessLevel, int available, String band,
+			String genre, String director, int yor) {
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.discFormat = format;
+		this.accessLevel = accessLevel;
+		this.available = available;
 		this.genre = genre;
-	}
-	
-	/**
-	 * @return the title year of release
-	 */
-	public int getYearOfRelease() {
-		return yearOfRelease;
-	}
-
-	/**
-	 * @param yor the title year of release to set
-	 */
-	public void setYearOfRelease(int yor) {
 		this.yearOfRelease = yor;
+
+		if (accessLevel.equals("ML")) {
+			ml.setBand(band);
+		} else if (accessLevel.equals("VL")) {
+			vl.setDirector(director);
+		}
 	}
 
-	/**
-	 * @return the search
-	 */
-	public String getSearch() {
-		return search;
+	@Override
+	public String getAccessLevel() {
+		return this.accessLevel;
 	}
 
-	/**
-	 * @param search the search to set
-	 */
-	public void setSearch(String search) {
-		this.search = search;
-	}
-
-	/**
-	 * @return the filter
-	 */
-	public String getFilter() {
-		return filter;
-	}
-
-	/**
-	 * @param filter the filter to set
-	 */
-	public void setFilter(String filter) {
-		this.filter = filter;
+	@Override
+	public void setAccessLevel(Level accessLevel) {
+		this.accessLevel = accessLevel.name();
 	}
 	
+	/**
+	 * AccessLevel to set (database load)
+	 */
+	public void setAccessLevel(String accessLevel) {
+		this.accessLevel = accessLevel;
+	}
+
+	/**
+	 * @return title list
+	 */
+	public Collection<Title> getTitleList() {
+		return titleList;
+	}
+
+	/**
+	 * @param titleList
+	 */
+	public void setTitleList(Collection<Title> titleList) {
+		this.titleList = titleList;
+	}
+
 	/**
 	 * @return the id
 	 */
@@ -110,18 +110,6 @@ public abstract class Title implements DiscFormat{
 		this.id = id;
 	}
 
-	/**
-	 * @return DiscFormat 
-	 */
-	public Media getTitle_format() {
-		return this.format;
-	}
-	
-	@Override
-	public void setDiscFormat(Media format) {
-		this.format = format;
-	}
-	
 	/**
 	 * @return the name
 	 */
@@ -150,6 +138,23 @@ public abstract class Title implements DiscFormat{
 		this.price = price;
 	}
 
+	@Override
+	public String getDiscFormat() {
+		return this.discFormat;
+	}
+
+	@Override
+	public void setDiscFormat(Media format) {
+		this.discFormat = format.name();
+	}
+	
+	/**
+	 * disc format to set (database load) 
+	 */
+	public void setDiscFormat(String format) {
+		this.discFormat = format;
+	}
+
 	/**
 	 * @return the title availability
 	 */
@@ -164,8 +169,37 @@ public abstract class Title implements DiscFormat{
 		this.available = available;
 	}
 
+	/**
+	 * @return the title genre
+	 */
+	public String getGenre() {
+		return genre;
+	}
+
+	/**
+	 * @param genre the title genre to set
+	 */
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	/**
+	 * @return the title year of release
+	 */
+	public int getYearOfRelease() {
+		return yearOfRelease;
+	}
+
+	/**
+	 * @param yor the title year of release to set
+	 */
+	public void setYearOfRelease(int yor) {
+		this.yearOfRelease = yor;
+	}
+
 	@Override
 	public String toString() {
-		return "Title name: "+this.name+"\n Title price: "+this.price+".";
+		return "Title name: " + this.name + "\n Title price: " + this.price + " Access Level: " + this.accessLevel
+				+ ".";
 	}
 }

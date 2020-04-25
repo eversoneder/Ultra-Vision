@@ -4,10 +4,10 @@ public interface AccessLevel {
 	/**
 	 * the Access Level of title to set
 	 */
-	public abstract void setAccessLevel();
+	public abstract void setAccessLevel(Level accessLevel);
 	
 	/**
 	 * get the Access Level of title
 	 */
-	public abstract Level getAccessLevel();
+	public abstract String getAccessLevel();
 }

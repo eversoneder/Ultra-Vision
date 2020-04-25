@@ -1,9 +1,229 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import view.Title;
+import view.accesses.MusicLover;
+import view.accesses.VideoLover;
+import view.customer.Customer;
+
+/**
+ * Ultra-Vision Database handling class
+ */
 public class UltraVisionDB {
 
-	public UltraVisionDB() {
-		// TODO Auto-generated constructor stub
+	private String dbHost = "jdbc:mysql://127.0.0.1:3306/ultra_visiondb";
+	private String user = "root";
+	private String password = "pass1234!";
+
+	private Connection con = null;
+	private Statement st = null;
+	private int tableSize;
+
+	private Collection<Title> titleList;
+	private Title title;
+
+	/**
+	 * DB Default Constructor, creation of database connection
+	 */
+	UltraVisionDB() {
+
+		try {
+			con = DriverManager.getConnection(dbHost, user, password);
+
+			st = con.createStatement();
+		} catch (SQLException sqle) {
+			while (sqle != null) {
+				System.out.println("Error: " + sqle.getMessage());
+				System.out.println("State: " + sqle.getSQLState());
+				System.out.println("Code: " + sqle.getErrorCode());
+				sqle = sqle.getNextException();
+			}
+		} catch (Exception e) {
+			System.out.println("Exception: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * closes Statement and Connection
+	 */
+	private void closings() {
+		try {
+			st.close();
+			con.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(UltraVisionDB.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	/**
+	 * @param searchName the name to search
+	 * @param filter     the filter to select
+	 * @return int of table size
+	 * @throws SQLException
+	 */
+	public int getTableSize(String entity, String searchName, String filter) {
+
+		String query = "SELECT COUNT(*) FROM " + entity + " WHERE " + filter + " LIKE '%" + searchName + "%';";
+		ResultSet rs = executeQueryRS(query);
+		try {
+			tableSize = rs.getInt("COUNT(*)");
+			closings();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return tableSize;
+	}
+
+	/**
+	 * @param query the query to execute (reusable method)
+	 * @return ResultSet of query given
+	 */
+	private ResultSet executeQueryRS(String query) {
+
+		ResultSet rs = null;
+		try {
+			rs = st.executeQuery(query);
+			rs.next();
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return rs;
+	}
+
+	/**
+	 * @param query query to execute update
+	 */
+	private void executeUpdateRS(String query) {
+
+		int rs = 0;
+		try {
+			rs = st.executeUpdate(query);
+			closings();
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * @param sqle exception messages to execute if error occurs(breaking down code)
+	 */
+	private void exceptionMessages(SQLException sqle) {
+		while (sqle != null) {
+			System.out.println("State: " + sqle.getSQLState());
+			System.out.println("Message: " + sqle.getMessage());
+			System.out.println("Error: " + sqle.getErrorCode());
+			sqle = sqle.getNextException();
+		}
+	}
+
+	public Collection<Title> getTitleList(String search, String filter) {
+
+		titleList = new ArrayList<>();
+
+		String query_nf = "SELECT * FROM title WHERE title_name LIKE '%" + search + "%' OR title_price LIKE '%" + search
+				+ "%' OR title_format LIKE '%" + search + "%' OR title_access_level LIKE '%" + search
+				+ "%' OR title_band LIKE '%" + search + "%' OR title_genre LIKE '%" + search + "%' OR title_yor LIKE '%"
+				+ search + "%';";
+		String query = "SELECT * FROM title WHERE " + filter + " LIKE '%" + search + "%';";
+
+		if (filter.equals("nofilter")) {
+			titleList = titleLoad(query_nf);
+			return titleList;
+		} else {
+			titleList = titleLoad(query);
+		}
+		return titleList;
+	}
+
+	/**
+	 * @param query to get titles loaded from db
+	 * @return collection of titles based on quer
+	 */
+	private Collection<Title> titleLoad(String query) {
+
+		ResultSet rs = executeQueryRS(query);
+		try {
+			while (rs.next()) {
+				for (int i = 0; i < tableSize; i++) {
+
+					// decision ml, vl, tv, title
+					title = titleSort(rs);
+					titleList.add(title);
+					rs.next();
+				}
+				closings();
+				title.setTitleList(titleList);
+			}
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return titleList;
+	}
+
+	/**
+	 * Sorts if title will be loaded as Title, MusicLover, VideoLover or TvLover
+	 * 
+	 * @param rs the ResultSet from db to be used in the operation
+	 * @return polymorphed Title loaded
+	 */
+	public Title titleSort(ResultSet rs) {
+
+		title = null;
+		try {
+			switch (rs.getString("title_access_level")) {
+			case "ML":
+				title = new MusicLover(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
+						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
+						rs.getString("title_band"), rs.getString("title_genre"), rs.getInt("title_yor"));
+				break;
+			case "VL":
+				title = new VideoLover(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
+						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
+						rs.getString("title_genre"), rs.getString("title_director"), rs.getInt("title_yor"));
+				break;
+			}
+
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return title;
+	}
+
+	public boolean newTitle(Title newTitle) {
+
+		return false;
+	}
+
+	public boolean newCustomer(Customer newCustomer) {
+
+		return false;
+	}
+
+	/**
+	 * @param password to check
+	 * @return true if password matches database membership_card_password
+	 */
+	public boolean checkCardPassword(int password) {
+
+		return false;
 	}
 
 }
