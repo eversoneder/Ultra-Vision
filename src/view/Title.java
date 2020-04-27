@@ -3,24 +3,24 @@ package view;
 import java.util.Collection;
 
 import view.accesses.MusicLover;
-import view.accesses.TvLover;
-import view.accesses.VideoLover;
+import view.accesses.Movie;
 
-public class Title implements DiscFormat, AccessLevel {
+public class Title implements DiscFormat, TitleType {
 
 	// general title attributes
 	private int id;
+	private String titleType;
 	private String name;
 	private double price;
 	private String discFormat;
-	private String accessLevel;
 	private int available;
 	private String genre;
 	private int yearOfRelease;
 
 	private Collection<Title> titleList;
+	
 	private MusicLover ml;
-	private VideoLover vl;
+	private Movie vl;
 
 	public Title() {
 
@@ -53,33 +53,34 @@ public class Title implements DiscFormat, AccessLevel {
 		this.name = name;
 		this.price = price;
 		this.discFormat = format;
-		this.accessLevel = accessLevel;
+		this.titleType = accessLevel;
 		this.available = available;
 		this.genre = genre;
 		this.yearOfRelease = yor;
 
 		if (accessLevel.equals("ML")) {
 			ml.setBand(band);
+			
 		} else if (accessLevel.equals("VL")) {
 			vl.setDirector(director);
 		}
 	}
 
 	@Override
-	public String getAccessLevel() {
-		return this.accessLevel;
+	public String getTitleType() {
+		return this.titleType;
 	}
 
 	@Override
-	public void setAccessLevel(Level accessLevel) {
-		this.accessLevel = accessLevel.name();
+	public void setTitleType(SubscriptionPlan accessLevel) {
+		this.titleType = accessLevel.name();
 	}
 	
 	/**
-	 * AccessLevel to set (database load)
+	 * title type to set from database loading
 	 */
-	public void setAccessLevel(String accessLevel) {
-		this.accessLevel = accessLevel;
+	public void setTitleType(String type) {
+		this.titleType = type;
 	}
 
 	/**
@@ -199,7 +200,7 @@ public class Title implements DiscFormat, AccessLevel {
 
 	@Override
 	public String toString() {
-		return "Title name: " + this.name + "\n Title price: " + this.price + " Access Level: " + this.accessLevel
+		return "Title name: " + this.name + "\n Title price: " + this.price + " Title type: " + this.titleType
 				+ ".";
 	}
 }

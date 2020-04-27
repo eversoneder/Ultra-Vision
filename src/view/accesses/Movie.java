@@ -3,33 +3,33 @@ package view.accesses;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import view.Level;
+import view.SubscriptionPlan;
 import view.Media;
 import view.Title;
 
-public class VideoLover extends Title {
+public class Movie extends Title {
 
 	private String director;
 
-	private Collection<VideoLover> vlTitles;
+	private Collection<Movie> movies;
 
-	public VideoLover() {
+	public Movie() {
 
 	}
 
-	public VideoLover(String name, double price, Media format, String director, String genre, int yor) {
+	public Movie(String name, double price, Media format, String director, String genre, int yor) {
 		super.setName(name);
 		super.setPrice(price);
 		super.setDiscFormat(format);
 		this.setDirector(director);
 		super.setGenre(genre);
 		super.setYearOfRelease(yor);
-		super.setAccessLevel(Level.VL);
+		super.setTitleType(SubscriptionPlan.VL.getClassName());
 		super.setAvailable(1);
 	}
 
 	/**
-	 * Load titles from db
+	 * Load titles from database
 	 * 
 	 * @param id        the id to set
 	 * @param name      the name to set
@@ -40,13 +40,13 @@ public class VideoLover extends Title {
 	 * @param yor       the year of release to set
 	 * @param available the available to set
 	 */
-	public VideoLover(int id, String name, double price, String format, String accessLevel, int available, String genre,
+	public Movie(int id, String name, double price, String format, String accessLevel, int available, String genre,
 			String director, int yor) {
 		super.setId(id);
 		super.setName(name);
 		super.setPrice(price);
 		super.setDiscFormat(format);
-		super.setAccessLevel(accessLevel);
+		super.setTitleType(accessLevel);
 		super.setAvailable(available);
 		super.setGenre(genre);
 		this.setDirector(director);
@@ -56,15 +56,15 @@ public class VideoLover extends Title {
 	/**
 	 * @return the vlTitles
 	 */
-	public Collection<VideoLover> getVLTitles() {
-		return vlTitles;
+	public Collection<Movie> getVLTitles() {
+		return movies;
 	}
 
 	/**
 	 * @param vlTitles the vlTitles to set
 	 */
-	public void setVLTitles(Collection<VideoLover> vlTitles) {
-		this.vlTitles = new ArrayList<>(vlTitles);
+	public void setVLTitles(Collection<Movie> vlTitles) {
+		this.movies = new ArrayList<>(vlTitles);
 	}
 
 	/**

@@ -5,7 +5,7 @@ package view.customer;
  */
 public abstract class DebitOrCreditAccount {
 
-	private int AccountNumber;
+	private long AccountNumber;
 	private double AccountBalance;
 
 	/**
@@ -16,6 +16,13 @@ public abstract class DebitOrCreditAccount {
 	}
 
 	/**
+	 * @return account balance amount
+	 */
+	public double getAccountBalance() {
+		return AccountBalance;
+	}
+	
+	/**
 	 * @param amount to set
 	 */
 	public void setAccountBalance(double amount) {
@@ -23,26 +30,24 @@ public abstract class DebitOrCreditAccount {
 	}
 
 	/**
-	 * @param hasThisAmount the amount to check in balance
+	 * @param amount the amount to check in balance
 	 * @return if contains passed value in balance
 	 */
-	public boolean checkBalance(double hasThisAmount) {
-		boolean hasMoney;
-		hasMoney = AccountBalance > hasThisAmount ? true : false;
-		return hasMoney;
+	public boolean hasMoney(double amount) {
+		return AccountBalance > amount ? true : false;
 	}
 
 	/**
 	 * @return the accountNumber
 	 */
-	public int getAccountNumber() {
+	public long getAccountNumber() {
 		return AccountNumber;
 	}
 
 	/**
 	 * @param accountNumber the accountNumber to set
 	 */
-	public void setAccountNumber(int accountNumber) {
+	public void setAccountNumber(long accountNumber) {
 		AccountNumber = accountNumber;
 	}
 }

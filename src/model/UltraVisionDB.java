@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import view.Title;
 import view.accesses.MusicLover;
-import view.accesses.VideoLover;
+import view.accesses.Movie;
 import view.customer.Customer;
 
 /**
@@ -20,7 +20,7 @@ import view.customer.Customer;
  */
 public class UltraVisionDB {
 
-	private String dbHost = "jdbc:mysql://127.0.0.1:3306/ultra_visiondb";
+	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb"+"?useSSL=false";
 	private String user = "root";
 	private String password = "pass1234!";
 
@@ -31,6 +31,12 @@ public class UltraVisionDB {
 	private Collection<Title> titleList;
 	private Title title;
 
+	
+	public static void main(String[]args) {
+		UltraVisionDB a = new UltraVisionDB();
+		int r = a.getTableSize("title", "title_name", "a");
+		System.out.println(r);
+	}
 	/**
 	 * DB Default Constructor, creation of database connection
 	 */
@@ -38,15 +44,9 @@ public class UltraVisionDB {
 
 		try {
 			con = DriverManager.getConnection(dbHost, user, password);
-
 			st = con.createStatement();
 		} catch (SQLException sqle) {
-			while (sqle != null) {
-				System.out.println("Error: " + sqle.getMessage());
-				System.out.println("State: " + sqle.getSQLState());
-				System.out.println("Code: " + sqle.getErrorCode());
-				sqle = sqle.getNextException();
-			}
+			exceptionMessages(sqle);
 		} catch (Exception e) {
 			System.out.println("Exception: " + e.getMessage());
 		}
@@ -70,7 +70,7 @@ public class UltraVisionDB {
 	 * @return int of table size
 	 * @throws SQLException
 	 */
-	public int getTableSize(String entity, String searchName, String filter) {
+	public int getTableSize(String entity, String filter, String searchName) {
 
 		String query = "SELECT COUNT(*) FROM " + entity + " WHERE " + filter + " LIKE '%" + searchName + "%';";
 		ResultSet rs = executeQueryRS(query);
@@ -164,9 +164,9 @@ public class UltraVisionDB {
 					titleList.add(title);
 					rs.next();
 				}
-				closings();
-				title.setTitleList(titleList);
 			}
+			closings();
+			title.setTitleList(titleList);
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
 		} catch (Exception e) {
@@ -192,7 +192,7 @@ public class UltraVisionDB {
 						rs.getString("title_band"), rs.getString("title_genre"), rs.getInt("title_yor"));
 				break;
 			case "VL":
-				title = new VideoLover(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
+				title = new Movie(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
 						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
 						rs.getString("title_genre"), rs.getString("title_director"), rs.getInt("title_yor"));
 				break;

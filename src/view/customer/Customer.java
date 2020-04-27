@@ -1,6 +1,8 @@
 package view.customer;
 
-public class Customer extends DebitOrCreditAccount{
+import java.util.Random;
+
+public class Customer extends DebitOrCreditAccount {
 
 	private int id;
 	private String name;
@@ -11,12 +13,62 @@ public class Customer extends DebitOrCreditAccount{
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * load customer from database
+	 * 
+	 * @param id
+	 * @param name
+	 * @param phone
+	 * @param address
+	 */
 	public Customer(int id, String name, int phone, String address) {
 		this.id = id;
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
+	}
+
+	/**
+	 * create new customer by user
+	 * 
+	 * @param name
+	 * @param phone
+	 * @param address
+	 */
+	public Customer(String name, int phone, String address) {
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
 		this.setAccountBalance(5000.00);
+		this.setAccountNumber(randomAccNumGenerator());
+	}
+
+	public static void main(String[] args) {
+
+		Customer a = new Customer("everson",838431954,"mountjoy square");
+
+		System.out.println(a.getCustomer_name());
+		System.out.println(a.getCustomer_phone());
+		System.out.println(a.getAccountNumber());
+		System.out.println(a.getAccountBalance());
+		System.out.println(a.getCustomer_address());
+	}
+
+	public static long randomAccNumGenerator() {
+
+		int sortCode = 900017;// bank branch number
+
+		// 8 digits account no. 9 digits -1 because it starts 0 to 999999999 < 8 digits
+		// ---------------------\/-----------------generate starting at 9 digts 10000000
+		// ---------------------\/-----------------\/>>>>>>>>>>>>>\/
+		// ---------------------->>>>>>>>>>\/---------------------\/
+		int randomAcc = new Random().nextInt(100000000 - 10000000) + 10000000;
+		// ----------------------------------------------/\
+		// subtract 10000000 because added 10000000 to generate as start point
+
+		String newAcc = Integer.toString(sortCode) + Integer.toString(randomAcc);
+
+		return Long.parseLong(newAcc);
 	}
 
 	/**

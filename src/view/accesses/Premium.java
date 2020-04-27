@@ -22,7 +22,7 @@ public class Premium extends Title {
 		super.setName(name);
 		super.setPrice(price);
 		super.setDiscFormat(format);
-		super.setAccessLevel(accessLevel);
+		super.setTitleType(accessLevel);
 		super.setAvailable(available);
 		this.setBand(band);
 		super.setGenre(genre);

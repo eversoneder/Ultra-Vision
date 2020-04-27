@@ -2,8 +2,8 @@ package view.customer;
 
 import java.util.Collection;
 
-import view.AccessLevel;
-import view.Level;
+import view.TitleType;
+import view.SubscriptionPlan;
 import view.Title;
 import view.Subscription;
 
@@ -14,7 +14,7 @@ public class MembershipCard extends DebitOrCreditAccount implements Subscription
 	private int hasFreeRent;
 	private int freeRents;
 	private int password;
-	private Level subscription;
+	private SubscriptionPlan subscription;
 
 	Collection<Title> rentingList;
 
@@ -47,7 +47,7 @@ public class MembershipCard extends DebitOrCreditAccount implements Subscription
 	 * @return true if balance contains title price money
 	 */
 	public boolean checkFunds(double titlePrice) {
-		boolean hasMoney = customer.checkBalance(titlePrice);
+		boolean hasMoney = customer.hasMoney(titlePrice);
 		return hasMoney;
 	}
 
@@ -124,21 +124,21 @@ public class MembershipCard extends DebitOrCreditAccount implements Subscription
 	public boolean retrieveFreeRental(Title rentingTitle) {
 
 		int hasFreeRent = 0;
-		hasFreeRent = availFreeRent(); //check if customer has freeRent to claim
+		hasFreeRent = availFreeRent(); // check if customer has freeRent to claim
 
 		boolean isLessThanFour = true;
 
-		switch (hasFreeRent) { 
-		case 0: //if don't have free rent to claim return false
+		switch (hasFreeRent) {
+		case 0: // if don't have free rent to claim return false
 			System.out.println("No available free rents.");
 			return false;
-		default://if has free rent, check if is on limit (4 rents)
+		default:// if has free rent, check if is on limit (4 rents)
 			isLessThanFour = checkRentingLimit();
 			if (isLessThanFour) {//
-				rentingList.add(rentingTitle); //no points gains && no payment as it is free rental
+				rentingList.add(rentingTitle); // no points gains && no payment as it is free rental
 				System.out.println("Retrieval done.");
 			} else {
-				break;//if renting 4, break and return false to the method
+				break;// if renting 4, break and return false to the method
 			}
 		}
 		return isLessThanFour;
@@ -168,7 +168,10 @@ public class MembershipCard extends DebitOrCreditAccount implements Subscription
 
 	public void addPoints(int points) {
 		this.points += points;
-		int freeR = this.points >= 100 ? updateFreeRents() : 0;
+
+		if (this.points >= 100) {
+			updateFreeRents();
+		}
 	}
 
 	/**
@@ -195,11 +198,11 @@ public class MembershipCard extends DebitOrCreditAccount implements Subscription
 	}
 
 	@Override
-	public Level getSubscription() {
+	public SubscriptionPlan getSubscription() {
 		return this.subscription;
 	}
 
-	public void setSubscription(Level subscription) {
+	public void setSubscription(SubscriptionPlan subscription) {
 		this.subscription = subscription;
 	}
 }

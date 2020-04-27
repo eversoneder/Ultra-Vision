@@ -5,10 +5,10 @@ public interface Subscription {
 	/**
 	 * the subscription of card to set
 	 */
-	public abstract void setSubscription(Level subscription);
+	public abstract void setSubscription(SubscriptionPlan plan);
 	
 	/**
 	 * get the subscription of card
 	 */
-	public abstract Level getSubscription();
+	public abstract SubscriptionPlan getSubscription();
 }
