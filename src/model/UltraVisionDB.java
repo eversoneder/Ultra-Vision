@@ -10,17 +10,18 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import view.Title;
-import view.accesses.MusicLover;
-import view.accesses.Movie;
-import view.customer.Customer;
+import model.customer.Customer;
+import model.titles.BoxSet;
+import model.titles.Movie;
+import model.titles.MusicOrLive;
+import model.titles.Title;
 
 /**
  * Ultra-Vision Database handling class
  */
 public class UltraVisionDB {
 
-	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb"+"?useSSL=false";
+	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb" + "?useSSL=false";
 	private String user = "root";
 	private String password = "pass1234!";
 
@@ -31,12 +32,12 @@ public class UltraVisionDB {
 	private Collection<Title> titleList;
 	private Title title;
 
-	
-	public static void main(String[]args) {
+	public static void main(String[] args) {
 		UltraVisionDB a = new UltraVisionDB();
-		int r = a.getTableSize("title", "title_name", "a");
+		int r = a.getTableSize("title_name", "a");
 		System.out.println(r);
 	}
+
 	/**
 	 * DB Default Constructor, creation of database connection
 	 */
@@ -70,9 +71,9 @@ public class UltraVisionDB {
 	 * @return int of table size
 	 * @throws SQLException
 	 */
-	public int getTableSize(String entity, String filter, String searchName) {
+	public int getTableSize(String filter, String searchName) {
 
-		String query = "SELECT COUNT(*) FROM " + entity + " WHERE " + filter + " LIKE '%" + searchName + "%';";
+		String query = "SELECT COUNT(*) FROM title WHERE " + filter + " LIKE '%" + searchName + "%';";
 		ResultSet rs = executeQueryRS(query);
 		try {
 			tableSize = rs.getInt("COUNT(*)");
@@ -185,16 +186,21 @@ public class UltraVisionDB {
 
 		title = null;
 		try {
-			switch (rs.getString("title_access_level")) {
-			case "ML":
-				title = new MusicLover(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
-						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
-						rs.getString("title_band"), rs.getString("title_genre"), rs.getInt("title_yor"));
+			switch (rs.getInt("title_type_id")) {
+			case 3:
+//				title = new Movie(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
+//						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
+//						rs.getString("title_genre"), rs.getString("title_director"), rs.getInt("title_yor"));
 				break;
-			case "VL":
-				title = new Movie(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
-						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
-						rs.getString("title_genre"), rs.getString("title_director"), rs.getInt("title_yor"));
+			case 4:
+//				title = new BoxSet(rs.getInt("title_id"),rs.getInt("title_type_id"), rs.getInt("disc_format_id"), rs.getInt("title_available"),
+//						rs.getString("title_name"), rs.getDouble("title_price"), rs.getString("title_genre"),
+//						rs.getInt("title_yor"));
+				break;
+			default:
+//				title = new MusicLover(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
+//						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
+//						rs.getString("title_band"), rs.getString("title_genre"), rs.getInt("title_yor"));
 				break;
 			}
 
@@ -207,16 +213,6 @@ public class UltraVisionDB {
 		return title;
 	}
 
-	public boolean newTitle(Title newTitle) {
-
-		return false;
-	}
-
-	public boolean newCustomer(Customer newCustomer) {
-
-		return false;
-	}
-
 	/**
 	 * @param password to check
 	 * @return true if password matches database membership_card_password
@@ -224,6 +220,21 @@ public class UltraVisionDB {
 	public boolean checkCardPassword(int password) {
 
 		return false;
+	}
+
+	public int addNewCustomer(Customer newCustumer) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int addNewTitle(Title newTitle) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int searchTitle(String entity, String filter, String search) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

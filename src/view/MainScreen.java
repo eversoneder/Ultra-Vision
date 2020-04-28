@@ -2,6 +2,8 @@ package view;
 
 import java.awt.event.KeyListener;
 
+import controller.KeyController;
+
 public class MainScreen {
 
 	private KeyController keyController;
