@@ -9,17 +9,15 @@ import model.customer.Customer;
 import model.titles.Title;
 import view.MainScreen;
 
-public class Controller {
+public class UltraVisionManagementSystem {
 
 	private UltraVisionDB db;
-	private MainScreen ms;
-
-	private KeyController keyController;
+	private MainScreen mainScreen;
 
 	private Collection<Title> titleList;
 
-	public Controller() {
-		ms = new MainScreen();
+	public UltraVisionManagementSystem() {
+		mainScreen = new MainScreen();
 	}
 
 	public void getTitleList(Collection<Title> titleList) {

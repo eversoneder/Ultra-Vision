@@ -6,7 +6,6 @@ import java.util.Date;
 
 import model.customer.MembershipCard;
 import model.titles.Title;
-import view.TimeDate;
 
 final class Rent {
 

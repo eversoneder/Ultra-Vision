@@ -41,7 +41,7 @@ public class UltraVisionDB {
 	/**
 	 * DB Default Constructor, creation of database connection
 	 */
-	UltraVisionDB() {
+	public UltraVisionDB() {
 
 		try {
 			con = DriverManager.getConnection(dbHost, user, password);

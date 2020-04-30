@@ -3,28 +3,28 @@ package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
+
 public class KeyController implements KeyListener{
 
-	public KeyController() {
-		// TODO Auto-generated constructor stub
+	private JButton btn;
+	public KeyController(JButton btn) {
+		this.btn = btn;
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getKeyCode() == 10 || e.getKeyCode() == 13) {
+			btn.doClick();
+        }
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
