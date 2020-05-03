@@ -2,31 +2,38 @@ package view;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import controller.KeyController;
 import controller.UltraVisionManagementSystem;
+import view.customer.DeleteCustomer;
 import view.customer.NewCustomer;
+import view.customer.SearchCustomer;
+import view.customer.UpdateCustomer;
+import view.title.DeleteTitle;
+import view.title.NewMusic;
+import view.title.ReturnTitle;
+import view.title.SearchTitle;
 
 public class MainScreen {
 
 	private JFrame MainScreen;
 	private NewCustomer newCustomer;
+	private SearchCustomer searchCustomer;
+	private UpdateCustomer updateCustomer;
+	private DeleteCustomer deleteCustomer;
+	private NewMusic newTitle;
+	private SearchTitle searchTitle;
+	private ReturnTitle returnTitle;
+	private DeleteTitle deleteTitle;
 
 	private UltraVisionManagementSystem controller;
 
@@ -53,15 +60,13 @@ public class MainScreen {
 	}
 
 	public void setComponents() {
-
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+//		backPanel.setBackground(new Color(0, 120, 170));
 		MainScreen.add(backPanel);
-
-
+		
 		JLabel logoIconInJLabel = new JLabel();
-		logoIconInJLabel.setIcon(new ImageIcon("img\\logo.png"));
+		logoIconInJLabel.setIcon(new ImageIcon("img\\icons\\logo.png"));
 		logoIconInJLabel.setBounds(MainScreen.getWidth() / 2 - 250, 20, 500, 375);
 		backPanel.add(logoIconInJLabel);
 
@@ -80,16 +85,19 @@ public class MainScreen {
 		backPanel.add(whiteStrip2);
 
 		objsWithinStrip2(whiteStrip2);
-
-
-
+		
+		JLabel background = new JLabel();
+		background.setIcon(new ImageIcon("img\\background.jpg"));
+		background.setBounds(0,0,backPanel.getWidth(),backPanel.getHeight());
+		backPanel.add(background);
+		
 	}
 
 	public void objsWithinStrip1(JPanel whiteStrip1) {
 
 //----------------Customer Icon----------------------------------------------
 		JLabel customerIconInJLabel = new JLabel();
-		customerIconInJLabel.setIcon(new ImageIcon("img\\customericon.png"));
+		customerIconInJLabel.setIcon(new ImageIcon("img\\icons\\customericon.png"));
 		customerIconInJLabel.setBounds(54, 0, 150, 150);
 		whiteStrip1.add(customerIconInJLabel);
 
@@ -156,7 +164,7 @@ public class MainScreen {
 		whiteStrip1.add(updateCustomerBtn);
 		updateCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UpdateCustomer = new UpdateCustomer();
+				updateCustomer = new UpdateCustomer();
 			}
 		});
 		updateCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -203,7 +211,7 @@ public class MainScreen {
 
 // ----------------Title Icon----------------------------------------------
 		JLabel customerIconInJLabel = new JLabel();
-		customerIconInJLabel.setIcon(new ImageIcon("img\\titleicon.png"));
+		customerIconInJLabel.setIcon(new ImageIcon("img\\icons\\titleicon.png"));
 		customerIconInJLabel.setBounds(54, 0, 150, 150);
 		whiteStrip2.add(customerIconInJLabel);
 
@@ -218,7 +226,7 @@ public class MainScreen {
 		whiteStrip2.add(newTitleBtn);
 		newTitleBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newTitle = new NewTitle();
+				newTitle = new NewMusic();
 //				ImageIcon logoIcon = new ImageIcon("img\\logopane.png");
 //				Object[] btns = { "yes", "no", "exit" };
 //				int i = JOptionPane.showOptionDialog(null, "hshshsh", "TITUy35345LO", JOptionPane.YES_NO_OPTION,

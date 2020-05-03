@@ -6,7 +6,7 @@ import model.enums.AccessLevel;
 import model.interfaces.TitleType;
 import model.titles.Title;
 
-public class MembershipCard extends DebitOrCreditAccount implements Subscription {
+public class MembershipCard implements Subscription {
 
 	private int id;
 	private int points;
@@ -18,11 +18,18 @@ public class MembershipCard extends DebitOrCreditAccount implements Subscription
 	Collection<Title> rentingList;
 
 	private Customer customer;
-
+	
 	public MembershipCard(Customer customer, int password) {
 		this.customer = customer;
 		this.password = password;
 	}
+	
+	public MembershipCard(Customer customer, AccessLevel plan, int password) {
+		this.customer = customer;
+		this.subscription = plan;
+		this.password = password;
+	}
+	
 
 	/**
 	 * @param title
@@ -203,5 +210,9 @@ public class MembershipCard extends DebitOrCreditAccount implements Subscription
 
 	public void setSubscription(AccessLevel subscription) {
 		this.subscription = subscription;
+	}
+	
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 }

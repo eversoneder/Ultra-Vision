@@ -8,7 +8,7 @@ public class Customer extends DebitOrCreditAccount {
 	private String name;
 	private int phone;
 	private String address;
-
+	
 	public Customer() {
 		// TODO Auto-generated constructor stub
 	}
@@ -26,6 +26,14 @@ public class Customer extends DebitOrCreditAccount {
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
+	}
+	
+	public Customer(String name, int phone, String address, Long accountNum) {
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		super.setAccountNumber(accountNum);
+		
 	}
 
 	/**
