@@ -15,13 +15,13 @@ public interface DiscFormat {
 	public abstract void setDiscFormatDB(int discFormat);
 	
 	/**
-	 * @return Disc Format (display to GUI)
+	 * @return String Disc Format (display to GUI)
 	 */
 	public abstract String getDiscFormatGUI();
 	
 	/**
 	 * 
-	 * @return Disc format to upload to DB title>(disc_format_id)
+	 * @return int Disc format to upload to DB title>(disc_format_id)
 	 */
 	public abstract int getDiscFormatDB();
 }

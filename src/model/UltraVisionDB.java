@@ -25,18 +25,18 @@ public class UltraVisionDB {
 	private String user = "root";
 	private String password = "pass1234!";
 
-	private Connection con = null;
-	private Statement st = null;
+	Connection con = null;
+	Statement st = null;
 	private int tableSize;
 
 	private Collection<Title> titleList;
 	private Title title;
 
-	public static void main(String[] args) {
-		UltraVisionDB a = new UltraVisionDB();
-		int r = a.getTableSize("title_name", "a");
-		System.out.println(r);
-	}
+//	public static void main(String[] args) {
+//		UltraVisionDB a = new UltraVisionDB();
+//		int r = a.getTableSize("title_name", "a");
+//		System.out.println(r);
+//	}
 
 	/**
 	 * DB Default Constructor, creation of database connection
@@ -105,17 +105,19 @@ public class UltraVisionDB {
 	/**
 	 * @param query query to execute update
 	 */
-	private void executeUpdateRS(String query) {
+	private int executeUpdateRS(String query) {
 
-		int rs = 0;
+		int rsi = 0;
 		try {
-			rs = st.executeUpdate(query);
-			closings();
+			rsi = st.executeUpdate(query);
+//			closings();
+			rsi = 1;
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		return rsi;
 	}
 
 	/**
@@ -227,9 +229,76 @@ public class UltraVisionDB {
 		return 0;
 	}
 
+	/**
+	 * @param newTitle type raw Title
+	 * @return 1 if succeeded, 0 if failed
+	 */
 	public int addNewTitle(Title newTitle) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		String queryInsertTitle = "INSERT INTO title (title_type_id, disc_format_id, title_available, title_name, title_price, title_genre, title_yor) "
+				+ "VALUES (" + newTitle.getTitleTypeDB() + ", " + newTitle.getDiscFormatDB() + ", "
+				+ newTitle.getAvailable() + ", '" + newTitle.getName() + "', " + newTitle.getPrice() + ", '"
+				+ newTitle.getGenre() + "', " + newTitle.getYearOfRelease() + ");";
+
+		return executeUpdateRS(queryInsertTitle);
+	}
+
+	/**
+	 * @param newMusicOrLive to add but should of first have inserted the raw title
+	 *                       in order to get the title_id to insert it to
+	 *                       music.title_id
+	 * @return 1 if succeeded 0 if failed
+	 */
+	public int addNewTitle(MusicOrLive newMusicOrLive) {// polymorphism of overloading. same signature, different param
+
+		int toreturn = 0;
+//---------------------------------RAW TITLE DB UPLOAD-------------------------------------------
+		Title newTitle = new Title(newMusicOrLive.getTitleTypeDB(), newMusicOrLive.getDiscFormatDB(),
+				newMusicOrLive.getAvailable(), newMusicOrLive.getName(), newMusicOrLive.getPrice(),
+				newMusicOrLive.getGenre(), newMusicOrLive.getYearOfRelease());
+		int rawTitle = addNewTitle(newTitle);// upload first raw title to DB
+
+		if (rawTitle == 0) {
+			System.out.println("Title upload failed.(class: UltraVision. method: addNewTitle(MusicOrLive).");
+			return toreturn;
+		}
+//---------------------------------MUSIC DB UPLOAD-------------------------------------------
+		String queryToGetNewTitleID = "SELECT * FROM title " + "WHERE title_type_id LIKE '%"
+				+ newMusicOrLive.getTitleTypeDB() + "%'" + " AND disc_format_id LIKE '%"
+				+ newMusicOrLive.getDiscFormatDB() + "%'" + " AND title_available LIKE '%"
+				+ newMusicOrLive.getAvailable() + "%'" + " AND title_name LIKE '%" + newMusicOrLive.getName() + "%'"
+				+ " AND title_genre LIKE '%" + newMusicOrLive.getGenre() + "%'" + " AND title_price LIKE '%"
+				+ newMusicOrLive.getPrice() + "%'" + " AND title_yor LIKE '%" + newMusicOrLive.getYearOfRelease() + "%'"
+				+ ";";
+		// query DB to get new title id to insert into music.title_id
+		ResultSet rs = executeQueryRS(queryToGetNewTitleID);
+		int title_id = 0;// variable to hold id from DB title.title_id
+
+		try {
+			title_id = rs.getInt("title_id");
+//			closings();
+			toreturn = 1;
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		if (toreturn == 0) {
+			System.out.println("queryToGetNewTitleID failed. class: UltraVisionDB. method: addNewTitle(MusicOrLive).");
+			return toreturn;
+		}
+
+		String queryInsertIntoMusic = "INSERT INTO music (music_singer, music_band, subscription_id, title_id) "
+				+ "VALUES ('" + newMusicOrLive.getSinger() + "', '" + newMusicOrLive.getBand() + "', " + newMusicOrLive.getTitleTypeDB() + ", " + title_id + ");";
+
+		int musicInsert = executeUpdateRS(queryInsertIntoMusic);
+
+		if (musicInsert == 0) {
+			System.out.println("Couldn't Insert Music. Class: UltraVisionDB. method: addNewTitle(MusicOrLive).");
+			return toreturn;
+		}
+		return 1;
 	}
 
 	public int searchTitle(String entity, String filter, String search) {

@@ -15,12 +15,12 @@ public interface TitleType {
 	public abstract void setTitleTypeDB(int titleType);
 	
 	/**
-	 * @return the title type (display GUI)
+	 * @return String the title type (display GUI)
 	 */
 	public abstract String getTitleTypeGUI();
 	
 	/**
-	 * @return title type to upload to DB (title_type_id) in entity title
+	 * @return int title type to upload to DB (title_type_id) in entity title
 	 */
 	public abstract int getTitleTypeDB();
 }

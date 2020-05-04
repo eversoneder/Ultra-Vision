@@ -42,9 +42,9 @@ public class MainScreen {
 	}
 
 	public MainScreen() {
-		setAttributes();
-		setComponents();
-		validation();
+			setAttributes();
+			setComponents();
+			validation();
 	}
 
 	public void setAttributes() {
@@ -52,11 +52,15 @@ public class MainScreen {
 		MainScreen = new JFrame();
 		MainScreen.setSize(1300, 800);
 		MainScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		MainScreen.setVisible(true);
+		
+		if(!MainScreen.isShowing()) {
+			MainScreen.setVisible(true);
+		}
+		
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
-		
+
 	}
 
 	public void setComponents() {
@@ -64,7 +68,7 @@ public class MainScreen {
 		backPanel.setLayout(null);
 //		backPanel.setBackground(new Color(0, 120, 170));
 		MainScreen.add(backPanel);
-		
+
 		JLabel logoIconInJLabel = new JLabel();
 		logoIconInJLabel.setIcon(new ImageIcon("img\\icons\\logo.png"));
 		logoIconInJLabel.setBounds(MainScreen.getWidth() / 2 - 250, 20, 500, 375);
@@ -85,12 +89,12 @@ public class MainScreen {
 		backPanel.add(whiteStrip2);
 
 		objsWithinStrip2(whiteStrip2);
-		
+
 		JLabel background = new JLabel();
 		background.setIcon(new ImageIcon("img\\background.jpg"));
-		background.setBounds(0,0,backPanel.getWidth(),backPanel.getHeight());
+		background.setBounds(0, 0, backPanel.getWidth(), backPanel.getHeight());
 		backPanel.add(background);
-		
+
 	}
 
 	public void objsWithinStrip1(JPanel whiteStrip1) {

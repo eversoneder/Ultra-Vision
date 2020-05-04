@@ -9,6 +9,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,12 +24,19 @@ import javax.swing.JTextField;
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
 import model.enums.Media;
+import model.titles.MusicOrLive;
+import model.titles.Title;
 
-public class NewMusic implements FocusListener{
+public class NewMusic implements FocusListener {
 
-	private JFrame newTitleScreen = new JFrame();
-	KeyController keyListener = new KeyController(newTitleScreen);
-	
+	private MusicOrLive newMusic;
+	JButton createBtn;
+
+	private JFrame newMusicScreen = new JFrame();
+	private KeyController keyListener = new KeyController(newMusicScreen, createBtn);
+
+	private UltraVisionManagementSystem managementSystem;
+
 	private JTextField musicnametf;
 	private JTextField musicsingertf;
 	private JTextField musicbandtf;
@@ -35,44 +44,44 @@ public class NewMusic implements FocusListener{
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
 	private JComboBox mediaComboBox;
+
 //	private Media mediaformattf;
 
-	
-	public NewMusic(){
+	public NewMusic() {
 		setAttributes();
 		setComponents();
 		validation();
 	}
-	
-	public static void main(String[]args) {
-		new NewMusic();
-	}
-	
+
+//	public static void main(String[] args) {
+//		new NewMusic();
+//	}
+
 	public void setAttributes() {
-		newTitleScreen.setSize(1000, 650);
-		newTitleScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		newTitleScreen.setVisible(true);
-		newTitleScreen.setResizable(false);
-		newTitleScreen.setTitle("Title Registration");
-		newTitleScreen.addKeyListener(keyListener);
-		newTitleScreen.setLocationRelativeTo(null);
-		
+		newMusicScreen.setSize(1000, 650);
+		newMusicScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		newMusicScreen.setVisible(true);
+		newMusicScreen.setResizable(false);
+		newMusicScreen.setTitle("Title Registration");
+		newMusicScreen.addKeyListener(keyListener);
+		newMusicScreen.setLocationRelativeTo(null);
+
 	}
-	
-	public void setComponents(){
-		
+
+	public void setComponents() {
+
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
-		newTitleScreen.add(backPanel);
+		newMusicScreen.add(backPanel);
 
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, newTitleScreen.getWidth(), newTitleScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, newMusicScreen.getWidth(), newMusicScreen.getHeight() - 200);
 		backPanel.add(backRectangle);
 
-		JLabel newCustomerLabel = new JLabel("New Customer");
+		JLabel newCustomerLabel = new JLabel("New Music");
 		newCustomerLabel.setFont(new Font("Tahoma", Font.PLAIN, 42));
 		newCustomerLabel.setBounds(110, 60, 300, 35);
 		newCustomerLabel.setForeground(Color.WHITE);
@@ -91,14 +100,14 @@ public class NewMusic implements FocusListener{
 		textFields(backRectangle);
 
 		JLabel bigCustomerIcon = new JLabel();
-		bigCustomerIcon.setIcon(new ImageIcon("img\\icons\\customericonbig.png"));
+		bigCustomerIcon.setIcon(new ImageIcon("img\\icons\\musiciconbig.png"));
 		bigCustomerIcon.setBounds(70, 50, 280, 350);
 		backRectangle.add(bigCustomerIcon);
 
 		buttons(backRectangle);
-		
+
 	}
-	
+
 	public void textFields(JPanel backRectangle) {
 
 		musicnametf = new JTextField();
@@ -136,7 +145,7 @@ public class NewMusic implements FocusListener{
 		musicgenretf.setBorder(null);
 		musicgenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(musicgenretf);
-		
+
 		yearofreleasetf = new JTextField();
 		yearofreleasetf.setText("year of release");
 		yearofreleasetf.setForeground(new Color(180, 180, 180));
@@ -145,7 +154,7 @@ public class NewMusic implements FocusListener{
 		yearofreleasetf.setBorder(null);
 		yearofreleasetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(yearofreleasetf);
-		
+
 		pricetf = new JTextField();
 		pricetf.setText("price");
 		pricetf.setForeground(new Color(180, 180, 180));
@@ -154,126 +163,150 @@ public class NewMusic implements FocusListener{
 		pricetf.setBorder(null);
 		pricetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(pricetf);
-		
-		Media [] mediaformats = Media.values();
-		
+
+		Media[] mediaformats = Media.values();
+
 		mediaComboBox = new JComboBox<Media>(mediaformats);
-		mediaComboBox.setBounds(655,175,225,45);
+		mediaComboBox.setBounds(655, 175, 225, 45);
 		backRectangle.add(mediaComboBox);
-		
 
 	}
-	
+
 	public void buttons(JPanel backRectangle) {
 
-
-		//---------------------------CANCEL BUTTON-------------------------------
-				JButton cancelBtn = new JButton();
-				cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
-				cancelBtn.setBackground(backRectangle.getBackground());
-				cancelBtn.setBounds(420, 335, 230, 106);
-				cancelBtn.setBorderPainted(false);
-				cancelBtn.setContentAreaFilled(false);
-				cancelBtn.setFocusPainted(false);
-				backRectangle.add(cancelBtn);
-				cancelBtn.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						newTitleScreen.dispose();
-					}
-				});
-				cancelBtn.addMouseListener(new MouseAdapter() {
-					public void mouseEntered(MouseEvent evt) {
-						cancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-						cancelBtn.setIcon(new ImageIcon("img\\btn\\hover\\cancelbtnhover.png"));
-						cancelBtn.setBounds(416, 333, 239, 110);
-					}
-
-					public void mouseExited(MouseEvent evt) {
-						cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
-						cancelBtn.setBounds(420, 335, 230, 106);
-					}
-				});
-		//---------------------------CREATE BUTTON-------------------------------
-				JButton createBtn = new JButton();
-				createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
-				createBtn.setBackground(backRectangle.getBackground());
-				createBtn.setBounds(632, 335, 230, 106);
-				createBtn.setBorderPainted(false);
-				createBtn.setContentAreaFilled(false);
-				createBtn.setFocusPainted(false);
-				backRectangle.add(createBtn);
-				createBtn.addActionListener(new ActionListener() {
-					private UltraVisionManagementSystem managementSystem;
-
-					public void actionPerformed(ActionEvent e) {
-
-						ImageIcon logoIcon = new ImageIcon("img\\logopane.png");;
-
-						String name = musicnametf.getText();
-						String singer = musicsingertf.getText();
-						String band = musicbandtf.getText();
-						String genre = musicgenretf.getText();
-						String yor = yearofreleasetf.getText();
-						String price = pricetf.getText();
-						String mediaformat = mediaComboBox.getName();
-						
-						
-						
-						if (name.equals("music name") || singer.equals("music singer") || band.equals("music band")
-								|| genre.equals("music genre") || yor.equals("year of release")
-								|| price.equals("price")) {
-
-							Object[] btns = { "Ok" };
-							int i = JOptionPane.showOptionDialog(null, "All fields are required.",
-									"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-									logoIcon, btns, btns[0]);
-							return;
-						}
-
-						if (!yor.matches("(^([0-9]{4}))")) {
-							Object[] btns = { "Ok" };
-							int i = JOptionPane.showOptionDialog(null,
-									"Invalid year of release number. \nEnter a valid year please.", "Year of Release Field Error",
-									JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-							return;
-						}
-						
-						if (!price.matches("(^([0-9]{2,3})[.]([0-9]{2})$)")) {
-							Object[] btns = { "Ok" };
-							int i = JOptionPane.showOptionDialog(null,
-									"Invalid price number. \nEnter a valid price please.", "Price Field Error",
-									JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-							return;
-						}
-						System.out.println("price certo");
-
-//						managementSystem = new UltraVisionManagementSystem();
-
-//								Customer newCustomer = new Customer(name, phone, address, account);
-//								MembershipCard newCard = new MemberShipCard(newCustomer, plan, membercardpass);
-
-//								managementSystem.addNewCustomer(newCustomer);
-					}
-				});
-				createBtn.addMouseListener(new MouseAdapter() {
-					public void mouseEntered(MouseEvent evt) {
-						createBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-						createBtn.setIcon(new ImageIcon("img\\btn\\hover\\createbtnhover.png"));
-						createBtn.setBounds(628, 333, 239, 110);
-					}
-
-					public void mouseExited(MouseEvent evt) {
-						createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
-						createBtn.setBounds(632, 335, 230, 106);
-					}
-				});
+		// ---------------------------CANCEL BUTTON-------------------------------
+		JButton cancelBtn = new JButton();
+		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
+		cancelBtn.setBackground(backRectangle.getBackground());
+		cancelBtn.setBounds(420, 295, 230, 106);
+		cancelBtn.setBorderPainted(false);
+		cancelBtn.setContentAreaFilled(false);
+		cancelBtn.setFocusPainted(false);
+		backRectangle.add(cancelBtn);
+		cancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newMusicScreen.dispose();
 			}
-	
-	public void validation() {
-		newTitleScreen.repaint();
-		newTitleScreen.validate();
+		});
+		cancelBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				cancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				cancelBtn.setIcon(new ImageIcon("img\\btn\\hover\\cancelbtnhover.png"));
+				cancelBtn.setBounds(416, 293, 239, 110);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
+				cancelBtn.setBounds(420, 295, 230, 106);
+			}
+		});
+		// ---------------------------CREATE BUTTON-------------------------------
+		createBtn = new JButton();
+		createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
+		createBtn.setBackground(backRectangle.getBackground());
+		createBtn.setBounds(632, 295, 230, 106);
+		createBtn.setBorderPainted(false);
+		createBtn.setContentAreaFilled(false);
+		createBtn.setFocusPainted(false);
+		backRectangle.add(createBtn);
+		createBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				ImageIcon logoIcon = new ImageIcon("img\\logopane.png");
+
+				String name = musicnametf.getText();
+				String singer = musicsingertf.getText();
+				String band = musicbandtf.getText();
+				String genre = musicgenretf.getText();
+				String yor = yearofreleasetf.getText();
+				String price = pricetf.getText();
+
+				if (name.equals("music name") || singer.equals("music singer") || band.equals("music band")
+						|| genre.equals("music genre") || yor.equals("year of release") || price.equals("price")) {
+
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
+							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+							logoIcon, btns, btns[0]);
+					return;
+				}
+				if (!yor.matches("(18|19|20)[0-9]{2}")) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"Invalid year of release number. \nEnter a valid year please.",
+							"Year of Release Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+							logoIcon, btns, btns[0]);
+					return;
+				}
+				if (!price.matches("(^([0-9]{1,2})[.]([0-9]{2})$)")) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Invalid price number. \nEnter a valid price please.",
+							"Price Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
+					return;
+				}
+
+				int selectedMediaIndex = mediaComboBox.getSelectedIndex();
+				Media medias[] = Media.values();
+				Media selectedFormat = null;
+				for (Media i : medias) {
+					if (i.getDiscFormatID() - 1 == selectedMediaIndex) {
+						selectedFormat = i;
+						break;
+					}
+				}
+				{// new title upload
+//					Double twoDecimalPrice = Double.parseDouble(String.format("%.2f", new BigDecimal(price)));
+//					DecimalFormat df = new DecimalFormat("#.00"); 
+					
+					double pricedouble = Double.parseDouble(price);
+					int yorint = Integer.parseInt(yor);
+
+					newMusic = new MusicOrLive(1, selectedFormat, name, pricedouble, genre, yorint, singer, band, 1);
+					managementSystem = new UltraVisionManagementSystem(0);
+					int insertNewMusic = managementSystem.addNewTitle(newMusic);
+
+					if (insertNewMusic == 0) {
+						
+//						Object[] btns = { "Ok" };
+//						int i = JOptionPane.showOptionDialog(null, "Invalid price number. \nEnter a valid price please.",
+//								"Price Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+//								btns[0]);
+						
+						
+//						Object[] btns = { "Ok" };
+//						int i = JOptionPane.showOptionDialog(null, "Couldn't register Title.",
+//								"Music Registration Failed.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+//								logoIcon, btns, btns[0]);
+
+					}else {
+						Object[] btns = { "Ok" };
+						int i = JOptionPane.showOptionDialog(null, "Music successfully registered!",
+								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+								logoIcon, btns, btns[0]);
+					}
+				}
+			}
+		});
+		createBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				createBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				createBtn.setIcon(new ImageIcon("img\\btn\\hover\\createbtnhover.png"));
+				createBtn.setBounds(628, 293, 239, 110);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
+				createBtn.setBounds(632, 295, 230, 106);
+			}
+		});
 	}
-	
+
+	public void validation() {
+		newMusicScreen.repaint();
+		newMusicScreen.validate();
+	}
+
 	@Override
 	public void focusGained(FocusEvent e) {
 
@@ -311,38 +344,38 @@ public class NewMusic implements FocusListener{
 			}
 		}
 //------------------music genre TextField-------------------------
-				if (musicgenretf.getText().matches("music genre")) {
-					musicgenretf.setText("");
-					musicgenretf.setForeground(new Color(0, 80, 110));
-				}
-				if (!musicgenretf.hasFocus()) {
-					if (musicgenretf.getText().matches("")) {
-						musicgenretf.setText("music genre");
-						musicgenretf.setForeground(new Color(180, 180, 180));
-					}
-				}
+		if (musicgenretf.getText().matches("music genre")) {
+			musicgenretf.setText("");
+			musicgenretf.setForeground(new Color(0, 80, 110));
+		}
+		if (!musicgenretf.hasFocus()) {
+			if (musicgenretf.getText().matches("")) {
+				musicgenretf.setText("music genre");
+				musicgenretf.setForeground(new Color(180, 180, 180));
+			}
+		}
 //------------------year of release TextField-------------------------
-				if (yearofreleasetf.getText().matches("year of release")) {
-					yearofreleasetf.setText("");
-					yearofreleasetf.setForeground(new Color(0, 80, 110));
-				}
-				if (!yearofreleasetf.hasFocus()) {
-					if (yearofreleasetf.getText().matches("")) {
-						yearofreleasetf.setText("year of release");
-						yearofreleasetf.setForeground(new Color(180, 180, 180));
-					}
-				}
+		if (yearofreleasetf.getText().matches("year of release")) {
+			yearofreleasetf.setText("");
+			yearofreleasetf.setForeground(new Color(0, 80, 110));
+		}
+		if (!yearofreleasetf.hasFocus()) {
+			if (yearofreleasetf.getText().matches("")) {
+				yearofreleasetf.setText("year of release");
+				yearofreleasetf.setForeground(new Color(180, 180, 180));
+			}
+		}
 //------------------year of release TextField-------------------------
-				if (pricetf.getText().matches("price")) {
-					pricetf.setText("");
-					pricetf.setForeground(new Color(0, 80, 110));
-				}
-				if (!pricetf.hasFocus()) {
-					if (pricetf.getText().matches("")) {
-						pricetf.setText("price");
-						pricetf.setForeground(new Color(180, 180, 180));
-					}
-				}
+		if (pricetf.getText().matches("price")) {
+			pricetf.setText("");
+			pricetf.setForeground(new Color(0, 80, 110));
+		}
+		if (!pricetf.hasFocus()) {
+			if (pricetf.getText().matches("")) {
+				pricetf.setText("price");
+				pricetf.setForeground(new Color(180, 180, 180));
+			}
+		}
 	}
 
 	@Override

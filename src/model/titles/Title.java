@@ -20,11 +20,13 @@ public class Title implements DiscFormat, TitleType {
 	private double price;
 	private String genre;
 	private int yearOfRelease;
+	private int subscriptionPlan;
 
 	private Collection<Title> titleList;
 
 	private MusicOrLive ml;
 	private Movie vl;
+	
 
 	/**
 	 * Constructor for New title by user
@@ -170,7 +172,7 @@ public class Title implements DiscFormat, TitleType {
 	}
 
 	/**
-	 * @return the name
+	 * @return the title name
 	 */
 	public String getName() {
 		return name;
@@ -184,7 +186,7 @@ public class Title implements DiscFormat, TitleType {
 	}
 
 	/**
-	 * @return the price
+	 * @return double the price
 	 */
 	public double getPrice() {
 		return price;
@@ -229,7 +231,7 @@ public class Title implements DiscFormat, TitleType {
 	}
 
 	/**
-	 * @return the title availability
+	 * @return int the title availability
 	 */
 	public int getAvailable() {
 		return available;
@@ -243,28 +245,29 @@ public class Title implements DiscFormat, TitleType {
 	}
 
 	/**
-	 * @return the title genre
+	 * @return the String title genre
 	 */
 	public String getGenre() {
 		return genre;
 	}
 
 	/**
-	 * @param genre the title genre to set
+	 * @param genre the title genre to set (String)
 	 */
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
 
 	/**
-	 * @return the title year of release
+	 * @return int the title year of release
 	 */
 	public int getYearOfRelease() {
 		return yearOfRelease;
 	}
 
 	/**
-	 * @param yor the title year of release to set
+	 * 
+	 * @param yor the title year of release to set (int)
 	 */
 	public void setYearOfRelease(int yor) {
 		this.yearOfRelease = yor;

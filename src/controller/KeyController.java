@@ -18,6 +18,12 @@ public class KeyController implements KeyListener {
 	public KeyController(JFrame frame) {
 		this.currentScreen = frame;
 	}
+	
+	public KeyController(JFrame frame, JButton btn) {
+		this.currentScreen = frame;
+		this.btn = btn;
+	}
+	
 	public KeyController() {
 
 	}

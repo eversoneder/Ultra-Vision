@@ -11,7 +11,8 @@ public class MusicOrLive extends Title {
 	private String singer;
 	private String band;
 	private int isLiveConcert;
-
+	private int subscriptionplan;
+	
 	private Collection<MusicOrLive> mlTitles;
 
 	public MusicOrLive() {
@@ -29,12 +30,12 @@ public class MusicOrLive extends Title {
 	 * @param yor
 	 * @param available
 	 */
-	public MusicOrLive(int type, Media format, int available, String name, double price, String genre, int yor,
-			String singer, String band) {
+	public MusicOrLive(int type, Media format, String name, double price, String genre, int yor,
+			String singer, String band, int plan) {
 		// title attributes
 		super.setTitleTypeDB(type);
 		super.setDiscFormatDB(format.getDiscFormatID());
-		super.setAvailable(available);
+		super.setAvailable(1);
 		super.setName(name);
 		super.setPrice(price);
 		super.setGenre(genre);
@@ -42,6 +43,8 @@ public class MusicOrLive extends Title {
 		// music/live concert attributes
 		this.setSinger(singer);
 		this.setBand(band);
+		this.setSubscriptionPlan(plan);
+		
 	}
 
 	/**
@@ -77,6 +80,20 @@ public class MusicOrLive extends Title {
 	 */
 	public Collection<MusicOrLive> getMLTitles() {
 		return mlTitles;
+	}
+	
+	/**
+	 * @return the subscriptionplan
+	 */
+	public int getSubscriptionplan() {
+		return subscriptionplan;
+	}
+
+	/**
+	 * @param subscriptionplan the subscriptionplan to set
+	 */
+	public void setSubscriptionPlan(int subscriptionplan) {
+		this.subscriptionplan = subscriptionplan;
 	}
 
 	/**
