@@ -27,15 +27,15 @@ import model.customer.MembershipCard;
 
 public class NewCustomer implements FocusListener {
 
+	private JButton cancelBtn;
 	private JFrame newCustomerScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newCustomerScreen);
+
 	private UltraVisionManagementSystem managementSystem;
 
 	private JTextField nametf;
 	private JTextField addresstf;
 	private JTextField phonetf;
-	private JTextField accounttf;
-	private JTextField memberCardPasstf;
+	
 
 	public static void main(String[] args) {
 		new NewCustomer();
@@ -53,7 +53,6 @@ public class NewCustomer implements FocusListener {
 		newCustomerScreen.setVisible(true);
 		newCustomerScreen.setResizable(false);
 		newCustomerScreen.setTitle("Customer Registration");
-		newCustomerScreen.addKeyListener(keyListener);
 		newCustomerScreen.setLocationRelativeTo(null);
 	}
 
@@ -63,6 +62,11 @@ public class NewCustomer implements FocusListener {
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
 		newCustomerScreen.add(backPanel);
+
+		JLabel logo = new JLabel();
+		logo.setIcon(new ImageIcon("img\\icons\\logobluecirclebig.png"));
+		logo.setBounds(470, 20, 400, 230);
+		backPanel.add(logo);
 
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
@@ -76,13 +80,11 @@ public class NewCustomer implements FocusListener {
 		newCustomerLabel.setForeground(Color.WHITE);
 		backPanel.add(newCustomerLabel);
 
-		JLabel logo = new JLabel();
-		logo.setIcon(new ImageIcon("img\\icons\\logobluecircle.png"));
-		logo.setBounds(560, 0, 300, 120);
-		backPanel.add(logo);
+		buttons(backRectangle, backPanel);
 
 		JLabel pressQ = new JLabel();
-		pressQ.setIcon(new ImageIcon("img\\icons\\pressq.png"));
+//		pressQ.setIcon(new ImageIcon("img\\icons\\goback.png"));
+		pressQ.setIcon(new ImageIcon("img\\icons\\press.png"));
 		pressQ.setBounds(backRectangle.getWidth() - 210, 20, 195, 65);
 		backPanel.add(pressQ);
 
@@ -93,155 +95,153 @@ public class NewCustomer implements FocusListener {
 		bigCustomerIcon.setBounds(70, 50, 280, 350);
 		backRectangle.add(bigCustomerIcon);
 
-		buttons(backRectangle);
-
 	}
 
 	public void textFields(JPanel backRectangle) {
 
 		nametf = new JTextField();
-		nametf.setText("name");
+		nametf.setText("customer name");
 		nametf.setForeground(new Color(180, 180, 180));
 		nametf.addFocusListener(this);
-		nametf.setBounds(400, 10, 470, 45);
+		nametf.setBounds(400, 150, 470, 45);
 		nametf.setBorder(null);
 		nametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(nametf);
 
 		addresstf = new JTextField();
-		addresstf.setText("address");
+		addresstf.setText("customer address");
 		addresstf.setForeground(new Color(180, 180, 180));
 		addresstf.addFocusListener(this);
-		addresstf.setBounds(400, 65, 470, 45);
+		addresstf.setBounds(400, 210, 470, 45);
 		addresstf.setBorder(null);
 		addresstf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(addresstf);
 
 		phonetf = new JTextField();
-		phonetf.setText("phone");
+		phonetf.setText("customer phone");
 		phonetf.setForeground(new Color(180, 180, 180));
 		phonetf.addFocusListener(this);
-		phonetf.setBounds(400, 120, 470, 45);
+		phonetf.setBounds(400, 270, 470, 45);
 		phonetf.setBorder(null);
 		phonetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(phonetf);
-
-		accounttf = new JTextField();
-		accounttf.setText("debit/credit account number");
-		accounttf.setForeground(new Color(180, 180, 180));
-		accounttf.addFocusListener(this);
-		accounttf.setBounds(400, 175, 470, 45);
-		accounttf.setBorder(null);
-		accounttf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(accounttf);
-
-		memberCardPasstf = new JTextField();
-		memberCardPasstf.setText("create membership card password");
-		memberCardPasstf.setForeground(new Color(180, 180, 180));
-		memberCardPasstf.addFocusListener(this);
-		memberCardPasstf.setBounds(400, 230, 470, 45);
-		memberCardPasstf.setBorder(null);
-		memberCardPasstf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(memberCardPasstf);
-
-//		accountnum = new JTextField();
-//		memberCardPasstf.setText("membership card password");
-//		memberCardPasstf.setForeground(new Color(180, 180, 180));
-//		memberCardPasstf.addFocusListener(this);
-//		memberCardPasstf.setBounds(420, 200, 400, 50);
-//		memberCardPasstf.setBorder(null);
-//		memberCardPasstf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-//		backRectangle.add(memberCardPasstf);
 	}
 
-	public void buttons(JPanel backRectangle) {
+	public void buttons(JPanel backRectangle, JPanel backPanel) {
 
-//---------------------Music Lover----------------------------------
-		JRadioButton mlRadio = new JRadioButton();
-		mlRadio.setActionCommand("ML");
-		mlRadio.setBorder(null);
-		mlRadio.setBorderPainted(false);
-		mlRadio.setContentAreaFilled(false);
-		mlRadio.setForeground(Color.WHITE);
-		mlRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		mlRadio.setBounds(400,260,100,100);
-		backRectangle.add(mlRadio);
-		
-		JLabel mlIcon = new JLabel();
-		mlIcon.setIcon(new ImageIcon("img\\btn\\ml3.png"));
-		mlIcon.setBounds(420,260,100,100);
-		backRectangle.add(mlIcon);
-		
-//---------------------Video Lover----------------------------------
-		JRadioButton vlRadio = new JRadioButton();
-		vlRadio.setActionCommand("VL");
-		vlRadio.setBorder(null);
-		vlRadio.setBorderPainted(false);
-		vlRadio.setContentAreaFilled(false);
-		vlRadio.setFocusPainted(false);
-		vlRadio.setForeground(Color.WHITE);
-		vlRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		vlRadio.setBounds(520,260,100,100);
-		backRectangle.add(vlRadio);
-		
-		JLabel vlIcon = new JLabel();
-		vlIcon.setIcon(new ImageIcon("img\\btn\\vl.png"));
-		vlIcon.setBounds(540,260,100,100);
-		backRectangle.add(vlIcon);
-		
-//---------------------TV Lover----------------------------------
-		
-		JRadioButton tvRadio = new JRadioButton();
-		tvRadio.setActionCommand("TV");
-		tvRadio.setBorder(null);
-		tvRadio.setBorderPainted(false);
-		tvRadio.setContentAreaFilled(false);
-		tvRadio.setFocusPainted(false);
-		tvRadio.setForeground(Color.WHITE);
-		tvRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		tvRadio.setBounds(640,260,100,100);
-		backRectangle.add(tvRadio);
-		
-		JLabel tvIcon = new JLabel();
-		tvIcon.setIcon(new ImageIcon("img\\btn\\tv.png"));
-		tvIcon.setBounds(660,260,100,100);
-		backRectangle.add(tvIcon);
-		
-//---------------------Premium----------------------------------
-		
-		JRadioButton prRadio = new JRadioButton();
-		prRadio.setActionCommand("PR");
-		prRadio.setBorder(null);
-		prRadio.setBorderPainted(false);
-		prRadio.setContentAreaFilled(false);
-		prRadio.setFocusPainted(false);
-		prRadio.setForeground(Color.WHITE);
-		prRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		prRadio.setBounds(760,260,100,100);
-		backRectangle.add(prRadio);
-		
-		JLabel prIcon = new JLabel();
-		prIcon.setIcon(new ImageIcon("img\\btn\\pr.png"));
-		prIcon.setBounds(780,260,100,100);
-		backRectangle.add(prIcon);
-		
-		ButtonGroup plans = new ButtonGroup();
-		plans.add(mlRadio);
-		plans.add(vlRadio);
-		plans.add(tvRadio);
-		plans.add(prRadio);
-		
+// ---------------------------PRESS CLOSE BUTTON-------------------------------
+		JButton pressClose = new JButton();
+		pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
+//				pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
+		pressClose.setBounds(780, 20, 222, 65);
+		pressClose.setBorderPainted(false);
+		pressClose.setContentAreaFilled(false);
+		pressClose.setFocusPainted(false);
+		backPanel.add(pressClose);
+		pressClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newCustomerScreen.dispose();
+			}
+		});
+		pressClose.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				pressClose.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				pressClose.setIcon(new ImageIcon("img\\btn\\hover\\gobackhover.png"));
+				pressClose.setBounds(778, 14, 230, 75);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
+				pressClose.setBounds(780, 20, 222, 65);
+			}
+		});
+
+////---------------------Music Lover----------------------------------
+//		JRadioButton mlRadio = new JRadioButton();
+//		mlRadio.setActionCommand("ML");
+//		mlRadio.setBorder(null);
+//		mlRadio.setBorderPainted(false);
+//		mlRadio.setContentAreaFilled(false);
+//		mlRadio.setForeground(Color.WHITE);
+//		mlRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+//		mlRadio.setBounds(400, 260, 100, 100);
+//		backRectangle.add(mlRadio);
+//
+//		JLabel mlIcon = new JLabel();
+//		mlIcon.setIcon(new ImageIcon("img\\btn\\ml3.png"));
+//		mlIcon.setBounds(420, 260, 100, 100);
+//		backRectangle.add(mlIcon);
+//
+////---------------------Video Lover----------------------------------
+//		JRadioButton vlRadio = new JRadioButton();
+//		vlRadio.setActionCommand("VL");
+//		vlRadio.setBorder(null);
+//		vlRadio.setBorderPainted(false);
+//		vlRadio.setContentAreaFilled(false);
+//		vlRadio.setFocusPainted(false);
+//		vlRadio.setForeground(Color.WHITE);
+//		vlRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+//		vlRadio.setBounds(520, 260, 100, 100);
+//		backRectangle.add(vlRadio);
+//
+//		JLabel vlIcon = new JLabel();
+//		vlIcon.setIcon(new ImageIcon("img\\btn\\vl.png"));
+//		vlIcon.setBounds(540, 260, 100, 100);
+//		backRectangle.add(vlIcon);
+//
+////---------------------TV Lover----------------------------------
+//
+//		JRadioButton tvRadio = new JRadioButton();
+//		tvRadio.setActionCommand("TV");
+//		tvRadio.setBorder(null);
+//		tvRadio.setBorderPainted(false);
+//		tvRadio.setContentAreaFilled(false);
+//		tvRadio.setFocusPainted(false);
+//		tvRadio.setForeground(Color.WHITE);
+//		tvRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+//		tvRadio.setBounds(640, 260, 100, 100);
+//		backRectangle.add(tvRadio);
+//
+//		JLabel tvIcon = new JLabel();
+//		tvIcon.setIcon(new ImageIcon("img\\btn\\tv.png"));
+//		tvIcon.setBounds(660, 260, 100, 100);
+//		backRectangle.add(tvIcon);
+//
+////---------------------Premium----------------------------------
+//
+//		JRadioButton prRadio = new JRadioButton();
+//		prRadio.setActionCommand("PR");
+//		prRadio.setBorder(null);
+//		prRadio.setBorderPainted(false);
+//		prRadio.setContentAreaFilled(false);
+//		prRadio.setFocusPainted(false);
+//		prRadio.setForeground(Color.WHITE);
+//		prRadio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+//		prRadio.setBounds(760, 260, 100, 100);
+//		backRectangle.add(prRadio);
+//
+//		JLabel prIcon = new JLabel();
+//		prIcon.setIcon(new ImageIcon("img\\btn\\pr.png"));
+//		prIcon.setBounds(780, 260, 100, 100);
+//		backRectangle.add(prIcon);
+//
+//		ButtonGroup plans = new ButtonGroup();
+//		plans.add(mlRadio);
+//		plans.add(vlRadio);
+//		plans.add(tvRadio);
+//		plans.add(prRadio);
+
 //		ButtonModel selected;
 //		selected = plans.getSelection();
 //		String command = selected.getActionCommand();
-		
+
 //		cancelBtn.setBorderPainted(false);
 //		cancelBtn.setContentAreaFilled(false);
 //		cancelBtn.setFocusPainted(false);
-		
 
 //---------------------------CANCEL BUTTON-------------------------------
-		JButton cancelBtn = new JButton();
+
+		cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
 		cancelBtn.setBounds(420, 335, 230, 106);
@@ -283,9 +283,7 @@ public class NewCustomer implements FocusListener {
 				String name = nametf.getText();
 				String address = addresstf.getText();
 				String phone = phonetf.getText();
-				String account = accounttf.getText();
 				String plan = "";
-				String membercardpass = "";
 
 				if (name.equals("name") || address.equals("address") || phone.equals("phone")
 						|| account.equals("debit/credit account number") || plan.equals("null")
@@ -339,58 +337,36 @@ public class NewCustomer implements FocusListener {
 	public void focusGained(FocusEvent e) {
 
 //------------------name TextField-------------------------
-		if (nametf.getText().matches("name")) {
+		if (nametf.getText().matches("customer name")) {
 			nametf.setText("");
 			nametf.setForeground(new Color(0, 80, 110));
 		}
 		if (!nametf.hasFocus()) {
 			if (nametf.getText().matches("")) {
-				nametf.setText("name");
+				nametf.setText("customer name");
 				nametf.setForeground(new Color(180, 180, 180));
 			}
 		}
 //------------------address TextField-------------------------
-		if (addresstf.getText().matches("address")) {
+		if (addresstf.getText().matches("customer address")) {
 			addresstf.setText("");
 			addresstf.setForeground(new Color(0, 80, 110));
 		}
 		if (!addresstf.hasFocus()) {
 			if (addresstf.getText().matches("")) {
-				addresstf.setText("address");
+				addresstf.setText("customer address");
 				addresstf.setForeground(new Color(180, 180, 180));
 			}
 		}
 //------------------phone TextField-------------------------
-		if (phonetf.getText().matches("phone")) {
+		if (phonetf.getText().matches("customer phone")) {
 			phonetf.setText("");
 			phonetf.setForeground(new Color(0, 80, 110));
 		}
 		if (!phonetf.hasFocus()) {
 			if (phonetf.getText().matches("")) {
-				phonetf.setText("phone");
+				phonetf.setText("customer phone");
 				phonetf.setForeground(new Color(180, 180, 180));
-			}
-		}
-//------------------account TextField-------------------------
-		if (accounttf.getText().matches("debit/credit account number")) {
-			accounttf.setText("");
-			accounttf.setForeground(new Color(0, 80, 110));
-		}
-		if (!accounttf.hasFocus()) {
-			if (accounttf.getText().matches("")) {
-				accounttf.setText("debit/credit account number");
-				accounttf.setForeground(new Color(180, 180, 180));
-			}
-		}
-// ------------------membership card TextField-------------------------
-		if (memberCardPasstf.getText().matches("create membership card password")) {
-			memberCardPasstf.setText("");
-			memberCardPasstf.setForeground(new Color(0, 80, 110));
-		}
-		if (!memberCardPasstf.hasFocus()) {
-			if (memberCardPasstf.getText().matches("")) {
-				memberCardPasstf.setText("create membership card password");
-				memberCardPasstf.setForeground(new Color(180, 180, 180));
 			}
 		}
 	}

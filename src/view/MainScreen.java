@@ -6,31 +6,39 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import controller.KeyController;
 import controller.UltraVisionManagementSystem;
+import view.customer.CustomerClassifications;
 import view.customer.DeleteCustomer;
 import view.customer.NewCustomer;
 import view.customer.SearchCustomer;
 import view.customer.UpdateCustomer;
 import view.title.DeleteTitle;
-import view.title.NewMusic;
 import view.title.ReturnTitle;
 import view.title.SearchTitle;
+import view.title.TitleClassifications;
 
-public class MainScreen {
+public class MainScreen implements WindowListener{
 
-	private JFrame MainScreen;
+	private JButton closeBtn;
+	private JFrame MainScreen = new JFrame();
+	private KeyController keyListener = new KeyController(MainScreen);
+
 	private NewCustomer newCustomer;
 	private SearchCustomer searchCustomer;
 	private UpdateCustomer updateCustomer;
 	private DeleteCustomer deleteCustomer;
-	private NewMusic newTitle;
+	private TitleClassifications newTitle;
 	private SearchTitle searchTitle;
 	private ReturnTitle returnTitle;
 	private DeleteTitle deleteTitle;
@@ -42,31 +50,28 @@ public class MainScreen {
 	}
 
 	public MainScreen() {
-			setAttributes();
-			setComponents();
-			validation();
+		setAttributes();
+		setComponents();
+		validation();
 	}
 
 	public void setAttributes() {
 //		this.setExtendedState(JFrame.MAXIMIZED_BOTH);//was trying to do full screen
-		MainScreen = new JFrame();
 		MainScreen.setSize(1300, 800);
 		MainScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		if(!MainScreen.isShowing()) {
-			MainScreen.setVisible(true);
-		}
-		
+		MainScreen.setVisible(true);
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
-
+		MainScreen.addKeyListener(keyListener);
+		MainScreen.addWindowListener(this);
 	}
 
 	public void setComponents() {
+
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-//		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 120, 170));
 		MainScreen.add(backPanel);
 
 		JLabel logoIconInJLabel = new JLabel();
@@ -90,11 +95,12 @@ public class MainScreen {
 
 		objsWithinStrip2(whiteStrip2);
 
+		closeBtn(backPanel);
+
 		JLabel background = new JLabel();
 		background.setIcon(new ImageIcon("img\\background.jpg"));
 		background.setBounds(0, 0, backPanel.getWidth(), backPanel.getHeight());
 		backPanel.add(background);
-
 	}
 
 	public void objsWithinStrip1(JPanel whiteStrip1) {
@@ -116,7 +122,7 @@ public class MainScreen {
 		whiteStrip1.add(newCustomerBtn);
 		newCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newCustomer = new NewCustomer();
+				new CustomerClassifications();
 			}
 		});
 		newCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -222,22 +228,19 @@ public class MainScreen {
 // ----------------New Title Button----------------------------------------------
 		JButton newTitleBtn = new JButton();
 		newTitleBtn.setIcon(new ImageIcon("img\\btn\\newtitlebtn.png"));
-		newTitleBtn.setBackground(whiteStrip2.getBackground());
 		newTitleBtn.setBounds(222, 22, 230, 106);
 		newTitleBtn.setBorderPainted(false);
 		newTitleBtn.setContentAreaFilled(false);
 		newTitleBtn.setFocusPainted(false);
-		whiteStrip2.add(newTitleBtn);
+
+		newTitleBtn.setActionCommand("newTitleBtn");
 		newTitleBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newTitle = new NewMusic();
-//				ImageIcon logoIcon = new ImageIcon("img\\logopane.png");
-//				Object[] btns = { "yes", "no", "exit" };
-//				int i = JOptionPane.showOptionDialog(null, "hshshsh", "TITUy35345LO", JOptionPane.YES_NO_OPTION,
-//						JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-//				System.out.println(i);
+				new TitleClassifications();
 			}
 		});
+
+		whiteStrip2.add(newTitleBtn);
 		newTitleBtn.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				newTitleBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -261,7 +264,7 @@ public class MainScreen {
 		whiteStrip2.add(searchCustomerBtn);
 		searchCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchTitle = new SearchTitle();
+				new SearchTitle();
 			}
 		});
 		searchCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -287,7 +290,7 @@ public class MainScreen {
 		whiteStrip2.add(updateCustomerBtn);
 		updateCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				returnTitle = new ReturnTitle();
+				new ReturnTitle();
 			}
 		});
 		updateCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -313,7 +316,7 @@ public class MainScreen {
 		whiteStrip2.add(deleteCustomerBtn);
 		deleteCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteTitle = new DeleteTitle();
+				new DeleteTitle();
 			}
 		});
 		deleteCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -330,8 +333,77 @@ public class MainScreen {
 		});
 	}
 
+	public void closeBtn(JPanel backPanel) {
+
+		closeBtn = new JButton();
+		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtn.png"));
+		closeBtn.setBounds(backPanel.getWidth() - 100, 22, 71, 71);
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setFocusPainted(false);
+		closeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		backPanel.add(closeBtn);
+		closeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnhover.png"));
+				closeBtn.setBounds(backPanel.getWidth() - 104, 17, 80, 80);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtn.png"));
+				closeBtn.setBounds(backPanel.getWidth() - 100, 22, 71, 71);
+			}
+		});
+	}
+
 	public void validation() {
 		MainScreen.repaint();
 		MainScreen.validate();
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		new MainScreen();
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		
 	}
 }

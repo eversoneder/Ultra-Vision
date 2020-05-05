@@ -18,7 +18,7 @@ public class MembershipCard implements Subscription {
 	Collection<Title> rentingList;
 
 	private Customer customer;
-	
+
 	public MembershipCard(Customer customer, int password) {
 		this.customer = customer;
 		this.password = password;
@@ -28,6 +28,10 @@ public class MembershipCard implements Subscription {
 		this.customer = customer;
 		this.subscription = plan;
 		this.password = password;
+	}
+	
+	public MembershipCard(AccessLevel plan) {
+		this.subscription = plan;
 	}
 	
 

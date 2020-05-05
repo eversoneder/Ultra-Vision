@@ -29,12 +29,12 @@ import model.titles.Title;
 
 public class NewMusic implements FocusListener {
 
-	private MusicOrLive newMusic;
-	JButton createBtn;
-
+	private JButton cancelBtn;
 	private JFrame newMusicScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newMusicScreen, createBtn);
+	private KeyController keyListener = new KeyController(newMusicScreen, cancelBtn);
 
+	private MusicOrLive newMusic;
+	
 	private UltraVisionManagementSystem managementSystem;
 
 	private JTextField musicnametf;
@@ -63,9 +63,8 @@ public class NewMusic implements FocusListener {
 		newMusicScreen.setVisible(true);
 		newMusicScreen.setResizable(false);
 		newMusicScreen.setTitle("Title Registration");
-		newMusicScreen.addKeyListener(keyListener);
 		newMusicScreen.setLocationRelativeTo(null);
-
+		newMusicScreen.addKeyListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -92,10 +91,10 @@ public class NewMusic implements FocusListener {
 		logo.setBounds(560, 0, 300, 120);
 		backPanel.add(logo);
 
-		JLabel pressQ = new JLabel();
-		pressQ.setIcon(new ImageIcon("img\\icons\\pressq.png"));
-		pressQ.setBounds(backRectangle.getWidth() - 210, 20, 195, 65);
-		backPanel.add(pressQ);
+//		JLabel pressQ = new JLabel();
+//		pressQ.setIcon(new ImageIcon("img\\btn\\pressclose.png"));
+//		pressQ.setBounds(backRectangle.getWidth() - 210, 20, 195, 65);
+//		backPanel.add(pressQ);
 
 		textFields(backRectangle);
 
@@ -104,7 +103,7 @@ public class NewMusic implements FocusListener {
 		bigCustomerIcon.setBounds(70, 50, 280, 350);
 		backRectangle.add(bigCustomerIcon);
 
-		buttons(backRectangle);
+		buttons(backRectangle, backPanel);
 
 	}
 
@@ -172,10 +171,36 @@ public class NewMusic implements FocusListener {
 
 	}
 
-	public void buttons(JPanel backRectangle) {
+	public void buttons(JPanel backRectangle, JPanel backPanel) {
 
-		// ---------------------------CANCEL BUTTON-------------------------------
-		JButton cancelBtn = new JButton();
+// ---------------------------PRESS CLOSE BUTTON-------------------------------
+		JButton closeBtn = new JButton();
+		closeBtn.setIcon(new ImageIcon("img\\btn\\goback.png"));
+//		pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
+		closeBtn.setBounds(backRectangle.getWidth() - 220, 20, 222, 65);
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setFocusPainted(false);
+		backPanel.add(closeBtn);
+		closeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newMusicScreen.dispose();
+			}
+		});
+		closeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\gobackhover.png"));
+				closeBtn.setBounds(backRectangle.getWidth() - 224, 14, 230, 75);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				closeBtn.setIcon(new ImageIcon("img\\btn\\goback.png"));
+				closeBtn.setBounds(backRectangle.getWidth() - 220, 20, 222, 65);
+			}
+		});
+// ---------------------------CANCEL BUTTON-------------------------------
+		cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
 		cancelBtn.setBounds(420, 295, 230, 106);
@@ -200,8 +225,8 @@ public class NewMusic implements FocusListener {
 				cancelBtn.setBounds(420, 295, 230, 106);
 			}
 		});
-		// ---------------------------CREATE BUTTON-------------------------------
-		createBtn = new JButton();
+// ---------------------------CREATE BUTTON-------------------------------
+		JButton createBtn = new JButton();
 		createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
 		createBtn.setBackground(backRectangle.getBackground());
 		createBtn.setBounds(632, 295, 230, 106);
@@ -212,7 +237,7 @@ public class NewMusic implements FocusListener {
 		createBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				ImageIcon logoIcon = new ImageIcon("img\\logopane.png");
+				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 
 				String name = musicnametf.getText();
 				String singer = musicsingertf.getText();
@@ -258,7 +283,7 @@ public class NewMusic implements FocusListener {
 				{// new title upload
 //					Double twoDecimalPrice = Double.parseDouble(String.format("%.2f", new BigDecimal(price)));
 //					DecimalFormat df = new DecimalFormat("#.00"); 
-					
+
 					double pricedouble = Double.parseDouble(price);
 					int yorint = Integer.parseInt(yor);
 
@@ -267,24 +292,26 @@ public class NewMusic implements FocusListener {
 					int insertNewMusic = managementSystem.addNewTitle(newMusic);
 
 					if (insertNewMusic == 0) {
-						
+
 //						Object[] btns = { "Ok" };
 //						int i = JOptionPane.showOptionDialog(null, "Invalid price number. \nEnter a valid price please.",
 //								"Price Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 //								btns[0]);
-						
-						
+
 //						Object[] btns = { "Ok" };
 //						int i = JOptionPane.showOptionDialog(null, "Couldn't register Title.",
 //								"Music Registration Failed.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 //								logoIcon, btns, btns[0]);
-
-					}else {
+					} else {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Music successfully registered!",
-								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-								logoIcon, btns, btns[0]);
+						int i = JOptionPane.showOptionDialog(null, "Music: " + name + ", Successfully registered!",
+								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+								btns, btns[0]);
+
 					}
+					// reset text fields
+					newMusicScreen.dispose();
+					new NewMusic();
 				}
 			}
 		});

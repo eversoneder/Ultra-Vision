@@ -5,7 +5,7 @@ public enum AccessLevel {
 	VL("Movie3", "movie"), 
 	TV("Box Set4", "box_set"),
 	PR("Premium", "premium");
-
+	
 	private String AccessClassification;
 	private String entityName;
 
