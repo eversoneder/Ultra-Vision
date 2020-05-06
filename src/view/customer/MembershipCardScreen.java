@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
+import model.customer.Customer;
 import model.customer.MembershipCard;
 
 public class MembershipCardScreen implements FocusListener {
@@ -32,6 +33,8 @@ public class MembershipCardScreen implements FocusListener {
 	private UltraVisionManagementSystem managementSystem;
 
 	private MembershipCard newMembershipCard;
+	private Customer newCustomer;
+
 	private JTextField accounttf;
 	private JPasswordField memberCardPasstf;
 	private int[] accAndCardPass;
@@ -40,8 +43,8 @@ public class MembershipCardScreen implements FocusListener {
 		new MembershipCardScreen();
 	}
 
-	public MembershipCardScreen(MembershipCard newMembershipCard) {
-		this.newMembershipCard = newMembershipCard;
+	public MembershipCardScreen(Customer newCustomer) {
+		this.newCustomer = newCustomer;
 		setAttributes();
 		setComponents();
 		validation();
@@ -166,10 +169,10 @@ public class MembershipCardScreen implements FocusListener {
 				ImageIcon logoIcon;
 
 				String account = accounttf.getText();
-				char[] membercardpass = memberCardPasstf.getPassword();
+				String memberpass = String.valueOf(memberCardPasstf.getPassword());
 
-				if (account.equals("debit/credit account number")
-						|| membercardpass.equals("create membership card password")) {
+				if (account.equals("enter debit/credit account number")
+						|| memberpass.equals("create a password for your membership card")) {
 
 					logoIcon = new ImageIcon("img\\logopane.png");
 					Object[] btns = { "Ok" };
@@ -178,7 +181,7 @@ public class MembershipCardScreen implements FocusListener {
 							logoIcon, btns, btns[0]);
 					return;
 				}
-
+				// -----------------VALIDATE ACCOUNT NUMBER--------------------
 				if (!account.matches("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}")) {
 					logoIcon = new ImageIcon("img\\icons\\logopane.png");
 					Object[] btns = { "Ok" };
@@ -187,13 +190,22 @@ public class MembershipCardScreen implements FocusListener {
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
-
-				managementSystem = new UltraVisionManagementSystem();
+				// --------------VALIDATE PASSWORD TO BE 8 DIGITS INT--------------------
+				if (!memberpass.matches("[0-9]{8}")) {
+					logoIcon = new ImageIcon("img\\icons\\logopane.png");
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.",
+							"Membership Card Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+							logoIcon, btns, btns[0]);
+					return;
+				}
+				// ---UPLOAD CUSTOMER TO DB TO GET IT'S ID TO ATTACH TO MEMBERSHIP CARD---
+				managementSystem.addNewCustomer(newCustomer);
+				// ---UPLOAD MEMBERSHIP CARD TO DB---
 
 //								Customer newCustomer = new Customer(name, phone, address, account);
 //								MembershipCard newCard = new MemberShipCard(newCustomer, plan, membercardpass);
 
-//								managementSystem.addNewCustomer(newCustomer);
 			}
 		});
 		createBtn.addMouseListener(new MouseAdapter() {

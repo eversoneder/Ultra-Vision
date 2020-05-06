@@ -18,30 +18,30 @@ import javax.swing.SwingUtilities;
 
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
-import view.customer.CustomerClassifications;
-import view.customer.DeleteCustomer;
-import view.customer.NewCustomer;
-import view.customer.SearchCustomer;
-import view.customer.UpdateCustomer;
-import view.title.DeleteTitle;
-import view.title.ReturnTitle;
-import view.title.SearchTitle;
-import view.title.TitleClassifications;
+import view.customer.CustomerClassificationsScreen;
+import view.customer.DeleteCustomerScreen;
+import view.customer.NewCustomerScreen;
+import view.customer.SearchCustomerScreen;
+import view.customer.UpdateCustomerScreen;
+import view.title.DeleteTitleScreen;
+import view.title.ReturnTitleScreen;
+import view.title.SearchTitleScreen;
+import view.title.TitleClassificationsScreen;
 
-public class MainScreen implements WindowListener{
+public class MainScreen {
 
 	private JButton closeBtn;
 	private JFrame MainScreen = new JFrame();
-	private KeyController keyListener = new KeyController(MainScreen);
+//	private KeyController keyListener = new KeyController(MainScreen);
 
-	private NewCustomer newCustomer;
-	private SearchCustomer searchCustomer;
-	private UpdateCustomer updateCustomer;
-	private DeleteCustomer deleteCustomer;
-	private TitleClassifications newTitle;
-	private SearchTitle searchTitle;
-	private ReturnTitle returnTitle;
-	private DeleteTitle deleteTitle;
+	private NewCustomerScreen newCustomer;
+	private SearchCustomerScreen searchCustomer;
+	private UpdateCustomerScreen updateCustomer;
+	private DeleteCustomerScreen deleteCustomer;
+	private TitleClassificationsScreen newTitle;
+	private SearchTitleScreen searchTitle;
+	private ReturnTitleScreen returnTitle;
+	private DeleteTitleScreen deleteTitle;
 
 	private UltraVisionManagementSystem controller;
 
@@ -63,8 +63,7 @@ public class MainScreen implements WindowListener{
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
-		MainScreen.addKeyListener(keyListener);
-		MainScreen.addWindowListener(this);
+//		MainScreen.addKeyListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -122,7 +121,7 @@ public class MainScreen implements WindowListener{
 		whiteStrip1.add(newCustomerBtn);
 		newCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CustomerClassifications();
+				new CustomerClassificationsScreen();
 			}
 		});
 		newCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -148,7 +147,7 @@ public class MainScreen implements WindowListener{
 		whiteStrip1.add(searchCustomerBtn);
 		searchCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchCustomer = new SearchCustomer();
+				searchCustomer = new SearchCustomerScreen();
 			}
 		});
 		searchCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -174,7 +173,7 @@ public class MainScreen implements WindowListener{
 		whiteStrip1.add(updateCustomerBtn);
 		updateCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateCustomer = new UpdateCustomer();
+				updateCustomer = new UpdateCustomerScreen();
 			}
 		});
 		updateCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -200,7 +199,7 @@ public class MainScreen implements WindowListener{
 		whiteStrip1.add(deleteCustomerBtn);
 		deleteCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteCustomer = new DeleteCustomer();
+				deleteCustomer = new DeleteCustomerScreen();
 			}
 		});
 		deleteCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -236,7 +235,7 @@ public class MainScreen implements WindowListener{
 		newTitleBtn.setActionCommand("newTitleBtn");
 		newTitleBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new TitleClassifications();
+				new TitleClassificationsScreen();
 			}
 		});
 
@@ -264,7 +263,7 @@ public class MainScreen implements WindowListener{
 		whiteStrip2.add(searchCustomerBtn);
 		searchCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SearchTitle();
+				new SearchTitleScreen();
 			}
 		});
 		searchCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -290,7 +289,7 @@ public class MainScreen implements WindowListener{
 		whiteStrip2.add(updateCustomerBtn);
 		updateCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ReturnTitle();
+				new ReturnTitleScreen();
 			}
 		});
 		updateCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -316,7 +315,7 @@ public class MainScreen implements WindowListener{
 		whiteStrip2.add(deleteCustomerBtn);
 		deleteCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new DeleteTitle();
+				new DeleteTitleScreen();
 			}
 		});
 		deleteCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -364,46 +363,5 @@ public class MainScreen implements WindowListener{
 	public void validation() {
 		MainScreen.repaint();
 		MainScreen.validate();
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		new MainScreen();
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		
 	}
 }
