@@ -12,15 +12,15 @@ public class MusicOrLive extends Title {
 	private String band;
 	private int isLiveConcert;
 	private int subscriptionplan;
-	
-	private Collection<MusicOrLive> mlTitles;
+
+	private ArrayList<MusicOrLive> mlTitles;
 
 	public MusicOrLive() {
 
 	}
 
 	/**
-	 * New titles by user
+	 * New music by user
 	 * 
 	 * @param name
 	 * @param price
@@ -60,7 +60,7 @@ public class MusicOrLive extends Title {
 	 * @param available
 	 */
 	public MusicOrLive(int id, int type, int format, int available, String name, double price, String genre, int yor,
-			String singer, String band) {
+			String singer, String band, int plan) {
 		// title attributes
 		super.setId(id);
 		super.setTitleTypeDB(type);
@@ -73,12 +73,13 @@ public class MusicOrLive extends Title {
 		// music/live concert attributes
 		this.setSinger(singer);
 		this.setBand(band);
+		this.setSubscriptionPlan(plan);
 	}
 
 	/**
 	 * @return the mlTitles
 	 */
-	public Collection<MusicOrLive> getMLTitles() {
+	public ArrayList<MusicOrLive> getMLTitles() {
 		return mlTitles;
 	}
 	
@@ -99,7 +100,7 @@ public class MusicOrLive extends Title {
 	/**
 	 * @param mlTitles the mlTitles to set
 	 */
-	public void setMLTitles(Collection<MusicOrLive> mlTitles) {
+	public void setMLTitles(ArrayList<MusicOrLive> mlTitles) {
 		this.mlTitles = new ArrayList<>(mlTitles);
 	}
 

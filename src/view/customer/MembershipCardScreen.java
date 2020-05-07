@@ -39,12 +39,13 @@ public class MembershipCardScreen implements FocusListener {
 	private JPasswordField memberCardPasstf;
 	private int[] accAndCardPass;
 
-	public static void main(String[] args) {
-		new MembershipCardScreen();
-	}
+//	public static void main(String[] args) {
+//		new MembershipCardScreen();
+//	}
 
-	public MembershipCardScreen(Customer newCustomer) {
+	public MembershipCardScreen(Customer newCustomer, MembershipCard newMembershipCard) {
 		this.newCustomer = newCustomer;
+		this.newMembershipCard = newMembershipCard;
 		setAttributes();
 		setComponents();
 		validation();
@@ -199,13 +200,22 @@ public class MembershipCardScreen implements FocusListener {
 							logoIcon, btns, btns[0]);
 					return;
 				}
-				// ---UPLOAD CUSTOMER TO DB TO GET IT'S ID TO ATTACH TO MEMBERSHIP CARD---
-				managementSystem.addNewCustomer(newCustomer);
+
+				newCustomer.setAccountNumber(Long.parseLong(account));
+
+				// ---UPLOAD CUSTOMER TO DB TO GET IT'S ID TO ATTACH TO ACCOUNT & MEMBERSHIP
+				// CARD ---
+				// newCustomer will be updated with customer_id in return
+				newCustomer = managementSystem.addNewCustomer(newCustomer);
+
+				// ---UPLOAD CUSTOMER ACCOUNT TO DB---
+				// newCustomer will be updated with account_id in return
+				newCustomer = managementSystem.addNewAccount(newCustomer);
+
 				// ---UPLOAD MEMBERSHIP CARD TO DB---
-
-//								Customer newCustomer = new Customer(name, phone, address, account);
-//								MembershipCard newCard = new MemberShipCard(newCustomer, plan, membercardpass);
-
+				// newMembershipCard will be updated with card_id in return
+				newMembershipCard = managementSystem.addNewMembershipCard(newMembershipCard,
+						newCustomer.getAccountID());
 			}
 		});
 		createBtn.addMouseListener(new MouseAdapter() {

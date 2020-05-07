@@ -6,70 +6,43 @@ import model.enums.AccessLevel;
 import model.interfaces.TitleType;
 import model.titles.Title;
 
-public class MembershipCard implements Subscription {
+public class MembershipCard implements TitleType {
 
+	Collection<Title> rentingList;
+	
 	private int id;
 	private int points;
 	private int hasFreeRent;
 	private int freeRents;
 	private int password;
-	private AccessLevel subscription;
+	private AccessLevel subscriptionEnum;
+	private int subscriptionID;
 
-	Collection<Title> rentingList;
+	private int accountID;
 
-	private Customer customer;
-
-	public MembershipCard(Customer customer, int password) {
-		this.customer = customer;
+	/**
+	 * DB download
+	 * @param customerid
+	 * @param plan
+	 * @param password
+	 */
+	public MembershipCard(int id, int password, int hasFreeRent, int freeRents, int points, int accountID, int subscriptionID) {
+		this.id = id;
 		this.password = password;
-	}
-	
-	public MembershipCard(Customer customer, AccessLevel plan, int password) {
-		this.customer = customer;
-		this.subscription = plan;
-		this.password = password;
-	}
-	
-	public MembershipCard(AccessLevel plan) {
-		this.subscription = plan;
-	}
-	
-
-	/**
-	 * @param title
-	 * @return
-	 */
-	public boolean setNewRent(Title title) {
-
-		boolean hasMoney = checkFunds(title.getPrice());
-
-		if (hasMoney) {
-			hasMoney = rentingList.size() < 4 ? makePayment(title.getPrice(), title) : rentingLimit();
-			return hasMoney;
-		} else {
-			System.out.println("No sufficient money in account.");
-		}
-		return false;
+		this.hasFreeRent = hasFreeRent;
+		this.freeRents = freeRents;
+		this.points = points;
+		this.accountID = accountID;
+		this.subscriptionID = subscriptionID;
+		
 	}
 
-	/**
-	 * @param titlePrice price to check in balance
-	 * @return true if balance contains title price money
-	 */
-	public boolean checkFunds(double titlePrice) {
-		boolean hasMoney = customer.hasMoney(titlePrice);
-		return hasMoney;
-	}
-
-	/**
-	 * @param titlePrice   the title price
-	 * @param rentingTitle the title to be rented
-	 * @return true if both statements are met (hasMoney && rentingList < 4)
-	 */
-	public boolean makePayment(double titlePrice, Title rentingTitle) {
-		customer.setTransaction(titlePrice);
-		recordRent(rentingTitle);
-		return true;
+	public MembershipCard(AccessLevel planEnum) {
+		this.setTitleTypeGUI(planEnum);
+		this.points = 0;
+		this.hasFreeRent = 0;
+		this.freeRents = 0;
+		
 	}
 
 	/**
@@ -77,7 +50,7 @@ public class MembershipCard implements Subscription {
 	 */
 	public void recordRent(Title rentingTitle) {
 		rentingList.add(rentingTitle);
-		addPoints(10);
+		addLoyaltyPoints(10);
 		rentingTitle.setAvailable(0);
 	}
 
@@ -165,7 +138,7 @@ public class MembershipCard implements Subscription {
 		return isLessThanFour;
 	}
 
-	public void freeRentalChoise() {
+	public void subtractFreeRental() {
 		this.freeRents -= 1;
 	}
 
@@ -176,7 +149,35 @@ public class MembershipCard implements Subscription {
 		return this.points;
 	}
 
-	public void addPoints(int points) {
+	/**
+	 * @return the hasFreeRent
+	 */
+	public int getHasFreeRent() {
+		return hasFreeRent;
+	}
+
+	/**
+	 * @param hasFreeRent the hasFreeRent to set
+	 */
+	public void setHasFreeRent(int hasFreeRent) {
+		this.hasFreeRent = hasFreeRent;
+	}
+
+	/**
+	 * @return the freeRents
+	 */
+	public int getFreeRents() {
+		return freeRents;
+	}
+
+	/**
+	 * @param freeRents the freeRents to set
+	 */
+	public void setFreeRents(int freeRents) {
+		this.freeRents = freeRents;
+	}
+
+	public void addLoyaltyPoints(int points) {
 		this.points += points;
 
 		if (this.points >= 100) {
@@ -187,10 +188,8 @@ public class MembershipCard implements Subscription {
 	/**
 	 * updates free rents whenever points reaches 100
 	 */
-	private int updateFreeRents() {
+	private void updateFreeRents() {
 		this.freeRents += 1;
-		System.out.println("New free rent available for " + customer.getCustomer_name() + ".");
-		return 0;
 	}
 
 	/**
@@ -207,16 +206,33 @@ public class MembershipCard implements Subscription {
 		this.password = pass;
 	}
 
+	
+
 	@Override
-	public AccessLevel getSubscription() {
-		return this.subscription;
+	public void setTitleTypeGUI(AccessLevel titleClassification) {// here's the card subscription
+
+		AccessLevel values[] = AccessLevel.values();// get instance of all subscription plans
+		for (AccessLevel value : values) {// go one by one
+
+			if (value.name().equals(titleClassification.name())) {// if name equals the one received
+				//then get the subscriptionID to know what is able to rent. eg: VL = 2 > movie
+				this.subscriptionID = Integer.parseInt(titleClassification.getSubscriptionID());
+			}
+		}
 	}
 
-	public void setSubscription(AccessLevel subscription) {
-		this.subscription = subscription;
+	@Override
+	public void setTitleTypeDB(int titleType) {
+		this.subscriptionID = titleType;
 	}
-	
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+
+	@Override
+	public String getTitleTypeGUI() {
+		return subscriptionEnum.name();
+	}
+
+	@Override
+	public int getTitleTypeDB() {
+		return subscriptionID;
 	}
 }

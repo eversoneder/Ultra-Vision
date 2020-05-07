@@ -11,7 +11,7 @@ public class Title implements DiscFormat, TitleType {
 
 	// general title attributes
 	private int id;
-	private String titleType;
+	private String titleTypeName;
 	private int titleTypeID;
 	private String discFormat;
 	private int discFormatID;
@@ -26,7 +26,6 @@ public class Title implements DiscFormat, TitleType {
 
 	private MusicOrLive ml;
 	private Movie vl;
-	
 
 	/**
 	 * Constructor for New title by user
@@ -84,7 +83,7 @@ public class Title implements DiscFormat, TitleType {
 
 	@Override
 	public String getTitleTypeGUI() {
-		return this.titleType;
+		return this.titleTypeName;
 	}
 
 	@Override
@@ -93,7 +92,7 @@ public class Title implements DiscFormat, TitleType {
 		String classificationName = null;
 
 		// split in case it is "ML" which has 2 accesses, music & live concert.
-		String types[] = titleClassification.getAccessClassification().split(",");
+		String types[] = titleClassification.getSubscriptionID().split(",");
 		for (String type : types) {
 
 			for (char ch : type.toCharArray()) {// char by char checking for enum(id)
@@ -104,7 +103,7 @@ public class Title implements DiscFormat, TitleType {
 				classificationName += ch;// get letters together without id
 			}
 		}
-		this.titleType = classificationName;
+		this.titleTypeName = classificationName;
 	}
 
 	@Override
@@ -113,32 +112,32 @@ public class Title implements DiscFormat, TitleType {
 	}
 
 	@Override
-	public void setTitleTypeDB(int titleClassification) {
+	public void setTitleTypeDB(int titleID) {
 
-		AccessLevel[] classifications = AccessLevel.values();
+		AccessLevel[] titleNames = AccessLevel.values();
 		String classificationName = "";
 
-		for (AccessLevel classification : classifications) {
+		for (AccessLevel titleName : titleNames) {
 
-			// split in case it is "ML" which has 2 accesses, music & live concert.
-			String types[] = classification.getAccessClassification().split(",");
+			// split in case it is "ML" which has 2 accesses: music & live concert.
+			String types[] = titleName.getSubscriptionID().split(",");
 			for (String type : types) {
 
-				for (char ch : type.toCharArray()) {// char by char checking for enum(id)
-					
+				for (char ch : type.toCharArray()) {// char by char checking for titleType(id)
+
 					if (Character.isDigit(ch)) {// if char is number (id)
 						int n = Integer.parseInt(Character.toString(ch));// parses to int
-						if (n == titleClassification) {// if parsed char = titleClassification
+						if (n == titleID) {// if parsed char = titleClassification
 
 							this.titleTypeID = n;// then I know also the enum.name()
-							this.titleType = classificationName;
+							this.titleTypeName = classificationName;
 							break;
 						}
-					} else {// enum.name not possible as I put Music & live so i got all chars
+					} else {// if char isn't number gather all chars together to form titleTypeName
 						classificationName += ch;// get letters together without id
 					}
 				}
-				classificationName = "";//if number not equal to parameter int, reset name
+				classificationName = "";// if number not equal to parameter int, reset name
 			}
 		}
 	}
@@ -275,6 +274,7 @@ public class Title implements DiscFormat, TitleType {
 
 	@Override
 	public String toString() {
-		return "Title name: " + this.name + "\n Title price: " + this.price + " Title type: " + this.titleType + ".";
+		return "Title name: " + this.name + "\n Title price: " + this.price + " Title type: " + this.titleTypeName
+				+ ".";
 	}
 }

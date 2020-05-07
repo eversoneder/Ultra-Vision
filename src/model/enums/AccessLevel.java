@@ -1,36 +1,36 @@
 package model.enums;
 
 public enum AccessLevel {
-	ML("Music1,Live Concert2", "music,live_concert"), 
-	VL("Movie3", "movie"), 
-	TV("Box Set4", "box_set"),
-	PR("Premium", "premium");
+	ML("Music1,Live Concert2", "1"), 
+	VL("Movie3", "2"), 
+	TV("Box Set4", "3"),
+	PR("Premium", "4");
 	
-	private String AccessClassification;
-	private String entityName;
+	private String titleNameAndID;
+	private String subscriptionID;
 
 	/**
 	 * database handling
 	 * 
-	 * @param titleName 
-	 * @param entityName
+	 * @param titleNameAndID 
+	 * @param subscriptionID
 	 */
-	private AccessLevel(String titleName, String entityName) {
-		this.AccessClassification = titleName;
-		this.entityName = entityName;
+	private AccessLevel(String titleNameAndID, String subscriptionID) {
+		this.titleNameAndID = titleNameAndID;
+		this.subscriptionID = subscriptionID;
 	}
 
 	/**
 	 * @return title name
 	 */
-	public String getAccessClassification() {
-		return this.AccessClassification;
+	public String getSubscriptionID() {
+		return this.titleNameAndID;
 	}
 
 	/**
 	 * @return database entity name
 	 */
-	public String getEntityName() {
-		return this.entityName;
+	public String getTitleNameAndID() {
+		return this.subscriptionID;
 	}
 }

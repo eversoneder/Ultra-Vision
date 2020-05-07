@@ -9,7 +9,10 @@ import model.enums.Media;
 public class BoxSet extends Title {
 
 	private String director;
-
+	private int subscriptionplan;
+	
+	private ArrayList<BoxSet> movies;
+	
 	public BoxSet() {
 
 	}
@@ -26,10 +29,10 @@ public class BoxSet extends Title {
 	 * @param yor
 	 * @param director
 	 */
-	public BoxSet(int titleType, int discFormat, int available, String name, double price, String genre, int yor,
-			String director) {
+	public BoxSet(int titleType, Media discFormat, int available, String name, double price, String genre, int yor,
+			String director, int plan) {
 		super.setTitleTypeDB(titleType);
-		super.setDiscFormatDB(discFormat);
+		super.setDiscFormatDB(discFormat.getDiscFormatID());
 		super.setAvailable(available);
 		super.setName(name);
 		super.setPrice(price);
@@ -37,6 +40,7 @@ public class BoxSet extends Title {
 		super.setYearOfRelease(yor);
 
 		this.setDirector(director);
+		this.setSubscriptionPlan(plan);
 	}
 
 	/**
@@ -52,7 +56,7 @@ public class BoxSet extends Title {
 	 * @param yor
 	 */
 	public BoxSet(int id, int titleType, int discFormat, int available, String name, double price, String genre,
-			int yor, String director) {
+			int yor, String director, int plan) {
 		super.setId(id);
 		super.setTitleTypeDB(titleType);
 		super.setDiscFormatDB(discFormat);
@@ -63,6 +67,21 @@ public class BoxSet extends Title {
 		super.setYearOfRelease(yor);
 
 		this.setDirector(director);
+		this.setSubscriptionPlan(plan);
+	}
+	
+	/**
+	 * @return the vlTitles
+	 */
+	public ArrayList<BoxSet> getVLTitles() {
+		return movies;
+	}
+
+	/**
+	 * @param vlTitles the vlTitles to set
+	 */
+	public void setVLTitles(ArrayList<BoxSet> vlTitles) {
+		this.movies = new ArrayList<>(vlTitles);
 	}
 
 	/**
@@ -78,5 +97,18 @@ public class BoxSet extends Title {
 	public void setDirector(String director) {
 		this.director = director;
 	}
+	
+	/**
+	 * @return the subscriptionplan
+	 */
+	public int getSubscriptionplan() {
+		return subscriptionplan;
+	}
 
+	/**
+	 * @param subscriptionplan the subscriptionplan to set
+	 */
+	public void setSubscriptionPlan(int subscriptionplan) {
+		this.subscriptionplan = subscriptionplan;
+	}
 }

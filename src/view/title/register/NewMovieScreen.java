@@ -1,4 +1,4 @@
-package view.title;
+package view.title.register;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -24,47 +24,45 @@ import javax.swing.JTextField;
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
 import model.enums.Media;
+import model.titles.Movie;
 import model.titles.MusicOrLive;
 import model.titles.Title;
 
-public class NewMusicScreen implements FocusListener {
+public class NewMovieScreen implements FocusListener {
 
 	private JButton cancelBtn;
-	private JFrame newMusicScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newMusicScreen, cancelBtn);
+	private JFrame newLiveConcertScreen = new JFrame();
+	private KeyController keyListener = new KeyController(newLiveConcertScreen, cancelBtn);
 
-	private MusicOrLive newMusic;
-	
+	private Movie newMovie;
+
 	private UltraVisionManagementSystem managementSystem;
 
-	private JTextField musicnametf;
-	private JTextField musicsingertf;
-	private JTextField musicbandtf;
-	private JTextField musicgenretf;
+	private JTextField movienametf;
+	private JTextField moviedirectortf;
+	private JTextField moviegenretf;
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
 	private JComboBox mediaComboBox;
 
-//	private Media mediaformattf;
-
-	public NewMusicScreen() {
+	public NewMovieScreen() {
 		setAttributes();
 		setComponents();
 		validation();
 	}
 
-//	public static void main(String[] args) {
-//		new NewMusic();
-//	}
+	public static void main(String[] args) {
+		new NewMovieScreen();
+	}
 
 	public void setAttributes() {
-		newMusicScreen.setSize(1000, 650);
-		newMusicScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		newMusicScreen.setVisible(true);
-		newMusicScreen.setResizable(false);
-		newMusicScreen.setTitle("Title Registration");
-		newMusicScreen.setLocationRelativeTo(null);
-		newMusicScreen.addKeyListener(keyListener);
+		newLiveConcertScreen.setSize(1000, 650);
+		newLiveConcertScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		newLiveConcertScreen.setVisible(true);
+		newLiveConcertScreen.setResizable(false);
+		newLiveConcertScreen.setTitle("Title Registration");
+		newLiveConcertScreen.setLocationRelativeTo(null);
+		newLiveConcertScreen.addKeyListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -72,17 +70,17 @@ public class NewMusicScreen implements FocusListener {
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
-		newMusicScreen.add(backPanel);
+		newLiveConcertScreen.add(backPanel);
 
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, newMusicScreen.getWidth(), newMusicScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, newLiveConcertScreen.getWidth(), newLiveConcertScreen.getHeight() - 200);
 		backPanel.add(backRectangle);
 
-		JLabel newCustomerLabel = new JLabel("New Music");
+		JLabel newCustomerLabel = new JLabel("New Movie");
 		newCustomerLabel.setFont(new Font("Tahoma", Font.PLAIN, 42));
-		newCustomerLabel.setBounds(110, 60, 300, 35);
+		newCustomerLabel.setBounds(100, 60, 350, 35);
 		newCustomerLabel.setForeground(Color.WHITE);
 		backPanel.add(newCustomerLabel);
 
@@ -91,15 +89,10 @@ public class NewMusicScreen implements FocusListener {
 		logo.setBounds(560, 0, 300, 120);
 		backPanel.add(logo);
 
-//		JLabel pressQ = new JLabel();
-//		pressQ.setIcon(new ImageIcon("img\\btn\\pressclose.png"));
-//		pressQ.setBounds(backRectangle.getWidth() - 210, 20, 195, 65);
-//		backPanel.add(pressQ);
-
 		textFields(backRectangle);
 
 		JLabel bigCustomerIcon = new JLabel();
-		bigCustomerIcon.setIcon(new ImageIcon("img\\icons\\musiciconbig.png"));
+		bigCustomerIcon.setIcon(new ImageIcon("img\\icons\\movieiconbig.png"));
 		bigCustomerIcon.setBounds(70, 50, 280, 350);
 		backRectangle.add(bigCustomerIcon);
 
@@ -109,41 +102,32 @@ public class NewMusicScreen implements FocusListener {
 
 	public void textFields(JPanel backRectangle) {
 
-		musicnametf = new JTextField();
-		musicnametf.setText("music name");
-		musicnametf.setForeground(new Color(180, 180, 180));
-		musicnametf.addFocusListener(this);
-		musicnametf.setBounds(400, 65, 225, 45);
-		musicnametf.setBorder(null);
-		musicnametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(musicnametf);
+		movienametf = new JTextField();
+		movienametf.setText("movie name");
+		movienametf.setForeground(new Color(180, 180, 180));
+		movienametf.addFocusListener(this);
+		movienametf.setBounds(400, 65, 225, 45);
+		movienametf.setBorder(null);
+		movienametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		backRectangle.add(movienametf);
 
-		musicsingertf = new JTextField();
-		musicsingertf.setText("music singer");
-		musicsingertf.setForeground(new Color(180, 180, 180));
-		musicsingertf.addFocusListener(this);
-		musicsingertf.setBounds(400, 120, 225, 45);
-		musicsingertf.setBorder(null);
-		musicsingertf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(musicsingertf);
-
-		musicbandtf = new JTextField();
-		musicbandtf.setText("music band");
-		musicbandtf.setForeground(new Color(180, 180, 180));
-		musicbandtf.addFocusListener(this);
-		musicbandtf.setBounds(400, 175, 225, 45);
-		musicbandtf.setBorder(null);
-		musicbandtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(musicbandtf);
-
-		musicgenretf = new JTextField();
-		musicgenretf.setText("music genre");
-		musicgenretf.setForeground(new Color(180, 180, 180));
-		musicgenretf.addFocusListener(this);
-		musicgenretf.setBounds(400, 230, 225, 45);
-		musicgenretf.setBorder(null);
-		musicgenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(musicgenretf);
+		moviegenretf = new JTextField();
+		moviegenretf.setText("movie genre");
+		moviegenretf.setForeground(new Color(180, 180, 180));
+		moviegenretf.addFocusListener(this);
+		moviegenretf.setBounds(400, 120, 225, 45);
+		moviegenretf.setBorder(null);
+		moviegenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		backRectangle.add(moviegenretf);
+		
+		moviedirectortf = new JTextField();
+		moviedirectortf.setText("movie director");
+		moviedirectortf.setForeground(new Color(180, 180, 180));
+		moviedirectortf.addFocusListener(this);
+		moviedirectortf.setBounds(400, 175, 225, 45);
+		moviedirectortf.setBorder(null);
+		moviedirectortf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		backRectangle.add(moviedirectortf);
 
 		yearofreleasetf = new JTextField();
 		yearofreleasetf.setText("year of release");
@@ -176,7 +160,6 @@ public class NewMusicScreen implements FocusListener {
 // ---------------------------PRESS CLOSE BUTTON-------------------------------
 		JButton closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\goback.png"));
-//		pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
 		closeBtn.setBounds(backRectangle.getWidth() - 220, 20, 222, 65);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
@@ -184,7 +167,7 @@ public class NewMusicScreen implements FocusListener {
 		backPanel.add(closeBtn);
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newMusicScreen.dispose();
+				newLiveConcertScreen.dispose();
 			}
 		});
 		closeBtn.addMouseListener(new MouseAdapter() {
@@ -210,7 +193,7 @@ public class NewMusicScreen implements FocusListener {
 		backRectangle.add(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newMusicScreen.dispose();
+				newLiveConcertScreen.dispose();
 			}
 		});
 		cancelBtn.addMouseListener(new MouseAdapter() {
@@ -239,15 +222,14 @@ public class NewMusicScreen implements FocusListener {
 
 				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 
-				String name = musicnametf.getText();
-				String singer = musicsingertf.getText();
-				String band = musicbandtf.getText();
-				String genre = musicgenretf.getText();
+				String name = movienametf.getText();
+				String director = moviedirectortf.getText();
+				String genre = moviegenretf.getText();
 				String yor = yearofreleasetf.getText();
 				String price = pricetf.getText();
 
-				if (name.equals("music name") || singer.equals("music singer") || band.equals("music band")
-						|| genre.equals("music genre") || yor.equals("year of release") || price.equals("price")) {
+				if (name.equals("movie name") || genre.equals("movie genre") || director.equals("movie director")
+						|| yor.equals("year of release") || price.equals("price")) {
 
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
@@ -280,38 +262,27 @@ public class NewMusicScreen implements FocusListener {
 						break;
 					}
 				}
-				{// new title upload
-//					Double twoDecimalPrice = Double.parseDouble(String.format("%.2f", new BigDecimal(price)));
-//					DecimalFormat df = new DecimalFormat("#.00"); 
-
+				{
 					double pricedouble = Double.parseDouble(price);
 					int yorint = Integer.parseInt(yor);
 
-					newMusic = new MusicOrLive(1, selectedFormat, name, pricedouble, genre, yorint, singer, band, 1);
+					newMovie = new Movie(3, selectedFormat, 1, name, pricedouble, genre, yorint, director, 1);
 					managementSystem = new UltraVisionManagementSystem(0);
-					int insertNewMusic = managementSystem.addNewTitle(newMusic);
+					int musicInsert = managementSystem.addNewTitle(newMovie);
 
-					if (insertNewMusic == 0) {
-
-//						Object[] btns = { "Ok" };
-//						int i = JOptionPane.showOptionDialog(null, "Invalid price number. \nEnter a valid price please.",
-//								"Price Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
-//								btns[0]);
-
-//						Object[] btns = { "Ok" };
-//						int i = JOptionPane.showOptionDialog(null, "Couldn't register Title.",
-//								"Music Registration Failed.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-//								logoIcon, btns, btns[0]);
+					if (musicInsert == 0) {
+						Object[] btns = { "Ok" };
+						int i = JOptionPane.showOptionDialog(null, "Registration of: " + name + ", couldn't be done.",
+								"Error Registering Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+								logoIcon, btns, btns[0]);
 					} else {
 						Object[] btns = { "Ok" };
 						int i = JOptionPane.showOptionDialog(null, "Music: " + name + ", Successfully registered!",
 								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
-
 					}
-					// reset text fields
-					newMusicScreen.dispose();
-					new NewMusicScreen();
+					newLiveConcertScreen.dispose();
+					new NewLiveConcertScreen();
 				}
 			}
 		});
@@ -330,55 +301,44 @@ public class NewMusicScreen implements FocusListener {
 	}
 
 	public void validation() {
-		newMusicScreen.repaint();
-		newMusicScreen.validate();
+		newLiveConcertScreen.repaint();
+		newLiveConcertScreen.validate();
 	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
 
 //------------------music name TextField-------------------------
-		if (musicnametf.getText().matches("music name")) {
-			musicnametf.setText("");
-			musicnametf.setForeground(new Color(0, 80, 110));
+		if (movienametf.getText().matches("movie name")) {
+			movienametf.setText("");
+			movienametf.setForeground(new Color(0, 80, 110));
 		}
-		if (!musicnametf.hasFocus()) {
-			if (musicnametf.getText().matches("")) {
-				musicnametf.setText("music name");
-				musicnametf.setForeground(new Color(180, 180, 180));
-			}
-		}
-//------------------music singer TextField-------------------------
-		if (musicsingertf.getText().matches("music singer")) {
-			musicsingertf.setText("");
-			musicsingertf.setForeground(new Color(0, 80, 110));
-		}
-		if (!musicsingertf.hasFocus()) {
-			if (musicsingertf.getText().matches("")) {
-				musicsingertf.setText("music singer");
-				musicsingertf.setForeground(new Color(180, 180, 180));
-			}
-		}
-//------------------music band TextField-------------------------
-		if (musicbandtf.getText().matches("music band")) {
-			musicbandtf.setText("");
-			musicbandtf.setForeground(new Color(0, 80, 110));
-		}
-		if (!musicbandtf.hasFocus()) {
-			if (musicbandtf.getText().matches("")) {
-				musicbandtf.setText("music band");
-				musicbandtf.setForeground(new Color(180, 180, 180));
+		if (!movienametf.hasFocus()) {
+			if (movienametf.getText().matches("")) {
+				movienametf.setText("movie name");
+				movienametf.setForeground(new Color(180, 180, 180));
 			}
 		}
 //------------------music genre TextField-------------------------
-		if (musicgenretf.getText().matches("music genre")) {
-			musicgenretf.setText("");
-			musicgenretf.setForeground(new Color(0, 80, 110));
+		if (moviegenretf.getText().matches("movie genre")) {
+			moviegenretf.setText("");
+			moviegenretf.setForeground(new Color(0, 80, 110));
 		}
-		if (!musicgenretf.hasFocus()) {
-			if (musicgenretf.getText().matches("")) {
-				musicgenretf.setText("music genre");
-				musicgenretf.setForeground(new Color(180, 180, 180));
+		if (!moviegenretf.hasFocus()) {
+			if (moviegenretf.getText().matches("")) {
+				moviegenretf.setText("movie genre");
+				moviegenretf.setForeground(new Color(180, 180, 180));
+			}
+		}
+//------------------music director TextField-------------------------
+		if (moviedirectortf.getText().matches("movie director")) {
+			moviedirectortf.setText("");
+			moviedirectortf.setForeground(new Color(0, 80, 110));
+		}
+		if (!moviedirectortf.hasFocus()) {
+			if (moviedirectortf.getText().matches("")) {
+				moviedirectortf.setText("movie director");
+				moviedirectortf.setForeground(new Color(180, 180, 180));
 			}
 		}
 //------------------year of release TextField-------------------------
@@ -407,7 +367,5 @@ public class NewMusicScreen implements FocusListener {
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

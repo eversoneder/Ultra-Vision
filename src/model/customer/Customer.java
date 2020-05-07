@@ -105,5 +105,5 @@ public class Customer extends DebitOrCreditAccount {
 	public void setCustomer_address(String address) {
 		this.address = address;
 	}
-
+	
 }

@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import model.customer.MembershipCard;
 import model.enums.AccessLevel;
 import model.titles.MusicOrLive;
-import view.title.NewMusicScreen;
+import view.title.register.NewBoxSetScreen;
 
 public class CustomerClassificationsScreen {
 
@@ -84,7 +84,6 @@ public class CustomerClassificationsScreen {
 		// ---------------------------MUSIC BUTTON-------------------------------
 		JButton musicLoverBtn = new JButton();
 		musicLoverBtn.setIcon(new ImageIcon("img\\btn\\ml.png"));
-//				pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
 		musicLoverBtn.setBounds(30, 50, 200, 200);
 		musicLoverBtn.setBorderPainted(false);
 		musicLoverBtn.setContentAreaFilled(false);
@@ -94,7 +93,7 @@ public class CustomerClassificationsScreen {
 			public void actionPerformed(ActionEvent e) {
 				customerClassifications.dispose();
 				newMembershipCard = new MembershipCard(AccessLevel.ML);
-//				new MembershipCardScreen(newMembershipCard);
+				new NewCustomerScreen(newMembershipCard);
 			}
 		});
 		musicLoverBtn.addMouseListener(new MouseAdapter() {
@@ -112,7 +111,6 @@ public class CustomerClassificationsScreen {
 		// ---------------------------LIVE CONCERT BUTTON-------------------------------
 		JButton videoLoverBtn = new JButton();
 		videoLoverBtn.setIcon(new ImageIcon("img\\btn\\vl.png"));
-//				pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
 		videoLoverBtn.setBounds(255, 50, 200, 200);
 		videoLoverBtn.setBorderPainted(false);
 		videoLoverBtn.setContentAreaFilled(false);
@@ -140,7 +138,6 @@ public class CustomerClassificationsScreen {
 		// ---------------------------MOVIE BUTTON-------------------------------
 		JButton tvLoverBtn = new JButton();
 		tvLoverBtn.setIcon(new ImageIcon("img\\btn\\tv.png"));
-//				pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
 		tvLoverBtn.setBounds(480, 50, 200, 200);
 		tvLoverBtn.setBorderPainted(false);
 		tvLoverBtn.setContentAreaFilled(false);
@@ -150,7 +147,7 @@ public class CustomerClassificationsScreen {
 			public void actionPerformed(ActionEvent e) {
 				customerClassifications.dispose();
 				newMembershipCard = new MembershipCard(AccessLevel.TV);
-//				new MembershipCardScreen(newMembershipCard);
+				new NewCustomerScreen(newMembershipCard);
 			}
 		});
 		tvLoverBtn.addMouseListener(new MouseAdapter() {
@@ -168,7 +165,6 @@ public class CustomerClassificationsScreen {
 		// ---------------------------BOX SET BUTTON-------------------------------
 		JButton premiumBtn = new JButton();
 		premiumBtn.setIcon(new ImageIcon("img\\btn\\pr.png"));
-//						pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
 		premiumBtn.setBounds(705, 50, 200, 200);
 		premiumBtn.setBorderPainted(false);
 		premiumBtn.setContentAreaFilled(false);
@@ -178,7 +174,7 @@ public class CustomerClassificationsScreen {
 			public void actionPerformed(ActionEvent e) {
 				customerClassifications.dispose();
 				newMembershipCard = new MembershipCard(AccessLevel.PR);
-//				new MembershipCardScreen(newMembershipCard);
+				new NewCustomerScreen(newMembershipCard);
 			}
 		});
 		premiumBtn.addMouseListener(new MouseAdapter() {

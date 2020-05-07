@@ -5,8 +5,23 @@ package model.customer;
  */
 public abstract class DebitOrCreditAccount {
 
+	private int accountID;
 	private long AccountNumber;
 	private double AccountBalance;
+
+	/**
+	 * @return the id
+	 */
+	public int getAccountID() {
+		return accountID;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setAccountID(int id) {
+		this.accountID = id;
+	}
 
 	/**
 	 * @param quantity to subtract
@@ -21,7 +36,7 @@ public abstract class DebitOrCreditAccount {
 	public double getAccountBalance() {
 		return AccountBalance;
 	}
-	
+
 	/**
 	 * @param amount to set
 	 */
@@ -49,5 +64,20 @@ public abstract class DebitOrCreditAccount {
 	 */
 	public void setAccountNumber(long accountNumber) {
 		AccountNumber = accountNumber;
+	}
+	
+	/**
+	 * @param titlePrice price to check in balance
+	 * @return true if balance contains title price money
+	 */
+	public boolean checkFunds(double titlePrice) {
+		
+		boolean hasMoney = false; 
+		
+		if(this.getAccountBalance() >= titlePrice) {
+			hasMoney = true;
+		}
+		
+		return hasMoney;
 	}
 }

@@ -4,96 +4,163 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import model.customer.Customer;
 import model.customer.MembershipCard;
+import model.enums.Media;
+import model.titles.BoxSet;
+import model.titles.Movie;
+import model.titles.MusicOrLive;
 import model.titles.Title;
 
 final class Rent {
 
-	private TimeDate td;
-	private int rent_id;
+	private TimeDate timeDate;
 	
-	private Date rent_DateStart;
-	private Date rent_DateReturn;
+	private Customer customer;
+	private MembershipCard membershipCard;
 
-	private Collection<Title> rentingTitles = new ArrayList<>();
-	private double rent_TotalPrice;
+	private int id;
+	private double totalPrice;
+	private Date startDate;
+	private Date returnDate;
 
-	protected Rent(Title title, MembershipCard mc) {
-		// TODO Auto-generated constructor stub
-		setrent_StartDate();
-		System.out.println(rent_DateStart.toString());
-	}
+	private Collection<Object> rentingTitles = new ArrayList<>();
 	
-	protected Rent(int id) {
-		this.rent_id = id;
+	public Rent(Title title, MembershipCard mc) {
+		
 	}
 
-//	public static void main(String[] args) {
-//		new Rent();
-//	}
+	public Rent(int id) {
+		this.id = id;
+	}
+	
+	public Rent() {
+		
+	}
+	
+	/**
+	 * @param title
+	 * @return
+	 */
+	public void setNewRent(ArrayList<Object> titles) {
 
-	protected void removeTitleRent(Title delT) {
+		MusicOrLive mu = new MusicOrLive();
+		Movie mo = new Movie();
+		BoxSet bs = new BoxSet();
+		
+		totalPrice = 0;
+		
+		for(Object obj : titles) {
+			
+			switch(obj.getClass().getName()) {
+			case "model.titles.MusicOrLive":
+				mu = (MusicOrLive) obj;
+				totalPrice += mu.getPrice();
+				break;
+			case "model.titles.Movie":
+				mo = (Movie) obj;
+				totalPrice += mo.getPrice();
+				break;
+			case "model.titles.BoxSet":
+				bs = (BoxSet) obj;
+				totalPrice += bs.getPrice();
+				break;
+			}
+			System.out.println(totalPrice);
+		}
+		
+//		boolean hasMoney = checkFunds(title.getPrice());
+
+//		if (hasMoney) {
+//			hasMoney = rentingList.size() < 4 ? makePayment(title.getPrice(), title) : rentingLimit();
+//			return hasMoney;
+//		} else {
+//			System.out.println("No sufficient money in account.");
+//		}
+//		return false;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	/**
+	 * @return the membershipCard
+	 */
+	public MembershipCard getMembershipCard() {
+		return membershipCard;
+	}
+
+	/**
+	 * @param membershipCard the membershipCard to set
+	 */
+	public void setMembershipCard(MembershipCard membershipCard) {
+		this.membershipCard = membershipCard;
+	}
+
+	public void removeTitleRent(Title delT) {
 		rentingTitles.remove(delT);
 		removeFromTotalPrice(delT);
 	}
-	
+
 	private void removeFromTotalPrice(Title delTprice) {
-		this.rent_TotalPrice -= delTprice.getPrice();
+		this.totalPrice -= delTprice.getPrice();
 	}
 
 	/**
 	 * @param title to add in renting list
 	 */
-	protected void addNewTitleRent(Title title) {
+	public void addNewTitleRent(Title title) {
 		rentingTitles.add(title);
 		appendTotalPrice(title.getPrice());
 	}
-	
+
 	/**
 	 * @param price to add to total price
 	 */
 	private void appendTotalPrice(double priceToAppend) {
-		this.rent_TotalPrice += priceToAppend;
+		this.totalPrice += priceToAppend;
 	}
 	
+	private void addLoyaltyPoints(MembershipCard card) {
+		 card.addLoyaltyPoints(10);
+	}
+
 	/**
 	 * @return the rent_id
 	 */
-	protected int getRent_id() {
-		return rent_id;
+	public int getId() {
+		return id;
 	}
 
-	/**
-	 * @param rent_id the rent_id to set
-	 */
-	protected void setRent_id(int rent_id) {
-		this.rent_id = rent_id;
-	}
-
-	protected double getrent_TotalPrice() {
-		return this.rent_TotalPrice;
+	public double getTotalPrice() {
+		return this.totalPrice;
 	}
 
 	/**
 	 * @return the date of rent start
 	 */
-	protected Date getrent_StartDate() {
-		return this.rent_DateStart;
+	public Date getStartDate() {
+		return this.startDate;
 	}
 
 	/**
 	 * @param set now time to start renting
 	 */
-	protected void setrent_StartDate() {
-		td = new TimeDate();
-		this.rent_DateStart = td.getNowDate();
-		this.rent_DateReturn = td.getReturnDateOf(rent_DateStart);
+	public void setStartDate() {
+		timeDate = new TimeDate();
+		this.startDate = timeDate.getNowDate();
+		this.returnDate = timeDate.getReturnDateOf(startDate);
 	}
 
 	/**
 	 * @return date of title return
 	 */
-	protected Date getrent_ReturnDate() {
-		return this.rent_DateReturn;
+	public Date getReturnDate() {
+		return this.returnDate;
 	}
 }

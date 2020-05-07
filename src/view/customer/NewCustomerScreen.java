@@ -245,7 +245,7 @@ public class NewCustomerScreen implements FocusListener {
 				int phoneint = Integer.parseInt(phone);
 				newCustomer = new Customer(name, phoneint, address);
 //------SEND CUSTOMER TO MEMBERCARDSCREEN TO GATHER INFO WITH ACC NUM & MEMBER PASS TO UPLOAD DB
-				new MembershipCardScreen(newCustomer);
+				new MembershipCardScreen(newCustomer, newMembershipCard);
 			}
 		});
 		createBtn.addMouseListener(new MouseAdapter() {
