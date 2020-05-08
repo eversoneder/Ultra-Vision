@@ -72,10 +72,10 @@ public class Title implements DiscFormat, TitleType {
 		this.yearOfRelease = yor;
 	}
 
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 //		Title a = new Title(3);
 //		System.out.println(a);
-	}
+//	}
 
 	public Title() {
 //		this.setTitleTypeDB(3);
@@ -92,7 +92,7 @@ public class Title implements DiscFormat, TitleType {
 		String classificationName = null;
 
 		// split in case it is "ML" which has 2 accesses, music & live concert.
-		String types[] = titleClassification.getSubscriptionID().split(",");
+		String types[] = titleClassification.getTitleNameAndID().split(",");
 		for (String type : types) {
 
 			for (char ch : type.toCharArray()) {// char by char checking for enum(id)
@@ -106,6 +106,33 @@ public class Title implements DiscFormat, TitleType {
 		this.titleTypeName = classificationName;
 	}
 
+	/**
+	 * @param AccessLevel.name() to get it's ID
+	 * @return title type ID
+	 */
+	public int getTitleTypeDB(AccessLevel titleClassification) {
+
+		String classificationName = "";
+
+		// split in case it is "ML" which has 2 accesses, music & live concert.
+		String types[] = titleClassification.getTitleNameAndID().split(",");
+		for (String type : types) {
+
+			for (char ch : type.toCharArray()) {// char by char checking for enum(id)
+				if (Character.isDigit(ch)) {// if char is number (id)
+					int n = Integer.parseInt(Character.toString(ch));// parses to int
+					this.titleTypeID = n;// get titleTypeID
+					this.titleTypeName = classificationName;
+					break;
+				} else {
+					classificationName += ch;
+				}
+			}
+			classificationName = "";// in case the line has 2 types (ML)
+		}
+		return titleTypeID;
+	}
+
 	@Override
 	public int getTitleTypeDB() {
 		return titleTypeID;
@@ -114,32 +141,31 @@ public class Title implements DiscFormat, TitleType {
 	@Override
 	public void setTitleTypeDB(int titleID) {
 
-		AccessLevel[] titleNames = AccessLevel.values();
-		String classificationName = "";
+		AccessLevel[] titleNamesAndIds = AccessLevel.values();
 
-		for (AccessLevel titleName : titleNames) {
+		for (AccessLevel titleNameAndId : titleNamesAndIds) {
 
-			// split in case it is "ML" which has 2 accesses: music & live concert.
-			String types[] = titleName.getSubscriptionID().split(",");
+			String types[] = titleNameAndId.getTitleNameAndID().split(",");
 			for (String type : types) {
 
-				for (char ch : type.toCharArray()) {// char by char checking for titleType(id)
-
+				String classificationName = "";
+				for (char ch : type.toCharArray()) {// char by char checking for enum(id)
 					if (Character.isDigit(ch)) {// if char is number (id)
-						int n = Integer.parseInt(Character.toString(ch));// parses to int
-						if (n == titleID) {// if parsed char = titleClassification
 
-							this.titleTypeID = n;// then I know also the enum.name()
+						int n = Integer.parseInt(Character.toString(ch));// parses to int
+						if (titleID == n) {
+							this.titleTypeID = n;// get titleTypeID
 							this.titleTypeName = classificationName;
-							break;
+							return;
 						}
-					} else {// if char isn't number gather all chars together to form titleTypeName
-						classificationName += ch;// get letters together without id
+						
+					} else {
+						classificationName += ch;
 					}
 				}
-				classificationName = "";// if number not equal to parameter int, reset name
 			}
 		}
+		this.titleTypeID = titleID;
 	}
 
 	/**

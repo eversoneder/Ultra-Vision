@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
+import model.enums.AccessLevel;
 import model.enums.Media;
 import model.titles.MusicOrLive;
 import model.titles.Title;
@@ -51,10 +52,6 @@ public class NewLiveConcertScreen implements FocusListener {
 		validation();
 	}
 
-	public static void main (String[]args) {
-		new NewBoxSetScreen();
-	}
-	
 	public void setAttributes() {
 		newLiveConcertScreen.setSize(1000, 650);
 		newLiveConcertScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -272,13 +269,23 @@ public class NewLiveConcertScreen implements FocusListener {
 						break;
 					}
 				}
-				{
+				if (selectedFormat.equals(Media.CD)) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Live Concerts can't to be recorded in CD's. \nChoose DVD or BLU-RAY only.",
+							"Title Media Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
+					return;
+				}
 
+				{
 					double pricedouble = Double.parseDouble(price);
 					int yorint = Integer.parseInt(yor);
 
-					newLiveConcert = new MusicOrLive(1, selectedFormat, name, pricedouble, genre, yorint, singer, band,
-							1);
+					int planID = AccessLevel.ML.getSubscriptionID();
+					int titleType = new Title().getTitleTypeDB(AccessLevel.ML);
+
+					newLiveConcert = new MusicOrLive(titleType, selectedFormat, name, pricedouble, genre, yorint,
+							singer, band, planID);
 					managementSystem = new UltraVisionManagementSystem(0);
 					int musicInsert = managementSystem.addNewTitle(newLiveConcert);
 
@@ -289,12 +296,12 @@ public class NewLiveConcertScreen implements FocusListener {
 								logoIcon, btns, btns[0]);
 					} else {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Music: " + name + ", Successfully registered!",
-								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
-								btns, btns[0]);
+						int i = JOptionPane.showOptionDialog(null,
+								"Live Concert: " + name + ", Successfully registered!", "Registered Title",
+								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					}
 					newLiveConcertScreen.dispose();
-					new NewBoxSetScreen();
+					new NewLiveConcertScreen();
 				}
 			}
 		});
@@ -320,7 +327,7 @@ public class NewLiveConcertScreen implements FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
 
-//------------------music name TextField-------------------------
+//------------------live concert name TextField-------------------------
 		if (liveconcertnametf.getText().matches("music name")) {
 			liveconcertnametf.setText("");
 			liveconcertnametf.setForeground(new Color(0, 80, 110));
@@ -331,7 +338,7 @@ public class NewLiveConcertScreen implements FocusListener {
 				liveconcertnametf.setForeground(new Color(180, 180, 180));
 			}
 		}
-//------------------music singer TextField-------------------------
+//------------------live concert singer TextField-------------------------
 		if (liveconcertsingertf.getText().matches("music singer")) {
 			liveconcertsingertf.setText("");
 			liveconcertsingertf.setForeground(new Color(0, 80, 110));
@@ -342,7 +349,7 @@ public class NewLiveConcertScreen implements FocusListener {
 				liveconcertsingertf.setForeground(new Color(180, 180, 180));
 			}
 		}
-//------------------music band TextField-------------------------
+//------------------live concert band TextField-------------------------
 		if (liveconcertbandtf.getText().matches("music band")) {
 			liveconcertbandtf.setText("");
 			liveconcertbandtf.setForeground(new Color(0, 80, 110));
@@ -353,7 +360,7 @@ public class NewLiveConcertScreen implements FocusListener {
 				liveconcertbandtf.setForeground(new Color(180, 180, 180));
 			}
 		}
-//------------------music genre TextField-------------------------
+//------------------live concert genre TextField-------------------------
 		if (liveconcertgenretf.getText().matches("music genre")) {
 			liveconcertgenretf.setText("");
 			liveconcertgenretf.setForeground(new Color(0, 80, 110));

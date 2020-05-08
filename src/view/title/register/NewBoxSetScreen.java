@@ -23,7 +23,9 @@ import javax.swing.JTextField;
 
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
+import model.enums.AccessLevel;
 import model.enums.Media;
+import model.titles.BoxSet;
 import model.titles.Movie;
 import model.titles.MusicOrLive;
 import model.titles.Title;
@@ -31,16 +33,16 @@ import model.titles.Title;
 public class NewBoxSetScreen implements FocusListener {
 
 	private JButton cancelBtn;
-	private JFrame newLiveConcertScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newLiveConcertScreen, cancelBtn);
+	private JFrame newBoxSetScreen = new JFrame();
+	private KeyController keyListener = new KeyController(newBoxSetScreen, cancelBtn);
 
-	private Movie newMovie;
+	private BoxSet newBoxSet;
 
 	private UltraVisionManagementSystem managementSystem;
 
-	private JTextField movienametf;
+	private JTextField boxSetnametf;
 	private JTextField numberoffilmstf;
-	private JTextField moviegenretf;
+	private JTextField boxsetgenretf;
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
 	private JComboBox mediaComboBox;
@@ -51,18 +53,14 @@ public class NewBoxSetScreen implements FocusListener {
 		validation();
 	}
 
-	public static void main(String[] args) {
-		new NewBoxSetScreen();
-	}
-
 	public void setAttributes() {
-		newLiveConcertScreen.setSize(1000, 650);
-		newLiveConcertScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		newLiveConcertScreen.setVisible(true);
-		newLiveConcertScreen.setResizable(false);
-		newLiveConcertScreen.setTitle("Title Registration");
-		newLiveConcertScreen.setLocationRelativeTo(null);
-		newLiveConcertScreen.addKeyListener(keyListener);
+		newBoxSetScreen.setSize(1000, 650);
+		newBoxSetScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		newBoxSetScreen.setVisible(true);
+		newBoxSetScreen.setResizable(false);
+		newBoxSetScreen.setTitle("Title Registration");
+		newBoxSetScreen.setLocationRelativeTo(null);
+		newBoxSetScreen.addKeyListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -70,12 +68,12 @@ public class NewBoxSetScreen implements FocusListener {
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
-		newLiveConcertScreen.add(backPanel);
+		newBoxSetScreen.add(backPanel);
 
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, newLiveConcertScreen.getWidth(), newLiveConcertScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, newBoxSetScreen.getWidth(), newBoxSetScreen.getHeight() - 200);
 		backPanel.add(backRectangle);
 
 		JLabel newCustomerLabel = new JLabel("New TV Box Set");
@@ -102,32 +100,32 @@ public class NewBoxSetScreen implements FocusListener {
 
 	public void textFields(JPanel backRectangle) {
 
-		movienametf = new JTextField();
-		movienametf.setText("box set name");
-		movienametf.setForeground(new Color(180, 180, 180));
-		movienametf.addFocusListener(this);
-		movienametf.setBounds(400, 65, 225, 45);
-		movienametf.setBorder(null);
-		movienametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(movienametf);
+		boxSetnametf = new JTextField();
+		boxSetnametf.setText("box set name");
+		boxSetnametf.setForeground(new Color(180, 180, 180));
+		boxSetnametf.addFocusListener(this);
+		boxSetnametf.setBounds(400, 65, 225, 45);
+		boxSetnametf.setBorder(null);
+		boxSetnametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		backRectangle.add(boxSetnametf);
 
-		moviegenretf = new JTextField();
-		moviegenretf.setText("movie genre");
-		moviegenretf.setForeground(new Color(180, 180, 180));
-		moviegenretf.addFocusListener(this);
-		moviegenretf.setBounds(400, 120, 225, 45);
-		moviegenretf.setBorder(null);
-		moviegenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(moviegenretf);
-		
 		numberoffilmstf = new JTextField();
 		numberoffilmstf.setText("number of films");
 		numberoffilmstf.setForeground(new Color(180, 180, 180));
 		numberoffilmstf.addFocusListener(this);
-		numberoffilmstf.setBounds(400, 175, 225, 45);
+		numberoffilmstf.setBounds(400, 120, 225, 45);
 		numberoffilmstf.setBorder(null);
 		numberoffilmstf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(numberoffilmstf);
+
+		boxsetgenretf = new JTextField();
+		boxsetgenretf.setText("box set genre");
+		boxsetgenretf.setForeground(new Color(180, 180, 180));
+		boxsetgenretf.addFocusListener(this);
+		boxsetgenretf.setBounds(400, 175, 225, 45);
+		boxsetgenretf.setBorder(null);
+		boxsetgenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		backRectangle.add(boxsetgenretf);
 
 		yearofreleasetf = new JTextField();
 		yearofreleasetf.setText("year of release");
@@ -167,7 +165,7 @@ public class NewBoxSetScreen implements FocusListener {
 		backPanel.add(closeBtn);
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newLiveConcertScreen.dispose();
+				newBoxSetScreen.dispose();
 			}
 		});
 		closeBtn.addMouseListener(new MouseAdapter() {
@@ -193,7 +191,7 @@ public class NewBoxSetScreen implements FocusListener {
 		backRectangle.add(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newLiveConcertScreen.dispose();
+				newBoxSetScreen.dispose();
 			}
 		});
 		cancelBtn.addMouseListener(new MouseAdapter() {
@@ -222,15 +220,14 @@ public class NewBoxSetScreen implements FocusListener {
 
 				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 
-				String name = movienametf.getText();
+				String name = boxSetnametf.getText();
 				String numoffilms = numberoffilmstf.getText();
-				String genre = moviegenretf.getText();
+				String genre = boxsetgenretf.getText();
 				String yor = yearofreleasetf.getText();
 				String price = pricetf.getText();
 
-				if (name.equals("movie name") || genre.equals("movie genre") || numoffilms.equals("number of films") 
+				if (name.equals("movie name") || genre.equals("box set genre") || numoffilms.equals("number of films")
 						|| yor.equals("year of release") || price.equals("price")) {
-
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
@@ -254,12 +251,12 @@ public class NewBoxSetScreen implements FocusListener {
 				}
 				if (!numoffilms.matches("[0-9]{1,2}|50")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Invalid number of films. \nEnter a valid number please.",
-							"Film Number Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
-							btns[0]);
+					int i = JOptionPane.showOptionDialog(null,
+							"Invalid number of films. \nEnter a valid number please.", "Film Number Field Error",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
-				
+
 				int selectedMediaIndex = mediaComboBox.getSelectedIndex();
 				Media medias[] = Media.values();
 				Media selectedFormat = null;
@@ -269,13 +266,26 @@ public class NewBoxSetScreen implements FocusListener {
 						break;
 					}
 				}
+				if (selectedFormat.equals(Media.CD)) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"Box Sets can't be recorded in CD's. \nChoose DVD or BLU-RAY only.", "Title Media Error",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+				}
 				{
 					double pricedouble = Double.parseDouble(price);
 					int yorint = Integer.parseInt(yor);
+					int numdiscs = Integer.parseInt(numoffilms);
 
-					newMovie = new Movie(3, selectedFormat, 1, name, pricedouble, genre, yorint, numoffilms, 1);
+					int planID = AccessLevel.TV.getSubscriptionID();
+					int titleType = new Title().getTitleTypeDB(AccessLevel.TV);
+//					
+//					int titleType, Media discFormat, int available, String name, double price, int yor,
+//					int numOfDiscs, int plan) {
+					newBoxSet = new BoxSet(titleType, selectedFormat, 1, name, pricedouble, yorint, numdiscs, genre, planID);
 					managementSystem = new UltraVisionManagementSystem(0);
-					int musicInsert = managementSystem.addNewTitle(newMovie);
+					int musicInsert = managementSystem.addNewTitle(newBoxSet);
 
 					if (musicInsert == 0) {
 						Object[] btns = { "Ok" };
@@ -284,13 +294,13 @@ public class NewBoxSetScreen implements FocusListener {
 								logoIcon, btns, btns[0]);
 					} else {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Music: " + name + ", Successfully registered!",
+						int i = JOptionPane.showOptionDialog(null, "Box Set: " + name + ", Successfully registered!",
 								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
 					}
-					newLiveConcertScreen.dispose();
-					new NewLiveConcertScreen();
-//				}
+					newBoxSetScreen.dispose();
+					new NewBoxSetScreen();
+				}
 			}
 		});
 		createBtn.addMouseListener(new MouseAdapter() {
@@ -308,36 +318,25 @@ public class NewBoxSetScreen implements FocusListener {
 	}
 
 	public void validation() {
-		newLiveConcertScreen.repaint();
-		newLiveConcertScreen.validate();
+		newBoxSetScreen.repaint();
+		newBoxSetScreen.validate();
 	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
 
-//------------------music name TextField-------------------------
-		if (movienametf.getText().matches("box set name")) {
-			movienametf.setText("");
-			movienametf.setForeground(new Color(0, 80, 110));
+//------------------box set name TextField-------------------------
+		if (boxSetnametf.getText().matches("box set name")) {
+			boxSetnametf.setText("");
+			boxSetnametf.setForeground(new Color(0, 80, 110));
 		}
-		if (!movienametf.hasFocus()) {
-			if (movienametf.getText().matches("")) {
-				movienametf.setText("box set name");
-				movienametf.setForeground(new Color(180, 180, 180));
+		if (!boxSetnametf.hasFocus()) {
+			if (boxSetnametf.getText().matches("")) {
+				boxSetnametf.setText("box set name");
+				boxSetnametf.setForeground(new Color(180, 180, 180));
 			}
 		}
-//------------------music genre TextField-------------------------
-		if (moviegenretf.getText().matches("movie genre")) {
-			moviegenretf.setText("");
-			moviegenretf.setForeground(new Color(0, 80, 110));
-		}
-		if (!moviegenretf.hasFocus()) {
-			if (moviegenretf.getText().matches("")) {
-				moviegenretf.setText("movie genre");
-				moviegenretf.setForeground(new Color(180, 180, 180));
-			}
-		}
-//------------------music director TextField-------------------------
+//------------------number of films TextField-------------------------
 		if (numberoffilmstf.getText().matches("number of films")) {
 			numberoffilmstf.setText("");
 			numberoffilmstf.setForeground(new Color(0, 80, 110));
@@ -346,6 +345,17 @@ public class NewBoxSetScreen implements FocusListener {
 			if (numberoffilmstf.getText().matches("")) {
 				numberoffilmstf.setText("number of films");
 				numberoffilmstf.setForeground(new Color(180, 180, 180));
+			}
+		}
+//------------------box set genre TextField-------------------------
+		if (boxsetgenretf.getText().matches("box set genre")) {
+			boxsetgenretf.setText("");
+			boxsetgenretf.setForeground(new Color(0, 80, 110));
+		}
+		if (!boxsetgenretf.hasFocus()) {
+			if (boxsetgenretf.getText().matches("")) {
+				boxsetgenretf.setText("box set genre");
+				boxsetgenretf.setForeground(new Color(180, 180, 180));
 			}
 		}
 //------------------year of release TextField-------------------------
@@ -359,7 +369,7 @@ public class NewBoxSetScreen implements FocusListener {
 				yearofreleasetf.setForeground(new Color(180, 180, 180));
 			}
 		}
-//------------------year of release TextField-------------------------
+//------------------price TextField-------------------------
 		if (pricetf.getText().matches("price")) {
 			pricetf.setText("");
 			pricetf.setForeground(new Color(0, 80, 110));

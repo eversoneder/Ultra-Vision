@@ -6,8 +6,8 @@ public class Customer extends DebitOrCreditAccount {
 
 	private int id;
 	private String name;
-	private int phone;
-	private String address;
+	private long phone;
+	private String email;
 
 	/**
 	 * load customer from database
@@ -17,11 +17,11 @@ public class Customer extends DebitOrCreditAccount {
 	 * @param phone   to load
 	 * @param address to load
 	 */
-	public Customer(int id, String name, int phone, String address, long accnumber, double balance) {
+	public Customer(int id, String name, long phone, String address, long accnumber, double balance) {
 		this.id = id;
 		this.name = name;
 		this.phone = phone;
-		this.address = address;
+		this.email = address;
 		this.setAccountBalance(balance);
 		this.setAccountNumber(accnumber);
 	}
@@ -33,10 +33,10 @@ public class Customer extends DebitOrCreditAccount {
 	 * @param phone
 	 * @param address
 	 */
-	public Customer(String name, int phone, String address) {
+	public Customer(String name, long phone, String address) {
 		this.name = name;
 		this.phone = phone;
-		this.address = address;
+		this.email = address;
 		this.setAccountBalance(5000.00);
 	}
 
@@ -81,29 +81,29 @@ public class Customer extends DebitOrCreditAccount {
 	/**
 	 * @return the phone
 	 */
-	public int getCustomer_phone() {
+	public long getCustomer_phone() {
 		return phone;
 	}
 
 	/**
 	 * @param phone the phone to set
 	 */
-	public void setCustomer_phone(int phone) {
+	public void setCustomer_phone(long phone) {
 		this.phone = phone;
 	}
 
 	/**
 	 * @return the address
 	 */
-	public String getCustomer_address() {
-		return address;
+	public String getEmail() {
+		return email;
 	}
 
 	/**
 	 * @param address the address to set
 	 */
-	public void setCustomer_address(String address) {
-		this.address = address;
+	public void setEmail(String address) {
+		this.email = address;
 	}
 	
 }

@@ -8,7 +8,8 @@ import model.enums.Media;
 
 public class BoxSet extends Title {
 
-	private String director;
+	private int boxSetID;
+	private int numOfDiscs;
 	private int subscriptionplan;
 	
 	private ArrayList<BoxSet> movies;
@@ -29,17 +30,17 @@ public class BoxSet extends Title {
 	 * @param yor
 	 * @param director
 	 */
-	public BoxSet(int titleType, Media discFormat, int available, String name, double price, String genre, int yor,
-			String director, int plan) {
+	public BoxSet(int titleType, Media discFormat, int available, String name, double price, int yor,
+			int numofdiscs, String genre, int plan) {
 		super.setTitleTypeDB(titleType);
 		super.setDiscFormatDB(discFormat.getDiscFormatID());
 		super.setAvailable(available);
 		super.setName(name);
 		super.setPrice(price);
-		super.setGenre(genre);
 		super.setYearOfRelease(yor);
-
-		this.setDirector(director);
+		super.setGenre(genre);
+		
+		this.setNumOfDiscs(numofdiscs);
 		this.setSubscriptionPlan(plan);
 	}
 
@@ -55,18 +56,19 @@ public class BoxSet extends Title {
 	 * @param genre
 	 * @param yor
 	 */
-	public BoxSet(int id, int titleType, int discFormat, int available, String name, double price, String genre,
-			int yor, String director, int plan) {
+	public BoxSet(int id, int boxSetID, int titleType, int discFormat, int available, String name, double price,
+			int yor, int numofdiscs, String genre, int plan) {
 		super.setId(id);
 		super.setTitleTypeDB(titleType);
 		super.setDiscFormatDB(discFormat);
 		super.setAvailable(available);
 		super.setName(name);
 		super.setPrice(price);
-		super.setGenre(genre);
 		super.setYearOfRelease(yor);
+		super.setGenre(genre);
 
-		this.setDirector(director);
+		this.setBoxSetID(boxSetID);
+		this.setNumOfDiscs(numofdiscs);
 		this.setSubscriptionPlan(plan);
 	}
 	
@@ -85,20 +87,6 @@ public class BoxSet extends Title {
 	}
 
 	/**
-	 * @return the director
-	 */
-	public String getDirector() {
-		return director;
-	}
-
-	/**
-	 * @param director the director to set
-	 */
-	public void setDirector(String director) {
-		this.director = director;
-	}
-	
-	/**
 	 * @return the subscriptionplan
 	 */
 	public int getSubscriptionplan() {
@@ -110,5 +98,32 @@ public class BoxSet extends Title {
 	 */
 	public void setSubscriptionPlan(int subscriptionplan) {
 		this.subscriptionplan = subscriptionplan;
+	}
+	
+	/**
+	 * @return the numOfDiscs
+	 */
+	public int getNumOfDiscs() {
+		return numOfDiscs;
+	}
+
+	/**
+	 * @param numOfDiscs the numOfDiscs to set
+	 */
+	public void setNumOfDiscs(int numOfDiscs) {
+		this.numOfDiscs = numOfDiscs;
+	}
+	/**
+	 * @return the boxSetID
+	 */
+	public int getBoxSetID() {
+		return boxSetID;
+	}
+
+	/**
+	 * @param boxSetID the boxSetID to set
+	 */
+	public void setBoxSetID(int boxSetID) {
+		this.boxSetID = boxSetID;
 	}
 }

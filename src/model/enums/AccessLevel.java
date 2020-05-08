@@ -1,13 +1,13 @@
 package model.enums;
 
 public enum AccessLevel {
-	ML("Music1,Live Concert2", "1"), 
-	VL("Movie3", "2"), 
-	TV("Box Set4", "3"),
-	PR("Premium", "4");
+	ML("Music1,Live Concert2", 1), 
+	VL("Movie3", 2), 
+	TV("Box Set4", 3),
+	PR("Premium", 4);
 	
 	private String titleNameAndID;
-	private String subscriptionID;
+	private int subscriptionID;
 
 	/**
 	 * database handling
@@ -15,22 +15,22 @@ public enum AccessLevel {
 	 * @param titleNameAndID 
 	 * @param subscriptionID
 	 */
-	private AccessLevel(String titleNameAndID, String subscriptionID) {
+	private AccessLevel(String titleNameAndID, int subscriptionID) {
 		this.titleNameAndID = titleNameAndID;
 		this.subscriptionID = subscriptionID;
 	}
 
 	/**
-	 * @return title name
+	 * @return int subscriptionID
 	 */
-	public String getSubscriptionID() {
-		return this.titleNameAndID;
+	public int getSubscriptionID() {
+		return this.subscriptionID;
 	}
 
 	/**
-	 * @return database entity name
+	 * @return String Title name and TitleID
 	 */
 	public String getTitleNameAndID() {
-		return this.subscriptionID;
+		return this.titleNameAndID;
 	}
 }

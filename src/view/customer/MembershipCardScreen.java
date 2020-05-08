@@ -27,21 +27,17 @@ import model.customer.MembershipCard;
 public class MembershipCardScreen implements FocusListener {
 
 	private JButton cancelBtn;
-	private JFrame customerCardScreen = new JFrame();
-	private KeyController keyListener = new KeyController(customerCardScreen, cancelBtn);
+	private JFrame membershipCardScreen = new JFrame();
+	private KeyController keyListener = new KeyController(membershipCardScreen, cancelBtn);
 
 	private UltraVisionManagementSystem managementSystem;
 
 	private MembershipCard newMembershipCard;
 	private Customer newCustomer;
-
+	
 	private JTextField accounttf;
 	private JPasswordField memberCardPasstf;
 	private int[] accAndCardPass;
-
-//	public static void main(String[] args) {
-//		new MembershipCardScreen();
-//	}
 
 	public MembershipCardScreen(Customer newCustomer, MembershipCard newMembershipCard) {
 		this.newCustomer = newCustomer;
@@ -50,7 +46,7 @@ public class MembershipCardScreen implements FocusListener {
 		setComponents();
 		validation();
 	}
-
+	
 	public MembershipCardScreen() {
 		setAttributes();
 		setComponents();
@@ -58,13 +54,13 @@ public class MembershipCardScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		customerCardScreen.setSize(700, 435);
-		customerCardScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		customerCardScreen.setVisible(true);
-		customerCardScreen.setResizable(false);
-		customerCardScreen.setTitle("Card Issue");
-		customerCardScreen.setLocationRelativeTo(null);
-		customerCardScreen.addKeyListener(keyListener);
+		membershipCardScreen.setSize(700, 435);
+		membershipCardScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		membershipCardScreen.setVisible(true);
+		membershipCardScreen.setResizable(false);
+		membershipCardScreen.setTitle("Card Issue");
+		membershipCardScreen.setLocationRelativeTo(null);
+		membershipCardScreen.addKeyListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -72,7 +68,7 @@ public class MembershipCardScreen implements FocusListener {
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
-		customerCardScreen.add(backPanel);
+		membershipCardScreen.add(backPanel);
 
 		JLabel customerScreen = new JLabel("Customer Screen");
 		customerScreen.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -140,7 +136,7 @@ public class MembershipCardScreen implements FocusListener {
 		backPanel.add(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				customerCardScreen.dispose();
+				membershipCardScreen.dispose();
 			}
 		});
 		cancelBtn.addMouseListener(new MouseAdapter() {
@@ -167,7 +163,7 @@ public class MembershipCardScreen implements FocusListener {
 		createBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				ImageIcon logoIcon;
+				ImageIcon logoIcon  = new ImageIcon("img\\icons\\logopane.png");
 
 				String account = accounttf.getText();
 				String memberpass = String.valueOf(memberCardPasstf.getPassword());
@@ -175,7 +171,6 @@ public class MembershipCardScreen implements FocusListener {
 				if (account.equals("enter debit/credit account number")
 						|| memberpass.equals("create a password for your membership card")) {
 
-					logoIcon = new ImageIcon("img\\logopane.png");
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
@@ -184,16 +179,14 @@ public class MembershipCardScreen implements FocusListener {
 				}
 				// -----------------VALIDATE ACCOUNT NUMBER--------------------
 				if (!account.matches("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}")) {
-					logoIcon = new ImageIcon("img\\icons\\logopane.png");
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null,
-							"Invalid account number. \nEnter a valid account please.", "Account Field Error",
+							"Invalid account number. \nEnter a valid account please.\n format: 1111.2222.3333.4444", "Account Field Error",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
 				// --------------VALIDATE PASSWORD TO BE 8 DIGITS INT--------------------
 				if (!memberpass.matches("[0-9]{8}")) {
-					logoIcon = new ImageIcon("img\\icons\\logopane.png");
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.",
 							"Membership Card Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
@@ -201,23 +194,34 @@ public class MembershipCardScreen implements FocusListener {
 					return;
 				}
 
-				newCustomer.setAccountNumber(Long.parseLong(account));
-
-				// ---UPLOAD CUSTOMER TO DB TO GET IT'S ID TO ATTACH TO ACCOUNT & MEMBERSHIP
-				// CARD ---
-				// newCustomer will be updated with customer_id in return
+// ---UPLOAD CUSTOMER TO DB TO GET IT'S ID TO ATTACH TO ACCOUNT & MEMBERSHIP CARD ---
+// newCustomer will be updated with customer_id in return
+				managementSystem = new UltraVisionManagementSystem(0);
 				newCustomer = managementSystem.addNewCustomer(newCustomer);
-
-				// ---UPLOAD CUSTOMER ACCOUNT TO DB---
-				// newCustomer will be updated with account_id in return
+				
+// ---UPLOAD CUSTOMER ACCOUNT TO DB---
+// newCustomer will be updated with account_id in return
+				newCustomer.setAccountNumber(Long.parseLong(account));
 				newCustomer = managementSystem.addNewAccount(newCustomer);
-
-				// ---UPLOAD MEMBERSHIP CARD TO DB---
-				// newMembershipCard will be updated with card_id in return
-				newMembershipCard = managementSystem.addNewMembershipCard(newMembershipCard,
-						newCustomer.getAccountID());
+// ---UPLOAD MEMBERSHIP CARD TO DB---
+// newMembershipCard will be updated with card_id in return
+				newMembershipCard.setPassword(Integer.parseInt(memberpass));
+				newMembershipCard.setAccountID(newCustomer.getAccountID());
+				newMembershipCard = managementSystem.addNewMembershipCard(newMembershipCard);
+				
+				Object[] btns = { "Ok" };
+				int i = JOptionPane.showOptionDialog(null,
+						"Customer registered successfully.", "Customer Added to System",
+						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+				
+				System.out.println(i);
+//				if(i == 0 || i == -1) {
+//					membershipCardScreen.dispose();
+//				}
 			}
+			
 		});
+		
 		createBtn.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				createBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -233,8 +237,8 @@ public class MembershipCardScreen implements FocusListener {
 	}
 
 	public void validation() {
-		customerCardScreen.repaint();
-		customerCardScreen.validate();
+		membershipCardScreen.repaint();
+		membershipCardScreen.validate();
 	}
 
 	public int[] getCardInfo(int cardnumber, int cardpass) {

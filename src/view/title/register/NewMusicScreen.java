@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
+import model.enums.AccessLevel;
 import model.enums.Media;
 import model.titles.MusicOrLive;
 import model.titles.Title;
@@ -268,12 +269,21 @@ public class NewMusicScreen implements FocusListener {
 						break;
 					}
 				}
+				if (!selectedFormat.equals(Media.CD)) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Music can't be recorded in DVD / BLU-RAY. \nChoose CD's only.",
+							"Title Media Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
+					return;
+				}
 				{
-
 					double pricedouble = Double.parseDouble(price);
 					int yorint = Integer.parseInt(yor);
 
-					newMusic = new MusicOrLive(1, selectedFormat, name, pricedouble, genre, yorint, singer, band, 1);
+					int planID = AccessLevel.ML.getSubscriptionID();
+					int titleType = new Title().getTitleTypeDB(AccessLevel.ML);
+					
+					newMusic = new MusicOrLive(titleType, selectedFormat, name, pricedouble, genre, yorint, singer, band, planID);
 					managementSystem = new UltraVisionManagementSystem(0);
 					int musicInsert = managementSystem.addNewTitle(newMusic);
 

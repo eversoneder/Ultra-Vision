@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import model.customer.Customer;
 import model.customer.MembershipCard;
+import model.enums.Media;
 import model.titles.BoxSet;
 import model.titles.Movie;
 import model.titles.MusicOrLive;
@@ -30,8 +31,7 @@ public class UltraVisionDB {
 	Statement st = null;
 	private int tableSize;
 
-	private Collection<Title> titleList;
-	private Title title;
+	private ArrayList<Object> titleList = new ArrayList<>();;
 
 //	public static void main(String[] args) {
 //		UltraVisionDB a = new UltraVisionDB();
@@ -111,7 +111,6 @@ public class UltraVisionDB {
 		int rsi = 0;
 		try {
 			rsi = st.executeUpdate(query);
-//			closings();
 			rsi = 1;
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
@@ -133,21 +132,55 @@ public class UltraVisionDB {
 		}
 	}
 
-	public Collection<Title> getTitleList(String search, String filter) {
+	public ArrayList<Object> getTitleList(String search, String titleClassification) {
 
-		titleList = new ArrayList<>();
-
-		String query_nf = "SELECT * FROM title WHERE title_name LIKE '%" + search + "%' OR title_price LIKE '%" + search
-				+ "%' OR title_format LIKE '%" + search + "%' OR title_access_level LIKE '%" + search
-				+ "%' OR title_band LIKE '%" + search + "%' OR title_genre LIKE '%" + search + "%' OR title_yor LIKE '%"
-				+ search + "%';";
-		String query = "SELECT * FROM title WHERE " + filter + " LIKE '%" + search + "%';";
-
-		if (filter.equals("nofilter")) {
-			titleList = titleLoad(query_nf);
-			return titleList;
-		} else {
-			titleList = titleLoad(query);
+		switch (titleClassification) {
+		case "music":
+			String searchMusic = "SELECT * FROM title t "
+					+ "INNER JOIN music m ON t.title_id = m.title_id "
+					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_name LIKE '%"+search+"%' OR "
+					+ "t.title_genre LIKE '%"+search+"%' OR "
+					+ "t.title_yor LIKE'%"+search+"%' OR "
+					+ "d.disc_type LIKE'%"+search+"%' OR "
+					+ "m.music_singer LIKE'%"+search+"%' OR "
+					+ "m.music_band LIKE '%"+search+"%';";
+			titleList = titleLoad(searchMusic, titleClassification);
+			break;
+		case "live_concert":
+			String searchLive = "SELECT * FROM title t "
+					+ "INNER JOIN live_concert lc ON t.title_id = lc.title_id "
+					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_name LIKE '%"+search+"%' OR "
+					+ "t.title_genre LIKE '%"+search+"%' OR "
+					+ "t.title_yor LIKE'%"+search+"%' OR "
+					+ "d.disc_type LIKE'%"+search+"%' OR "
+					+ "lc.music_singer LIKE'%"+search+"%' OR "
+					+ "lc.music_band LIKE '%"+search+"%';";
+			titleList = titleLoad(searchLive, titleClassification);
+			break;
+		case "movie":
+			String searchMovie = "SELECT * FROM title t "
+					+ "INNER JOIN movie m ON t.title_id = m.title_id "
+					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_name LIKE '%"+search+"%' OR "
+					+ "t.title_genre LIKE '%"+search+"%' OR "
+					+ "t.title_yor LIKE'%"+search+"%' OR "
+					+ "d.disc_type LIKE'%"+search+"%' OR "
+					+ "m.movie_director LIKE '%"+search+"%';";
+			titleList = titleLoad(searchMovie, titleClassification);
+			break;
+		case "box_set":
+			String searchBoxSet = "SELECT * FROM title t "
+					+ "INNER JOIN box_set bs ON t.title_id = bs.title_id "
+					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_name LIKE '%"+search+"%' OR "
+					+ "t.title_genre LIKE '%"+search+"%' OR "
+					+ "t.title_yor LIKE'%"+search+"%' OR "
+					+ "d.disc_type LIKE'%"+search+"%' OR "
+					+ "bs.number_of_discs LIKE '%"+search+"%';";
+			titleList = titleLoad(searchBoxSet, titleClassification);
+			break;
 		}
 		return titleList;
 	}
@@ -156,21 +189,82 @@ public class UltraVisionDB {
 	 * @param query to get titles loaded from db
 	 * @return collection of titles based on quer
 	 */
-	private Collection<Title> titleLoad(String query) {
+	private ArrayList<Object> titleLoad(String query, String titleClassification) {
 
 		ResultSet rs = executeQueryRS(query);
 		try {
 			while (rs.next()) {
-				for (int i = 0; i < tableSize; i++) {
-
-					// decision ml, vl, tv, title
-					title = titleSort(rs);
-					titleList.add(title);
-					rs.next();
+				
+				switch(titleClassification) {
+				case "music":
+					MusicOrLive newMusic = new MusicOrLive(
+							rs.getInt("title_id"), 
+							rs.getInt("music_id"), 
+							rs.getInt("title_type_id"),
+							rs.getInt("disc_format_id"),
+							rs.getInt("title_available"),
+							rs.getString("title_name"),
+							rs.getDouble("title_price"),
+							rs.getString("title_genre"),
+							rs.getInt("title_yor"),
+							rs.getString("music_singer"), 
+							rs.getString("music_band"),
+							rs.getInt("subscription_id")
+							);
+					titleList.add(newMusic);
+					break;
+				case "live_concert":
+					MusicOrLive newLive = new MusicOrLive(
+							rs.getInt("title_id"), 
+							rs.getInt("live_concert_id"), 
+							rs.getInt("title_type_id"),
+							rs.getInt("disc_format_id"),
+							rs.getInt("title_available"),
+							rs.getString("title_name"),
+							rs.getDouble("title_price"),
+							rs.getString("title_genre"),
+							rs.getInt("title_yor"),
+							rs.getString("live_concert_singer"), 
+							rs.getString("live_concert_band"),
+							rs.getInt("subscription_id")
+							);
+					titleList.add(newLive);
+					break;
+				case "movie":
+					Movie newMovie = new Movie(
+							rs.getInt("title_id"), 
+							rs.getInt("movie_id"), 
+							rs.getInt("title_type_id"),
+							rs.getInt("disc_format_id"),
+							rs.getInt("title_available"),
+							rs.getString("title_name"),
+							rs.getDouble("title_price"),
+							rs.getString("title_genre"),
+							rs.getInt("title_yor"),
+							rs.getString("movie_director"),
+							rs.getInt("subscription_id")
+							);
+					titleList.add(newMovie);
+					break;
+				case "box_set":
+					BoxSet boxSet = new BoxSet(
+							rs.getInt("title_id"), 
+							rs.getInt("box_set_id"), 
+							rs.getInt("title_type_id"),
+							rs.getInt("disc_format_id"),
+							rs.getInt("title_available"),
+							rs.getString("title_name"),
+							rs.getDouble("title_price"),
+							rs.getInt("title_yor"),
+							rs.getInt("number_of_discs"),
+							rs.getString("title_genre"),
+							rs.getInt("subscription_id")
+							);
+					titleList.add(boxSet);
+					break;
 				}
 			}
 			closings();
-			title.setTitleList(titleList);
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
 		} catch (Exception e) {
@@ -227,32 +321,48 @@ public class UltraVisionDB {
 
 	public Customer addNewCustomer(Customer customer) {
 
-		String query = "SELECT * FROM customer WHERE " + "customer_name LIKE '%" + customer.getCustomer_name() + "%' "
-				+ "AND customer_phone LIKE '%" + customer.getCustomer_phone() + "%' " + "AND customer_address LIKE '%"
-				+ customer.getCustomer_address() + "%';";
+		String queryInsert = "INSERT INTO customer (customer_name, customer_phone, customer_email) " + "VALUES ('"
+				+ customer.getCustomer_name() + "', " + customer.getCustomer_phone() + ", '" + customer.getEmail()
+				+ "');";
 
-		ResultSet rs = executeQueryRS(query);
+		int i = executeUpdateRS(queryInsert);
+		if (i == 0) {
+			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewCustomer method.");
+		}
+
+		String queryGetCustID = "SELECT * FROM customer WHERE " + "customer_name LIKE '%" + customer.getCustomer_name()
+				+ "%' " + "AND customer_phone LIKE '%" + customer.getCustomer_phone() + "%' "
+				+ "AND customer_email LIKE '%" + customer.getEmail() + "%';";
+
+		ResultSet rs = executeQueryRS(queryGetCustID);
+
 		try {
 			int custID = rs.getInt("customer_id");
 			customer.setCustomer_id(custID);
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
 		}
+		closings();
 		return customer;
 	}
 
-	public Customer updateCustomerInfo(Customer customer) {
-
-		String query = "SELECT * FROM customer WHERE " + "customer_name LIKE '%" + customer.getCustomer_name() + "%' "
-				+ "AND customer_phone LIKE '%" + customer.getCustomer_phone() + "%' " + "AND customer_address LIKE '%"
-				+ customer.getCustomer_address() + "%';";
+	public Customer updateAccountAndCustomerInfo(Customer customer) {
+//		SELECT * FROM customer c INNER JOIN debit_or_credit_account acc ON c.customer_id = acc.customer_id;
+		String query = "SELECT * FROM customer c INNER JOIN debit_or_credit_account acc ON c.customer_id = acc.customer_id WHERE "
+				+ "customer_name LIKE '%" + customer.getCustomer_name() + "%' " + "AND customer_phone LIKE '%"
+				+ customer.getCustomer_phone() + "%' " + "AND customer_email LIKE '%" + customer.getEmail() + "%';";
 
 		ResultSet rs = executeQueryRS(query);
 		try {
+			// customer info
 			customer.setCustomer_id(rs.getInt("customer_id"));
 			customer.setCustomer_name(rs.getString("customer_name"));
-			customer.setCustomer_phone(rs.getInt("customer_phone"));
-			customer.setCustomer_address(rs.getString("customer_address"));
+			customer.setCustomer_phone(rs.getLong("customer_phone"));
+			customer.setEmail(rs.getString("customer_email"));
+			// account info
+			customer.setAccountID(rs.getInt("account_id"));
+			customer.setAccountNumber(rs.getLong("account_number"));
+			customer.setAccountBalance(rs.getInt("account_balance"));
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
 		}
@@ -265,11 +375,15 @@ public class UltraVisionDB {
 				+ "VALUES (" + customer.getAccountNumber() + ", " + customer.getAccountBalance() + ", "
 				+ customer.getCustomer_id() + ");";
 
-		executeUpdateRS(queryInsertAccount);
+		int i = executeUpdateRS(queryInsertAccount);
+		if (i == 0) {
+			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewAccount method.");
+		}
 
-		// get customer_id
-		customer = updateCustomerInfo(customer);
+		// updates info with auto incremented ID
+		customer = updateAccountAndCustomerInfo(customer);
 
+		closings();
 		return customer;
 	}
 
@@ -278,17 +392,67 @@ public class UltraVisionDB {
 		return customer;
 	}
 
-	public MembershipCard addNewMembershipCard(MembershipCard card, int accountID) {
+	public MembershipCard addNewMembershipCard(MembershipCard card) {
 
-		int password = card.getPassword();
-		int hasFreeRent = card.getHasFreeRent();
-		int freeRents = card.getFreeRents();
-		int points = card.getPoints();
-		int accID = accountID;
-		int subscriptionID = card.getTitleTypeDB();
+//		String queryGetSubsID = "SELECT * FROM subscription;";
+//
+//		ResultSet rs = executeQueryRS(queryGetSubsID);
+//		// update card with subscription_id
+//		card = setCardSubscriptionID(card, rs);
+
+		String queryInsertCard = "INSERT INTO membership_card (card_password, card_has_free_rent, card_free_rents, card_points, account_id, subscription_id) \r\n"
+				+ "VALUES ( " + card.getPassword() + ", " + card.getHasFreeRent() + ", " + card.getFreeRents() + ", "
+				+ card.getPoints() + ", " + card.getAccountID() + ", " + card.getTitleTypeDB() + ");";
+
+		int i = executeUpdateRS(queryInsertCard);
+		if (i == 0) {
+			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewMembershipCard method.");
+		}
+
+		// update card with membership_card_id
+		card = updateCardInfo(card);
 
 		return card;
 	}
+
+	public MembershipCard updateCardInfo(MembershipCard card) {
+
+		String queryInsertAccount = "SELECT * FROM membership_card " + "WHERE card_password LIKE '%"
+				+ card.getPassword() + "%' " + "AND card_has_free_rent LIKE '%" + card.getHasFreeRent() + "%' "
+				+ "AND card_free_rents LIKE '%" + card.getFreeRents() + "%' " + "AND card_points LIKE '%"
+				+ card.getPoints() + "%' " + "AND account_id LIKE '%" + card.getAccountID() + "%' "
+				+ "AND subscription_id LIKE '%" + card.getTitleTypeDB() + "%';";
+
+		ResultSet rs = executeQueryRS(queryInsertAccount);
+
+		try {
+			card.setCardID(rs.getInt("card_id"));
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		}
+		closings();
+		return card;
+	}
+
+//	public MembershipCard setCardSubscriptionID(MembershipCard card, ResultSet rs) {
+//
+//		try {
+//			while (rs.next()) {
+//				
+//				int subsplan = rs.getInt("subscription_id");
+//
+//				if(subsplan == card.getTitleTypeDB()) {
+//					
+//				}
+//			}
+//		} catch (SQLException sqle) {
+//			exceptionMessages(sqle);
+//		} catch (Exception e) {
+//			e.getStackTrace();
+//		}
+//
+//		return card;
+//	}
 
 	public Title updateTitleInfo(Title title) {
 
@@ -325,7 +489,10 @@ public class UltraVisionDB {
 				+ newTitle.getAvailable() + ", '" + newTitle.getName() + "', " + newTitle.getPrice() + ", '"
 				+ newTitle.getGenre() + "', " + newTitle.getYearOfRelease() + ");";
 
-		executeUpdateRS(queryInsertTitle);
+		int i = executeUpdateRS(queryInsertTitle);
+		if (i == 0) {
+			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewTitle method.");
+		}
 
 		newTitle = updateTitleInfo(newTitle);
 
@@ -333,29 +500,86 @@ public class UltraVisionDB {
 	}
 
 	/**
-	 * @param newMusicOrLive to add but should of first have inserted the raw title
-	 *                       in order to get the title_id to insert it to
-	 *                       music.title_id
+	 * @param newMusicOrLive to add
 	 * @return 1 if succeeded 0 if failed
 	 */
 	public int addNewTitle(MusicOrLive newMusicOrLive) {// polymorphism of overloading. same signature,
 														// different param
 //---------------------------------RAW TITLE DB UPLOAD-------------------------------------------
-		Title newTitle = new Title(newMusicOrLive.getTitleTypeDB(), newMusicOrLive.getDiscFormatDB(),
-				newMusicOrLive.getAvailable(), newMusicOrLive.getName(), newMusicOrLive.getPrice(),
-				newMusicOrLive.getGenre(), newMusicOrLive.getYearOfRelease());
-
 		// add new title and returns with title_id
-		newTitle = addNewTitle(newTitle);// upload first raw title to DB
-		
+		// upload first raw title to DB
+		Title newTitle = addNewTitle(new Title(newMusicOrLive.getTitleTypeDB(), newMusicOrLive.getDiscFormatDB(),
+				newMusicOrLive.getAvailable(), newMusicOrLive.getName(), newMusicOrLive.getPrice(),
+				newMusicOrLive.getGenre(), newMusicOrLive.getYearOfRelease()));
+
 //---------------------------------MUSIC DB UPLOAD-------------------------------------------
-		String queryInsertIntoMusic = "INSERT INTO music (music_singer, music_band, subscription_id, title_id) "
-				+ "VALUES ('" + newMusicOrLive.getSinger() + "', '" + newMusicOrLive.getBand() + "', "
-				+ newMusicOrLive.getTitleTypeDB() + ", " + newTitle.getId() + ");";
 
-		int musicOrLiveInsert = executeUpdateRS(queryInsertIntoMusic);
+		int musicOrLiveInsert = 0;
 
+		switch (newMusicOrLive.getTitleTypeDB()) {
+		case 1:// if music
+			String queryInsertIntoMusic = "INSERT INTO music (music_singer, music_band, subscription_id, title_id) "
+					+ "VALUES ('" + newMusicOrLive.getSinger() + "', '" + newMusicOrLive.getBand() + "', "
+					+ newMusicOrLive.getTitleTypeDB() + ", " + newTitle.getId() + ");";
+
+			musicOrLiveInsert = executeUpdateRS(queryInsertIntoMusic);
+			break;
+		case 2:// if live
+			String queryInsertIntoLiveConcert = "INSERT INTO live_concert (live_concert_singer, live_concert_band, subscription_id, title_id) "
+					+ "VALUES ('" + newMusicOrLive.getSinger() + "', '" + newMusicOrLive.getBand() + "', "
+					+ newMusicOrLive.getSubscriptionplan() + ", " + newTitle.getId() + ");";
+
+			musicOrLiveInsert = executeUpdateRS(queryInsertIntoLiveConcert);
+			break;
+		}
+		closings();
 		return musicOrLiveInsert;
+	}
+
+	/**
+	 * @param newMovie to add
+	 * @return 1 if succeeded 0 if failed
+	 */
+	public int addNewTitle(Movie newMovie) {// polymorphism of overloading. same signature,
+											// different param
+//---------------------------------RAW TITLE DB UPLOAD-------------------------------------------
+		// add new title and returns with title_id
+		// upload first raw title to DB
+		Title newTitle = addNewTitle(
+				new Title(newMovie.getTitleTypeDB(), newMovie.getDiscFormatDB(), newMovie.getAvailable(),
+						newMovie.getName(), newMovie.getPrice(), newMovie.getGenre(), newMovie.getYearOfRelease()));
+
+//---------------------------------MOVIE DB UPLOAD-------------------------------------------
+		String queryInsertIntoMovie = "INSERT INTO movie (movie_director, subscription_id, title_id) " + "VALUES ('"
+				+ newMovie.getDirector() + "', " + newMovie.getSubscriptionPlan() + ", " + newTitle.getId() + ");";
+
+		int movieInsert = executeUpdateRS(queryInsertIntoMovie);
+
+		closings();
+		return movieInsert;
+	}
+
+	/**
+	 * @param newBoxSet to add
+	 * @return 1 if succeeded 0 if failed
+	 */
+	public int addNewTitle(BoxSet newBoxSet) {// polymorphism of overloading. same signature,
+												// different param
+//---------------------------------RAW TITLE DB UPLOAD-------------------------------------------
+		// add new title and returns with title_id
+		// upload first raw title to DB
+		Title newTitle = addNewTitle(
+				new Title(newBoxSet.getTitleTypeDB(), newBoxSet.getDiscFormatDB(), newBoxSet.getAvailable(),
+						newBoxSet.getName(), newBoxSet.getPrice(), newBoxSet.getGenre(), newBoxSet.getYearOfRelease()));
+
+//---------------------------------MOVIE DB UPLOAD-------------------------------------------
+		String queryInsertIntoBoxSet = "INSERT INTO box_set (number_of_discs, subscription_id, title_id) " + "VALUES ('"
+				+ newBoxSet.getNumOfDiscs() + "', " + newBoxSet.getSubscriptionplan() + ", " + newTitle.getId() + ");";
+
+		int boxSetInsert = executeUpdateRS(queryInsertIntoBoxSet);
+
+		closings();
+		return boxSetInsert;
 	}
 
 	public int searchTitle(String entity, String filter, String search) {

@@ -42,19 +42,20 @@ public class UltraVisionManagementSystem {
 	 * @return int 1 if succeeded, 0 if failed
 	 */
 	public Customer addNewAccount(Customer customerinfo) {
+		db = new UltraVisionDB();
 		return db.addNewAccount(customerinfo);
 	}
 	
-	public MembershipCard addNewMembershipCard(MembershipCard card, int accountID) {
-		return db.addNewMembershipCard(card, accountID);
+	public MembershipCard addNewMembershipCard(MembershipCard card) {
+		db = new UltraVisionDB();
+		return db.addNewMembershipCard(card);
 	}
 	
 	/**
 	 * @param newTitle add new BoxSet to db
 	 * @return int 1 if succeeded, 0 if failed
 	 */
-	public int addNewTitle(Title newTitle) {// polymorphism of overload
-		db = new UltraVisionDB();
+	public Title addNewTitle(Title newTitle) {// polymorphism of overload
 		return db.addNewTitle(newTitle);
 	}
 
@@ -66,7 +67,7 @@ public class UltraVisionManagementSystem {
 		db = new UltraVisionDB();
 		return db.addNewTitle(newMusicOrLive);
 	}
-
+	
 	/**
 	 * @param newTitle add new BoxSet to db
 	 * @return int 1 if succeeded, 0 if failed
@@ -81,6 +82,7 @@ public class UltraVisionManagementSystem {
 	 * @return int 1 if succeeded, 0 if failed
 	 */
 	public int addNewTitle(BoxSet newTitle) {// polymorphism of overload
+		db = new UltraVisionDB();
 		return db.addNewTitle(newTitle);
 	}
 

@@ -22,26 +22,22 @@ import view.title.register.NewBoxSetScreen;
 public class CustomerClassificationsScreen {
 
 	private JFrame customerClassifications = new JFrame();
-	
+
 	private MembershipCard newMembershipCard;
-	
-//	public static void main (String[]args) {
-//		new CustomerClassifications();
-//	}
-	
+
 	public CustomerClassificationsScreen() {
 		setAttributes();
 		setComponents();
 		validation();
 	}
-	
+
 	private void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
 		customerClassifications.add(backPanel);
-		
+
 		JLabel musicLover = new JLabel("Music Lover");
 		musicLover.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		musicLover.setBounds(87, 15, 200, 30);
@@ -68,7 +64,7 @@ public class CustomerClassificationsScreen {
 
 		buttons(backPanel);
 	}
-	
+
 	public void setAttributes() {
 		customerClassifications.setSize(950, 300);
 		customerClassifications.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -78,7 +74,7 @@ public class CustomerClassificationsScreen {
 		customerClassifications.setLocationRelativeTo(null);
 
 	}
-	
+
 	public void buttons(JPanel backPanel) {
 
 		// ---------------------------MUSIC BUTTON-------------------------------
@@ -92,8 +88,7 @@ public class CustomerClassificationsScreen {
 		musicLoverBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customerClassifications.dispose();
-				newMembershipCard = new MembershipCard(AccessLevel.ML);
-				new NewCustomerScreen(newMembershipCard);
+				new NewCustomerScreen(new MembershipCard(AccessLevel.ML));
 			}
 		});
 		musicLoverBtn.addMouseListener(new MouseAdapter() {
@@ -119,8 +114,7 @@ public class CustomerClassificationsScreen {
 		videoLoverBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customerClassifications.dispose();
-				newMembershipCard = new MembershipCard(AccessLevel.VL);
-				new NewCustomerScreen(newMembershipCard);
+				new NewCustomerScreen(new MembershipCard(AccessLevel.VL));
 			}
 		});
 		videoLoverBtn.addMouseListener(new MouseAdapter() {
@@ -146,8 +140,7 @@ public class CustomerClassificationsScreen {
 		tvLoverBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customerClassifications.dispose();
-				newMembershipCard = new MembershipCard(AccessLevel.TV);
-				new NewCustomerScreen(newMembershipCard);
+				new NewCustomerScreen(new MembershipCard(AccessLevel.TV));
 			}
 		});
 		tvLoverBtn.addMouseListener(new MouseAdapter() {
@@ -173,8 +166,7 @@ public class CustomerClassificationsScreen {
 		premiumBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customerClassifications.dispose();
-				newMembershipCard = new MembershipCard(AccessLevel.PR);
-				new NewCustomerScreen(newMembershipCard);
+				new NewCustomerScreen(new MembershipCard(AccessLevel.PR));
 			}
 		});
 		premiumBtn.addMouseListener(new MouseAdapter() {
@@ -190,7 +182,7 @@ public class CustomerClassificationsScreen {
 			}
 		});
 	}
-	
+
 	public void validation() {
 		customerClassifications.repaint();
 		customerClassifications.validate();

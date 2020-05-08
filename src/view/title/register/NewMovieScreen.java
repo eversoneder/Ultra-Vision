@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
+import model.enums.AccessLevel;
 import model.enums.Media;
 import model.titles.Movie;
 import model.titles.MusicOrLive;
@@ -49,10 +50,6 @@ public class NewMovieScreen implements FocusListener {
 		setAttributes();
 		setComponents();
 		validation();
-	}
-
-	public static void main(String[] args) {
-		new NewMovieScreen();
 	}
 
 	public void setAttributes() {
@@ -230,7 +227,6 @@ public class NewMovieScreen implements FocusListener {
 
 				if (name.equals("movie name") || genre.equals("movie genre") || director.equals("movie director")
 						|| yor.equals("year of release") || price.equals("price")) {
-
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
@@ -262,14 +258,24 @@ public class NewMovieScreen implements FocusListener {
 						break;
 					}
 				}
+				if (selectedFormat.equals(Media.CD)) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Movies can't be recorded in CD's. \nChoose DVD or BLU-RAY only.",
+							"Title Media Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
+					return;
+				}
 				{
 					double pricedouble = Double.parseDouble(price);
 					int yorint = Integer.parseInt(yor);
-
-					newMovie = new Movie(3, selectedFormat, 1, name, pricedouble, genre, yorint, director, 1);
+					
+					int planID = AccessLevel.VL.getSubscriptionID();
+					int titleType = new Title().getTitleTypeDB(AccessLevel.VL);
+					
+					newMovie = new Movie(titleType, selectedFormat, 1, name, pricedouble, genre, yorint, director, planID);
 					managementSystem = new UltraVisionManagementSystem(0);
 					int musicInsert = managementSystem.addNewTitle(newMovie);
-
+					
 					if (musicInsert == 0) {
 						Object[] btns = { "Ok" };
 						int i = JOptionPane.showOptionDialog(null, "Registration of: " + name + ", couldn't be done.",
@@ -277,12 +283,12 @@ public class NewMovieScreen implements FocusListener {
 								logoIcon, btns, btns[0]);
 					} else {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Music: " + name + ", Successfully registered!",
+						int i = JOptionPane.showOptionDialog(null, "Movie: " + name + ", Successfully registered!",
 								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
 					}
 					newLiveConcertScreen.dispose();
-					new NewLiveConcertScreen();
+					new NewMovieScreen();
 				}
 			}
 		});
@@ -308,7 +314,7 @@ public class NewMovieScreen implements FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
 
-//------------------music name TextField-------------------------
+//------------------movie name TextField-------------------------
 		if (movienametf.getText().matches("movie name")) {
 			movienametf.setText("");
 			movienametf.setForeground(new Color(0, 80, 110));
@@ -319,7 +325,7 @@ public class NewMovieScreen implements FocusListener {
 				movienametf.setForeground(new Color(180, 180, 180));
 			}
 		}
-//------------------music genre TextField-------------------------
+//------------------movie genre TextField-------------------------
 		if (moviegenretf.getText().matches("movie genre")) {
 			moviegenretf.setText("");
 			moviegenretf.setForeground(new Color(0, 80, 110));
@@ -330,7 +336,7 @@ public class NewMovieScreen implements FocusListener {
 				moviegenretf.setForeground(new Color(180, 180, 180));
 			}
 		}
-//------------------music director TextField-------------------------
+//------------------movie director TextField-------------------------
 		if (moviedirectortf.getText().matches("movie director")) {
 			moviedirectortf.setText("");
 			moviedirectortf.setForeground(new Color(0, 80, 110));

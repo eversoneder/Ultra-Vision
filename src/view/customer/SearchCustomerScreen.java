@@ -20,6 +20,10 @@ public class SearchCustomerScreen {
 		validation();
 	}
 	
+	public static void main(String[]args) {
+		new SearchCustomerScreen();
+	}
+	
 	public void setAttributes() {
 		searchCustomerScreen.setSize(1000, 650);
 		searchCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

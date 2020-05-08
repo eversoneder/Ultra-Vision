@@ -8,8 +8,9 @@ import model.enums.Media;
 
 public class Movie extends Title {
 
+	private int movieID;
 	private String director;
-	private int subscriptionplan;
+	private int subscriptionPlan;
 	
 	private ArrayList<Movie> movies;
 
@@ -46,7 +47,7 @@ public class Movie extends Title {
 	/**
 	 * Load titles from database
 	 * 
-	 * @param id        the id to set
+	 * @param titleID        the id to set
 	 * @param name      the name to set
 	 * @param price     the price to set
 	 * @param format    the format to set
@@ -55,9 +56,9 @@ public class Movie extends Title {
 	 * @param yor       the year of release to set
 	 * @param available the available to set
 	 */
-	public Movie(int id, int type, int format, int available, String name, double price, String genre, int yor,
+	public Movie(int titleID, int movieID , int type, int format, int available, String name, double price, String genre, int yor,
 			String director, int plan) {
-		super.setId(id);
+		super.setId(titleID);
 		super.setTitleTypeDB(type);
 		super.setDiscFormatDB(format);
 		super.setAvailable(available);
@@ -66,6 +67,7 @@ public class Movie extends Title {
 		super.setGenre(genre);
 		super.setYearOfRelease(yor);
 		
+		this.setMovieID(movieID);
 		this.setDirector(director);
 		this.setSubscriptionPlan(plan);
 	}
@@ -99,16 +101,30 @@ public class Movie extends Title {
 	}
 	
 	/**
-	 * @return the subscriptionplan
+	 * @return the subscriptionPlan
 	 */
-	public int getSubscriptionplan() {
-		return subscriptionplan;
+	public int getSubscriptionPlan() {
+		return subscriptionPlan;
 	}
 
 	/**
-	 * @param subscriptionplan the subscriptionplan to set
+	 * @param subscriptionPlan the subscriptionplan to set
 	 */
-	public void setSubscriptionPlan(int subscriptionplan) {
-		this.subscriptionplan = subscriptionplan;
+	public void setSubscriptionPlan(int subscriptionPlan) {
+		this.subscriptionPlan = subscriptionPlan;
+	}
+	
+	/**
+	 * @return the movieID
+	 */
+	public int getMovieID() {
+		return movieID;
+	}
+
+	/**
+	 * @param movieID the movieID to set
+	 */
+	public void setMovieID(int movieID) {
+		this.movieID = movieID;
 	}
 }

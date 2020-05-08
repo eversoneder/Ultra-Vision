@@ -32,6 +32,11 @@ public class MainScreen {
 
 	private JButton closeBtn;
 	private JFrame MainScreen = new JFrame();
+
+	// if you activate line 40 and 67, when you run the program and you press 'q'
+	// the screen closes, but if you run, click a button, back, try to press 'q'
+	// to close the program, it won't work. I'd like a feedback on that, no clue why
+	// it's not working. I was going to do this for all screens for faster UX
 //	private KeyController keyListener = new KeyController(MainScreen);
 
 	private NewCustomerScreen newCustomer;
@@ -44,10 +49,6 @@ public class MainScreen {
 	private DeleteTitleScreen deleteTitle;
 
 	private UltraVisionManagementSystem controller;
-
-	public static void main(String[] args) {
-		new MainScreen();
-	}
 
 	public MainScreen() {
 		setAttributes();

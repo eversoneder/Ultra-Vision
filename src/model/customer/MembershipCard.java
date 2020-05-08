@@ -9,8 +9,8 @@ import model.titles.Title;
 public class MembershipCard implements TitleType {
 
 	Collection<Title> rentingList;
-	
-	private int id;
+
+	private int cardID;
 	private int points;
 	private int hasFreeRent;
 	private int freeRents;
@@ -22,19 +22,21 @@ public class MembershipCard implements TitleType {
 
 	/**
 	 * DB download
+	 * 
 	 * @param customerid
 	 * @param plan
 	 * @param password
 	 */
-	public MembershipCard(int id, int password, int hasFreeRent, int freeRents, int points, int accountID, int subscriptionID) {
-		this.id = id;
+	public MembershipCard(int id, int password, int hasFreeRent, int freeRents, int points, int accountID,
+			int subscriptionID) {
+		this.cardID = id;
 		this.password = password;
 		this.hasFreeRent = hasFreeRent;
 		this.freeRents = freeRents;
 		this.points = points;
 		this.accountID = accountID;
 		this.subscriptionID = subscriptionID;
-		
+
 	}
 
 	public MembershipCard(AccessLevel planEnum) {
@@ -42,7 +44,7 @@ public class MembershipCard implements TitleType {
 		this.points = 0;
 		this.hasFreeRent = 0;
 		this.freeRents = 0;
-		
+
 	}
 
 	/**
@@ -81,15 +83,15 @@ public class MembershipCard implements TitleType {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
-		return id;
+	public int getCardID() {
+		return cardID;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
-		this.id = id;
+	public void setCardID(int id) {
+		this.cardID = id;
 	}
 
 	/**
@@ -150,6 +152,13 @@ public class MembershipCard implements TitleType {
 	}
 
 	/**
+	 * @param points the points to set
+	 */
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	/**
 	 * @return the hasFreeRent
 	 */
 	public int getHasFreeRent() {
@@ -202,24 +211,35 @@ public class MembershipCard implements TitleType {
 	/**
 	 * @param password to set
 	 */
-	protected void setPassword(int pass) {
+	public void setPassword(int pass) {
 		this.password = pass;
 	}
 
-	
-
 	@Override
-	public void setTitleTypeGUI(AccessLevel titleClassification) {// here's the card subscription
+	public void setTitleTypeGUI(AccessLevel titleClassification) {// here gets the card subscriptionID
 
 		AccessLevel values[] = AccessLevel.values();// get instance of all subscription plans
 		for (AccessLevel value : values) {// go one by one
 
 			if (value.name().equals(titleClassification.name())) {// if name equals the one received
-				//then get the subscriptionID to know what is able to rent. eg: VL = 2 > movie
-				this.subscriptionID = Integer.parseInt(titleClassification.getSubscriptionID());
+				// then get the subscriptionID to know what is able to rent. eg: VL = 2 > movie
+				this.subscriptionEnum = titleClassification;
+				this.subscriptionID = titleClassification.getSubscriptionID();
+				break;
 			}
 		}
 	}
+
+//	public void setCardPlan(AccessLevel plan) {//here gets the subs classification
+//		AccessLevel values[] = AccessLevel.values();// get instance of all subscription plans
+//		for (AccessLevel value : values) {// go one by one
+//
+//			if (value.name().equals(plan.name())) {
+//				this.subscriptionEnum = plan;
+//				break;
+//			}
+//		}
+//	}
 
 	@Override
 	public void setTitleTypeDB(int titleType) {
@@ -231,8 +251,25 @@ public class MembershipCard implements TitleType {
 		return subscriptionEnum.name();
 	}
 
+	/**
+	 * @return subscriptionID
+	 */
 	@Override
 	public int getTitleTypeDB() {
 		return subscriptionID;
+	}
+	
+	/**
+	 * @return the accountID
+	 */
+	public int getAccountID() {
+		return accountID;
+	}
+
+	/**
+	 * @param accountID the accountID to set
+	 */
+	public void setAccountID(int accountID) {
+		this.accountID = accountID;
 	}
 }

@@ -24,6 +24,7 @@ import model.titles.BoxSet;
 import model.titles.Movie;
 import model.titles.MusicOrLive;
 import view.title.register.NewLiveConcertScreen;
+import view.title.register.NewMovieScreen;
 import view.title.register.NewBoxSetScreen;
 import view.title.register.NewMusicScreen;
 
@@ -34,10 +35,6 @@ public class TitleClassificationsScreen {
 	private JTextField accounttf;
 	private JTextField memberCardPasstf;
 	
-	public static void main(String[] args) {
-		new TitleClassificationsScreen();
-	}
-
 	public TitleClassificationsScreen() {
 		setAttributes();
 		setComponents();
@@ -156,7 +153,7 @@ public class TitleClassificationsScreen {
 		movieBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				titleClassifications.dispose();
-				new NewBoxSetScreen();
+				new NewMovieScreen();
 			}
 		});
 		movieBtn.addMouseListener(new MouseAdapter() {
@@ -183,7 +180,7 @@ public class TitleClassificationsScreen {
 		boxSetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				titleClassifications.dispose();
-				new MusicOrLive();
+				new NewBoxSetScreen();
 			}
 		});
 		boxSetBtn.addMouseListener(new MouseAdapter() {

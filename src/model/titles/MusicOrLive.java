@@ -8,6 +8,8 @@ import model.enums.Media;
 
 public class MusicOrLive extends Title {
 
+	private int musicOrLiveID;
+
 	private String singer;
 	private String band;
 	private int isLiveConcert;
@@ -50,7 +52,7 @@ public class MusicOrLive extends Title {
 	/**
 	 * Load titles from database
 	 * 
-	 * @param id
+	 * @param titleID
 	 * @param name
 	 * @param price
 	 * @param format
@@ -59,10 +61,10 @@ public class MusicOrLive extends Title {
 	 * @param yor
 	 * @param available
 	 */
-	public MusicOrLive(int id, int type, int format, int available, String name, double price, String genre, int yor,
+	public MusicOrLive(int titleID, int MusicOrLiveID,int type, int format, int available, String name, double price, String genre, int yor,
 			String singer, String band, int plan) {
 		// title attributes
-		super.setId(id);
+		super.setId(titleID);
 		super.setTitleTypeDB(type);
 		super.setDiscFormatDB(format);
 		super.setAvailable(available);
@@ -71,6 +73,7 @@ public class MusicOrLive extends Title {
 		super.setGenre(genre);
 		super.setYearOfRelease(yor);
 		// music/live concert attributes
+		this.setMusicOrLiveID(MusicOrLiveID);
 		this.setSinger(singer);
 		this.setBand(band);
 		this.setSubscriptionPlan(plan);
@@ -148,5 +151,19 @@ public class MusicOrLive extends Title {
 	 */
 	public void setIsLiveConcert(int isLiveConcert) {
 		this.isLiveConcert = isLiveConcert;
+	}
+	
+	/**
+	 * @return the musicOrLiveID
+	 */
+	public int getMusicOrLiveID() {
+		return musicOrLiveID;
+	}
+
+	/**
+	 * @param musicOrLiveID the musicOrLiveID to set
+	 */
+	public void setMusicOrLiveID(int musicOrLiveID) {
+		this.musicOrLiveID = musicOrLiveID;
 	}
 }

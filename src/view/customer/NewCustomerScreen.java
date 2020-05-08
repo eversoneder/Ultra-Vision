@@ -33,15 +33,15 @@ public class NewCustomerScreen implements FocusListener {
 	private UltraVisionManagementSystem managementSystem;
 
 	private JTextField nametf;
-	private JTextField addresstf;
+	private JTextField emailtf;
 	private JTextField phonetf;
 
 	private Customer newCustomer;
 	private MembershipCard newMembershipCard;
 
-	public static void main(String[] args) {
-		new NewCustomerScreen();
-	}
+//	public static void main(String[] args) {
+//		new NewCustomerScreen();
+//	}
 
 	public NewCustomerScreen(MembershipCard newMembershipCard) {
 		this.newMembershipCard = newMembershipCard;
@@ -126,14 +126,14 @@ public class NewCustomerScreen implements FocusListener {
 		phonetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(phonetf);
 
-		addresstf = new JTextField();
-		addresstf.setText("customer address");
-		addresstf.setForeground(new Color(180, 180, 180));
-		addresstf.addFocusListener(this);
-		addresstf.setBounds(400, 270, 470, 45);
-		addresstf.setBorder(null);
-		addresstf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(addresstf);
+		emailtf = new JTextField();
+		emailtf.setText("customer email");
+		emailtf.setForeground(new Color(180, 180, 180));
+		emailtf.addFocusListener(this);
+		emailtf.setBounds(400, 270, 470, 45);
+		emailtf.setBorder(null);
+		emailtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		backRectangle.add(emailtf);
 
 	}
 
@@ -205,17 +205,15 @@ public class NewCustomerScreen implements FocusListener {
 		createBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				ImageIcon logoIcon;
+				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");;
 
 				String name = nametf.getText();
-				String address = addresstf.getText();
+				String email = emailtf.getText();
 				String phone = phonetf.getText();
 
 //----------------------VALIDATE IF NOTHING MISSING---------------------
 				if (name.equals("customer name") || phone.equals("customer phone")
-						|| address.equals("customer address")) {
-
-					logoIcon = new ImageIcon("img\\logopane.png");
+						|| email.equals("customer email")) {
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
@@ -223,9 +221,7 @@ public class NewCustomerScreen implements FocusListener {
 					return;
 				}
 //----------------------VALIDATE PHONE NUMBER---------------------
-				if (!phone.matches(
-						"^\\s*(?:\\+?(\\d{1,3}))?([-. (]*(\\d{3})[-. )]*)?((\\d{3})[-. ]*(\\d{2,4})(?:[-.x ]*(\\d+))?)\\s*$")) {
-					logoIcon = new ImageIcon("img\\icons\\logopane.png");
+				if (!phone.matches("[0-9]{7,16}")) {
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "Invalid phone number. \nEnter a valid number please.",
 							"Phone Number Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
@@ -233,8 +229,7 @@ public class NewCustomerScreen implements FocusListener {
 					return;
 				}
 //----------------------VALIDATE EMAIL ADDRESS---------------------
-				if (!address.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
-					logoIcon = new ImageIcon("img\\icons\\logopane.png");
+				if (!email.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "Invalid email addres. \nEnter a valid email please.",
 							"Email Address Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
@@ -242,10 +237,13 @@ public class NewCustomerScreen implements FocusListener {
 					return;
 				}
 //---------PARSE PHONE TO UPLOAD DB AFTER GETTING ACC NUM & MEMBERCARD PASS----------
-				int phoneint = Integer.parseInt(phone);
-				newCustomer = new Customer(name, phoneint, address);
+					Long phonelong = Long.parseLong(phone);
+				
+				newCustomer = new Customer(name, phonelong, email);
 //------SEND CUSTOMER TO MEMBERCARDSCREEN TO GATHER INFO WITH ACC NUM & MEMBER PASS TO UPLOAD DB
 				new MembershipCardScreen(newCustomer, newMembershipCard);
+				
+				
 			}
 		});
 		createBtn.addMouseListener(new MouseAdapter() {
@@ -265,7 +263,7 @@ public class NewCustomerScreen implements FocusListener {
 		newCustomerScreen.repaint();
 		newCustomerScreen.validate();
 	}
-
+	
 	@Override
 	public void focusGained(FocusEvent e) {
 
@@ -281,14 +279,14 @@ public class NewCustomerScreen implements FocusListener {
 			}
 		}
 //------------------address TextField-------------------------
-		if (addresstf.getText().matches("customer address")) {
-			addresstf.setText("");
-			addresstf.setForeground(new Color(0, 80, 110));
+		if (emailtf.getText().matches("customer email")) {
+			emailtf.setText("");
+			emailtf.setForeground(new Color(0, 80, 110));
 		}
-		if (!addresstf.hasFocus()) {
-			if (addresstf.getText().matches("")) {
-				addresstf.setText("customer address");
-				addresstf.setForeground(new Color(180, 180, 180));
+		if (!emailtf.hasFocus()) {
+			if (emailtf.getText().matches("")) {
+				emailtf.setText("customer email");
+				emailtf.setForeground(new Color(180, 180, 180));
 			}
 		}
 //------------------phone TextField-------------------------
@@ -321,7 +319,7 @@ public class NewCustomerScreen implements FocusListener {
 	 * @return the addresstf
 	 */
 	public JTextField getAddresstf() {
-		return addresstf;
+		return emailtf;
 	}
 
 	/**
