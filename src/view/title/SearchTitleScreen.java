@@ -2,6 +2,7 @@ package view.title;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,31 +10,56 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import controller.KeyController;
+import controller.UltraVisionManagementSystem;
+import model.enums.Media;
+import model.titles.BoxSet;
+import model.titles.Movie;
+import model.titles.MusicOrLive;
 
 public class SearchTitleScreen implements FocusListener {
 
 	private JFrame searchTitleScreen = new JFrame();
 	KeyController keyListener = new KeyController(searchTitleScreen);
 
+	private UltraVisionManagementSystem managementSystem;
+
+	private ArrayList<Object> titleList = new ArrayList<>();
+	private ArrayList<MusicOrLive> musicOrLiveList = new ArrayList<>();
+	private ArrayList<Movie> movieList = new ArrayList<>();
+	private ArrayList<BoxSet> boxSetList = new ArrayList<>();
+
 	private JTextField searchTitletf;
 	private JButton searchBtn;
 
+	private JComboBox<String> filter;
+
+	private JTable table;
+	private DefaultTableModel model;
+	private String[] ColumnNames;
+	private JPanel panelToLayTable;
+	
 	public SearchTitleScreen() {
 		setAttributes();
 		setComponents();
 		validation();
 	}
-
-	public static void main(String[] args) {
+	
+	public static void main (String[]args) {
 		new SearchTitleScreen();
 	}
 
@@ -54,14 +80,14 @@ public class SearchTitleScreen implements FocusListener {
 		backPanel.setBackground(new Color(0, 120, 170));
 		searchTitleScreen.add(backPanel);
 
-		mainScreenBtn(backPanel);
-		
+		closeBtn(backPanel);
+
 		JLabel customericon = new JLabel();
-		customericon.setIcon(new ImageIcon("img\\icons\\customericonbluebackcircle.png"));
+		customericon.setIcon(new ImageIcon("img\\icons\\titleiconbluebackcircle.png"));
 		customericon.setBounds(10, 0, 300, 150);
 		backPanel.add(customericon);
 
-		mainScreenBtn(backPanel);
+		closeBtn(backPanel);
 
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
@@ -74,18 +100,24 @@ public class SearchTitleScreen implements FocusListener {
 		searchTitletf.setHorizontalAlignment(JTextField.CENTER);
 		searchTitletf.setForeground(new Color(180, 180, 180));
 		searchTitletf.addFocusListener(this);
-		searchTitletf.setBounds(270, 15, 400, 45);
+		searchTitletf.setBounds(205, 15, 400, 45);
 		searchTitletf.setBorder(null);
 		searchTitletf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backRectangle.add(searchTitletf);
 
-		JPanel whiteRectangle = new JPanel();
-		whiteRectangle.setLayout(null);
-		whiteRectangle.setBackground(Color.WHITE);
-		whiteRectangle.setBounds(142, 70, 700, 370);
-		backRectangle.add(whiteRectangle);
+		JPanel searchbarPanel = new JPanel();
+		searchbarPanel.setLayout(null);
+		searchbarPanel.setBackground(new Color(0, 80, 110));
+		searchbarPanel.setBounds(180, 0, 600, 70);
+		backRectangle.add(searchbarPanel);
+		
+		panelToLayTable = new JPanel();
+		panelToLayTable.setLayout(null);
+		panelToLayTable.setBackground(Color.WHITE);
+		panelToLayTable.setBounds(50, 70, 885, 370);
+		backRectangle.add(panelToLayTable);
 
-		JLabel newCustomerLabel = new JLabel("Customer Info");
+		JLabel newCustomerLabel = new JLabel("Title Info");
 		newCustomerLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		newCustomerLabel.setBounds(170, 70, 350, 35);
 		newCustomerLabel.setForeground(Color.WHITE);
@@ -96,67 +128,263 @@ public class SearchTitleScreen implements FocusListener {
 		logo.setBounds(420, 0, 300, 120);
 		backPanel.add(logo);
 
-		buttons(backRectangle);
+		buttons(backRectangle, searchbarPanel);
+
 	}
 
-	public void mainScreenBtn(JPanel backPanel) {
+	public void closeBtn(JPanel backPanel) {
 
-		JButton mainScreenBtn = new JButton();
-		mainScreenBtn.setIcon(new ImageIcon("img\\btn\\mainscreenbtn.png"));
-		mainScreenBtn.setBounds(780, 20, 222, 65);
-		mainScreenBtn.setBorderPainted(false);
-		mainScreenBtn.setContentAreaFilled(false);
-		mainScreenBtn.setFocusPainted(false);
-		backPanel.add(mainScreenBtn);
-		mainScreenBtn.addActionListener(new ActionListener() {
+		JButton closeBtn = new JButton();
+		closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
+		closeBtn.setBounds(780, 20, 222, 65);
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setFocusPainted(false);
+		backPanel.add(closeBtn);
+		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				searchTitleScreen.dispose();
 			}
 		});
-		mainScreenBtn.addMouseListener(new MouseAdapter() {
+		closeBtn.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
-				mainScreenBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				mainScreenBtn.setIcon(new ImageIcon("img\\btn\\hover\\mainscreenbtnhover.png"));
-				mainScreenBtn.setBounds(778, 15, 230, 75);
+				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closepagebtnhover.png"));
+				closeBtn.setBounds(778, 15, 230, 75);
 			}
 
 			public void mouseExited(MouseEvent evt) {
-				mainScreenBtn.setIcon(new ImageIcon("img\\btn\\mainscreenbtn.png"));
-				mainScreenBtn.setBounds(780, 20, 222, 65);
+				closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
+				closeBtn.setBounds(780, 20, 222, 65);
 			}
 		});
 	}
 
-	public void buttons(JPanel backRectangle) {
+	public void buttons(JPanel backRectangle, JPanel searchbarPanel) {
 
-		
 // ---------------------------SEARCH BUTTON-------------------------------
 		searchBtn = new JButton();
 		searchBtn.setIcon(new ImageIcon("img\\btn\\searchbtn.png"));
-		searchBtn.setBounds(595, 5, 222, 65);
+		searchBtn.setBounds(525, 5, 60, 60);
 		searchBtn.setBorderPainted(false);
 		searchBtn.setContentAreaFilled(false);
 		searchBtn.setFocusPainted(false);
-		backRectangle.add(searchBtn);
+		searchbarPanel.add(searchBtn);
 		searchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				searchTitletf.getText();
-				
+				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
+
+				managementSystem = new UltraVisionManagementSystem(0);
+
+				String entityName = "";
+				switch (filter.getSelectedItem().toString()) {
+				case "Music":
+					entityName = "music";
+					break;
+				case "Live Concert":
+					entityName = "live_concert";
+					break;
+				case "Movie":
+					entityName = "movie";
+					break;
+				case "Box Set":
+					entityName = "box_set";
+					break;
+				}
+
+				if (searchTitletf.getText().equals("search title")) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
+							"No search given.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
+					return;
+				}
+
+				titleList = managementSystem.setSearchGetTitleList(searchTitletf.getText(), entityName);
+
+				if (titleList.isEmpty()) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"No results for search: " + searchTitletf.getText() + ".", "No Results.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+				} else {
+					unwrapTitles(titleList);
+					setColumnHeaders();
+					populateModel();
+					tableInit();
+					
+					titleList = new ArrayList<>();
+					musicOrLiveList = new ArrayList<>();
+					movieList = new ArrayList<>();
+					boxSetList = new ArrayList<>();
+				}
 			}
 		});
 		searchBtn.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				searchBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				searchBtn.setIcon(new ImageIcon("img\\btn\\hover\\searchbtnhover.png"));
-				searchBtn.setBounds(593, 2, 228, 70);
+				searchBtn.setBounds(524, 3, 65, 65);
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				searchBtn.setIcon(new ImageIcon("img\\btn\\searchbtn.png"));
-				searchBtn.setBounds(595, 5, 222, 65);
+				searchBtn.setBounds(525, 5, 60, 60);
 			}
 		});
 
+		String[] classifications = { "Music", "Live Concert", "Movie", "Box Set" };
+
+		filter = new JComboBox<String>(classifications);
+		filter.setBounds(435, 26, 84, 25);
+		filter.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		searchbarPanel.add(filter);
+
+	}
+
+	public void tableInit() {
+		
+		table = new JTable(model);
+		
+		table.setRowHeight(30);
+		table.setGridColor(new Color(0, 80, 110));
+		table.setFont(new Font("Tahoma", Font.BOLD, 12));
+		table.setEnabled(false);
+		
+		JScrollPane scrollpane = new JScrollPane();
+		scrollpane.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
+		scrollpane.getViewport().add(table);
+		table.setPreferredScrollableViewportSize(new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight())); 
+		table.setFillsViewportHeight(true); 
+		
+		panelToLayTable.add(scrollpane);
+		
+//		table = new JTable();
+//
+//		table.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
+//		table.setRowHeight(30);
+//		table.setFont(new Font("Tahoma", Font.BOLD, 16));
+//		table.setGridColor(new Color(0, 80, 110));
+//		table.setEnabled(false);// non-editable cells
+//
+//		JScrollPane scrollpane = new JScrollPane();
+//		table.add(scrollpane);
+//
+//		table.setModel(model);
+//		panelToLayTable.add(table);
+//
+//		table.repaint();
+//		table.revalidate();
+	}
+
+	public void setColumnHeaders() {
+
+		model = new DefaultTableModel();	
+		
+		switch (filter.getSelectedItem().toString()) {
+		case "Music":
+			ColumnNames = new String[] { "Title ID", "Music Name", "Music Singer", "Music Band", "Music Genre", "Year of Release",
+					"Disc Type", "Price", "Availability" };
+			break;
+		case "Live Concert":
+			ColumnNames = new String[] { "Title ID", "Concert Name", "Concert Singer", "Concert Band", "Concert Genre",
+					"Year of Release", "Disc Type", "Price", "Availability" };
+			break;
+		case "Movie":
+			ColumnNames = new String[] { "Title ID", "Movie Name", "Movie Genre", "Movie Director", "Year of Release", "Disc Type",
+					"Price", "Availability" };
+			break;
+		case "Box Set":
+			ColumnNames = new String[] { "Title ID", "Box Set Name", "Box Set Genre", "Number of Films", "Disc Type", "Price",
+					"Availability" };
+			break;
+		}
+		model.setColumnIdentifiers(ColumnNames);
+		model.setColumnCount(ColumnNames.length);
+	}
+
+	public void unwrapTitles(ArrayList<Object> titles) {
+
+		for (Object obj : titles) {
+			switch (obj.getClass().getName()) {// or filter.getName()
+			case "model.titles.MusicOrLive":
+				musicOrLiveList.add((MusicOrLive) obj);
+				break;
+			case "model.titles.Movie":
+				movieList.add((Movie) obj);
+				break;
+			case "model.titles.BoxSet":
+				boxSetList.add((BoxSet) obj);
+				break;
+			}
+		}
+	}
+
+	public void populateModel() {
+		
+		Object[] tablePopulation;
+		switch (filter.getSelectedItem().toString()) {
+		case "Music":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = musicOrLiveList.get(i).getId();
+				tablePopulation[1] = musicOrLiveList.get(i).getName();
+				tablePopulation[2] = musicOrLiveList.get(i).getSinger();
+				tablePopulation[3] = musicOrLiveList.get(i).getBand();
+				tablePopulation[4] = musicOrLiveList.get(i).getGenre();
+				tablePopulation[5] = musicOrLiveList.get(i).getYearOfRelease();
+				tablePopulation[6] = musicOrLiveList.get(i).getDiscFormatGUI();
+				tablePopulation[7] = musicOrLiveList.get(i).getPrice();
+				tablePopulation[8] = musicOrLiveList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
+
+				model.addRow(tablePopulation);
+			}
+			break;
+		case "Live Concert":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = musicOrLiveList.get(i).getId();
+				tablePopulation[1] = musicOrLiveList.get(i).getName();
+				tablePopulation[2] = musicOrLiveList.get(i).getSinger();
+				tablePopulation[3] = musicOrLiveList.get(i).getBand();
+				tablePopulation[4] = musicOrLiveList.get(i).getGenre();
+				tablePopulation[5] = musicOrLiveList.get(i).getYearOfRelease();
+				tablePopulation[6] = musicOrLiveList.get(i).getDiscFormatGUI();
+				tablePopulation[7] = musicOrLiveList.get(i).getPrice();
+				tablePopulation[8] = musicOrLiveList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
+				model.addRow(tablePopulation);
+			}
+			break;
+		case "Movie":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = movieList.get(i).getId();
+				tablePopulation[1] = movieList.get(i).getName();
+				tablePopulation[2] = movieList.get(i).getGenre();
+				tablePopulation[3] = movieList.get(i).getDirector();
+				tablePopulation[4] = movieList.get(i).getYearOfRelease();
+				tablePopulation[5] = movieList.get(i).getDiscFormatGUI();
+				tablePopulation[6] = movieList.get(i).getPrice();
+				tablePopulation[7] = movieList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
+				model.addRow(tablePopulation);
+			}
+			break;
+		case "Box Set":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = boxSetList.get(i).getId();
+				tablePopulation[1] = boxSetList.get(i).getName();
+				tablePopulation[2] = boxSetList.get(i).getGenre();
+				tablePopulation[3] = boxSetList.get(i).getNumOfDiscs();
+				tablePopulation[4] = boxSetList.get(i).getDiscFormatGUI();
+				tablePopulation[5] = boxSetList.get(i).getPrice();
+				tablePopulation[6] = boxSetList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
+				model.addRow(tablePopulation);
+			}
+			break;
+		}
 	}
 
 	public void validation() {

@@ -9,6 +9,23 @@ public class Customer extends DebitOrCreditAccount {
 	private long phone;
 	private String email;
 
+//	/**
+//	 * load customer from database
+//	 * 
+//	 * @param id      to load
+//	 * @param name    to load
+//	 * @param phone   to load
+//	 * @param address to load
+//	 */
+//	public Customer(int id, String name, long phone, String address, String accnumber, double balance) {
+//		this.id = id;
+//		this.name = name;
+//		this.phone = phone;
+//		this.email = address;
+//		this.setAccountBalance(balance);
+//		this.setAccountNumber(accnumber);
+//	}
+	
 	/**
 	 * load customer from database
 	 * 
@@ -17,13 +34,14 @@ public class Customer extends DebitOrCreditAccount {
 	 * @param phone   to load
 	 * @param address to load
 	 */
-	public Customer(int id, String name, long phone, String address, long accnumber, double balance) {
-		this.id = id;
+	public Customer(int accID, String accNum, double accBalance, int custID, String name, long phone, String email) {
+		super.setAccountID(accID);
+		super.setAccountNumber(accNum);
+		super.setAccountBalance(accBalance);
+		this.id = custID;
 		this.name = name;
 		this.phone = phone;
-		this.email = address;
-		this.setAccountBalance(balance);
-		this.setAccountNumber(accnumber);
+		this.email = email;
 	}
 
 	/**

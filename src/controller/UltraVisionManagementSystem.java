@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JFrame;
@@ -17,9 +18,6 @@ public class UltraVisionManagementSystem {
 
 	private UltraVisionDB db;
 	private MainScreen mainScreen;
-	private JFrame frame;
-
-	private Collection<Title> titleList;
 
 	public UltraVisionManagementSystem() {
 		mainScreen = new MainScreen();
@@ -28,8 +26,14 @@ public class UltraVisionManagementSystem {
 	public UltraVisionManagementSystem(int instanceWithoutMainScreenBeingStarted) {
 	}
 
-	public void getTitleList(Collection<Title> titleList) {
-		this.titleList = titleList;
+	public ArrayList<Object> setSearchGetTitleList(String search, String filter) {
+		db = new UltraVisionDB();
+		return db.setSearchGetTitleList(search,filter);
+	}
+	
+	public ArrayList<Object> setSearchGetCustomerList(String search){
+		db = new UltraVisionDB();
+		return db.setSearchGetCustomerList(search);
 	}
 
 	public Customer addNewCustomer(Customer customer) {

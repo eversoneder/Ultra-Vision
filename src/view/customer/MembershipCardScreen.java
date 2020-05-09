@@ -198,10 +198,10 @@ public class MembershipCardScreen implements FocusListener {
 // newCustomer will be updated with customer_id in return
 				managementSystem = new UltraVisionManagementSystem(0);
 				newCustomer = managementSystem.addNewCustomer(newCustomer);
-				
+			
 // ---UPLOAD CUSTOMER ACCOUNT TO DB---
 // newCustomer will be updated with account_id in return
-				newCustomer.setAccountNumber(Long.parseLong(account));
+				newCustomer.setAccountNumber(account);
 				newCustomer = managementSystem.addNewAccount(newCustomer);
 // ---UPLOAD MEMBERSHIP CARD TO DB---
 // newMembershipCard will be updated with card_id in return
@@ -214,10 +214,9 @@ public class MembershipCardScreen implements FocusListener {
 						"Customer registered successfully.", "Customer Added to System",
 						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 				
-				System.out.println(i);
-//				if(i == 0 || i == -1) {
-//					membershipCardScreen.dispose();
-//				}
+				if(i == 0 || i == -1) {
+					membershipCardScreen.dispose();
+				}
 			}
 			
 		});

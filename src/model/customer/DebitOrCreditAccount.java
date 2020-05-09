@@ -6,7 +6,7 @@ package model.customer;
 public abstract class DebitOrCreditAccount {
 
 	private int accountID;
-	private long AccountNumber;
+	private String AccountNumber;
 	private double AccountBalance;
 
 	/**
@@ -55,14 +55,14 @@ public abstract class DebitOrCreditAccount {
 	/**
 	 * @return the accountNumber
 	 */
-	public long getAccountNumber() {
+	public String getAccountNumber() {
 		return AccountNumber;
 	}
 
 	/**
 	 * @param accountNumber the accountNumber to set
 	 */
-	public void setAccountNumber(long accountNumber) {
+	public void setAccountNumber(String accountNumber) {
 		AccountNumber = accountNumber;
 	}
 	

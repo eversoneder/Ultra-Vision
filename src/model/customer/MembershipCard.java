@@ -1,5 +1,6 @@
 package model.customer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import model.enums.AccessLevel;
@@ -8,7 +9,7 @@ import model.titles.Title;
 
 public class MembershipCard implements TitleType {
 
-	Collection<Title> rentingList;
+	private ArrayList<Object> rentingList;
 
 	private int cardID;
 	private int points;

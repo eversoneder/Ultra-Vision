@@ -31,14 +31,12 @@ public class UltraVisionDB {
 	Statement st = null;
 	private int tableSize;
 
-	private ArrayList<Object> titleList = new ArrayList<>();;
-
-//	public static void main(String[] args) {
-//		UltraVisionDB a = new UltraVisionDB();
-//		int r = a.getTableSize("title_name", "a");
-//		System.out.println(r);
-//	}
-
+	private ArrayList<Object> titleList = new ArrayList<>();
+	
+	private ArrayList<Customer> customerList = new ArrayList<>();
+	private ArrayList<MembershipCard> cardList = new ArrayList<>();
+	private ArrayList<Object> customerInfo = new ArrayList<>();
+	
 	/**
 	 * DB Default Constructor, creation of database connection
 	 */
@@ -97,6 +95,7 @@ public class UltraVisionDB {
 			rs.next();
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
+			sqle.printStackTrace();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -131,19 +130,82 @@ public class UltraVisionDB {
 			sqle = sqle.getNextException();
 		}
 	}
+	
+	public ArrayList<Object> setSearchGetCustomerList(String search){
+		
+		String searchCustomer = "SELECT * FROM debit_or_credit_account dc " + 
+				"INNER JOIN customer c ON dc.customer_id = c.customer_id " + 
+				"INNER JOIN membership_card m ON dc.account_id = m.account_id " + 
+				"WHERE c.customer_id LIKE '%"+search+"%' " + 
+				"OR c.customer_name LIKE '%"+search+"%' " + 
+				"OR c.customer_phone LIKE '%"+search+"%' " + 
+				"OR c.customer_email LIKE '%"+search+"%' " + 
+				"OR m.card_id LIKE '%"+search+"%' " + 
+				"OR m.card_has_free_rent LIKE '%"+search+"%' " + 
+				"OR m.card_free_rents LIKE '%"+search+"%' " + 
+				"OR m.card_points LIKE '%"+search+"%' " + 
+				"OR m.subscription_id LIKE '%"+search+"%';";
+		
+		customerInfo = customerInfoLoad(searchCustomer);
+		
+		return customerInfo;
+	}
+	
+	private ArrayList<Object> customerInfoLoad(String query) {
 
-	public ArrayList<Object> getTitleList(String search, String titleClassification) {
+		ResultSet rs = executeQueryRS(query);
+		
+		try {
+			
+			do {
+				if(!rs.wasNull()) {
+					Customer newCustomer = new Customer(
+							rs.getInt("account_id"), 
+							rs.getString("account_number"), 
+							rs.getDouble("account_balance"),
+							rs.getInt("customer_id"),
+							rs.getString("customer_name"),
+							rs.getLong("customer_phone"),
+							rs.getString("customer_email")
+							);
+					customerInfo.add(newCustomer);
+					
+					MembershipCard newCard = new MembershipCard(
+							rs.getInt("card_id"), 
+							rs.getInt("card_password"), 
+							rs.getInt("card_has_free_rent"),
+							rs.getInt("card_free_rents"),
+							rs.getInt("card_points"),
+							rs.getInt("account_id"),
+							rs.getInt("subscription_id")
+							);
+					customerInfo.add(newCard);
+				}
+			}while (rs.next());
+			closings();
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return customerInfo;
+	}
+
+	public ArrayList<Object> setSearchGetTitleList(String search, String titleClassification) {
 
 		switch (titleClassification) {
 		case "music":
 			String searchMusic = "SELECT * FROM title t "
 					+ "INNER JOIN music m ON t.title_id = m.title_id "
 					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_id LIKE '%"+search+"%' OR "
 					+ "t.title_name LIKE '%"+search+"%' OR "
 					+ "t.title_genre LIKE '%"+search+"%' OR "
-					+ "t.title_yor LIKE'%"+search+"%' OR "
-					+ "d.disc_type LIKE'%"+search+"%' OR "
-					+ "m.music_singer LIKE'%"+search+"%' OR "
+					+ "t.title_yor LIKE '%"+search+"%' OR "
+					+ "t.title_price LIKE '%"+search+"%' OR "
+					+ "d.disc_type LIKE '%"+search+"%' OR "
+					+ "m.music_id LIKE '%"+search+"%' OR "
+					+ "m.music_singer LIKE '%"+search+"%' OR "
 					+ "m.music_band LIKE '%"+search+"%';";
 			titleList = titleLoad(searchMusic, titleClassification);
 			break;
@@ -151,22 +213,28 @@ public class UltraVisionDB {
 			String searchLive = "SELECT * FROM title t "
 					+ "INNER JOIN live_concert lc ON t.title_id = lc.title_id "
 					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_id LIKE '%"+search+"%' OR "
 					+ "t.title_name LIKE '%"+search+"%' OR "
 					+ "t.title_genre LIKE '%"+search+"%' OR "
-					+ "t.title_yor LIKE'%"+search+"%' OR "
-					+ "d.disc_type LIKE'%"+search+"%' OR "
-					+ "lc.music_singer LIKE'%"+search+"%' OR "
-					+ "lc.music_band LIKE '%"+search+"%';";
+					+ "t.title_yor LIKE '%"+search+"%' OR "
+					+ "t.title_price LIKE '%"+search+"%' OR "
+					+ "d.disc_type LIKE '%"+search+"%' OR "
+					+ "lc.live_concert_id LIKE '%"+search+"%' OR "
+					+ "lc.live_concert_singer LIKE '%"+search+"%' OR "
+					+ "lc.live_concert_band LIKE '%"+search+"%';";
 			titleList = titleLoad(searchLive, titleClassification);
 			break;
 		case "movie":
 			String searchMovie = "SELECT * FROM title t "
 					+ "INNER JOIN movie m ON t.title_id = m.title_id "
 					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_id LIKE '%"+search+"%' OR "
 					+ "t.title_name LIKE '%"+search+"%' OR "
 					+ "t.title_genre LIKE '%"+search+"%' OR "
-					+ "t.title_yor LIKE'%"+search+"%' OR "
-					+ "d.disc_type LIKE'%"+search+"%' OR "
+					+ "t.title_yor LIKE '%"+search+"%' OR "
+					+ "t.title_price LIKE '%"+search+"%' OR "
+					+ "d.disc_type LIKE '%"+search+"%' OR "
+					+ "m.movie_id LIKE '%"+search+"%' OR "
 					+ "m.movie_director LIKE '%"+search+"%';";
 			titleList = titleLoad(searchMovie, titleClassification);
 			break;
@@ -174,10 +242,13 @@ public class UltraVisionDB {
 			String searchBoxSet = "SELECT * FROM title t "
 					+ "INNER JOIN box_set bs ON t.title_id = bs.title_id "
 					+ "INNER JOIN disc_format d ON t.disc_format_id = d.disc_format_id WHERE "
+					+ "t.title_id LIKE '%"+search+"%' OR "
 					+ "t.title_name LIKE '%"+search+"%' OR "
 					+ "t.title_genre LIKE '%"+search+"%' OR "
-					+ "t.title_yor LIKE'%"+search+"%' OR "
-					+ "d.disc_type LIKE'%"+search+"%' OR "
+					+ "t.title_yor LIKE '%"+search+"%' OR "
+					+ "t.title_price LIKE '%"+search+"%' OR "
+					+ "d.disc_type LIKE '%"+search+"%' OR "
+					+ "bs.box_set_id LIKE '%"+search+"%' OR "
 					+ "bs.number_of_discs LIKE '%"+search+"%';";
 			titleList = titleLoad(searchBoxSet, titleClassification);
 			break;
@@ -192,9 +263,11 @@ public class UltraVisionDB {
 	private ArrayList<Object> titleLoad(String query, String titleClassification) {
 
 		ResultSet rs = executeQueryRS(query);
+		
 		try {
-			while (rs.next()) {
-				
+			
+			do {
+				if(!rs.wasNull()) {
 				switch(titleClassification) {
 				case "music":
 					MusicOrLive newMusic = new MusicOrLive(
@@ -263,7 +336,8 @@ public class UltraVisionDB {
 					titleList.add(boxSet);
 					break;
 				}
-			}
+				}
+			}while (rs.next());
 			closings();
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
@@ -271,43 +345,6 @@ public class UltraVisionDB {
 			System.out.println(e.getMessage());
 		}
 		return titleList;
-	}
-
-	/**
-	 * Sorts if title will be loaded as Title, MusicLover, VideoLover or TvLover
-	 * 
-	 * @param rs the ResultSet from db to be used in the operation
-	 * @return polymorphed Title loaded
-	 */
-	public Title titleSort(ResultSet rs) {
-
-		title = null;
-		try {
-			switch (rs.getInt("title_type_id")) {
-			case 3:
-//				title = new Movie(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
-//						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
-//						rs.getString("title_genre"), rs.getString("title_director"), rs.getInt("title_yor"));
-				break;
-			case 4:
-//				title = new BoxSet(rs.getInt("title_id"),rs.getInt("title_type_id"), rs.getInt("disc_format_id"), rs.getInt("title_available"),
-//						rs.getString("title_name"), rs.getDouble("title_price"), rs.getString("title_genre"),
-//						rs.getInt("title_yor"));
-				break;
-			default:
-//				title = new MusicLover(rs.getInt("title_id"), rs.getString("title_name"), rs.getDouble("title_price"),
-//						rs.getString("title_format"), rs.getString("title_access_level"), rs.getInt("title_available"),
-//						rs.getString("title_band"), rs.getString("title_genre"), rs.getInt("title_yor"));
-				break;
-			}
-
-		} catch (SQLException sqle) {
-			exceptionMessages(sqle);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		return title;
 	}
 
 	/**
@@ -361,7 +398,7 @@ public class UltraVisionDB {
 			customer.setEmail(rs.getString("customer_email"));
 			// account info
 			customer.setAccountID(rs.getInt("account_id"));
-			customer.setAccountNumber(rs.getLong("account_number"));
+			customer.setAccountNumber(rs.getString("account_number"));
 			customer.setAccountBalance(rs.getInt("account_balance"));
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
@@ -372,7 +409,7 @@ public class UltraVisionDB {
 	public Customer addNewAccount(Customer customer) {
 
 		String queryInsertAccount = "INSERT INTO debit_or_credit_account (account_number, account_balance, customer_id) "
-				+ "VALUES (" + customer.getAccountNumber() + ", " + customer.getAccountBalance() + ", "
+				+ "VALUES ('" + customer.getAccountNumber() + "', " + customer.getAccountBalance() + ", "
 				+ customer.getCustomer_id() + ");";
 
 		int i = executeUpdateRS(queryInsertAccount);
@@ -400,8 +437,8 @@ public class UltraVisionDB {
 //		// update card with subscription_id
 //		card = setCardSubscriptionID(card, rs);
 
-		String queryInsertCard = "INSERT INTO membership_card (card_password, card_has_free_rent, card_free_rents, card_points, account_id, subscription_id) \r\n"
-				+ "VALUES ( " + card.getPassword() + ", " + card.getHasFreeRent() + ", " + card.getFreeRents() + ", "
+		String queryInsertCard = "INSERT INTO membership_card (card_password, card_has_free_rent, card_free_rents, card_points, account_id, subscription_id) "
+				+ "VALUES (" + card.getPassword() + ", " + card.getHasFreeRent() + ", " + card.getFreeRents() + ", "
 				+ card.getPoints() + ", " + card.getAccountID() + ", " + card.getTitleTypeDB() + ");";
 
 		int i = executeUpdateRS(queryInsertCard);

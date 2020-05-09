@@ -83,6 +83,13 @@ public class NewCustomerScreen implements FocusListener {
 		backRectangle.setBounds(0, 110, newCustomerScreen.getWidth(), newCustomerScreen.getHeight() - 200);
 		backPanel.add(backRectangle);
 
+		JLabel subscriptionLabel = new JLabel();
+		subscriptionLabel.setText("Subscription: "+newMembershipCard.getTitleTypeGUI());
+		subscriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		subscriptionLabel.setBounds(110, 20, 300, 35);
+		subscriptionLabel.setForeground(new Color(0,80,110));
+		backPanel.add(subscriptionLabel);
+		
 		JLabel newCustomerLabel = new JLabel("New Customer");
 		newCustomerLabel.setFont(new Font("Tahoma", Font.PLAIN, 42));
 		newCustomerLabel.setBounds(110, 60, 300, 35);

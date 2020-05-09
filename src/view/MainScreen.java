@@ -31,22 +31,14 @@ import view.title.TitleClassificationsScreen;
 public class MainScreen {
 
 	private JButton closeBtn;
+	private JButton rentBtn;
 	private JFrame MainScreen = new JFrame();
 
-	// if you activate line 40 and 67, when you run the program and you press 'q'
+	// if you activate line 40 and 58, when you run the program and you press 'q'
 	// the screen closes, but if you run, click a button, back, try to press 'q'
 	// to close the program, it won't work. I'd like a feedback on that, no clue why
 	// it's not working. I was going to do this for all screens for faster UX
 //	private KeyController keyListener = new KeyController(MainScreen);
-
-	private NewCustomerScreen newCustomer;
-	private SearchCustomerScreen searchCustomer;
-	private UpdateCustomerScreen updateCustomer;
-	private DeleteCustomerScreen deleteCustomer;
-	private TitleClassificationsScreen newTitle;
-	private SearchTitleScreen searchTitle;
-	private ReturnTitleScreen returnTitle;
-	private DeleteTitleScreen deleteTitle;
 
 	private UltraVisionManagementSystem controller;
 
@@ -54,6 +46,10 @@ public class MainScreen {
 		setAttributes();
 		setComponents();
 		validation();
+	}
+	
+	public static void main (String[]args) {
+		new MainScreen();
 	}
 
 	public void setAttributes() {
@@ -73,7 +69,7 @@ public class MainScreen {
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
 		MainScreen.add(backPanel);
-
+		
 		JLabel logoIconInJLabel = new JLabel();
 		logoIconInJLabel.setIcon(new ImageIcon("img\\icons\\logo.png"));
 		logoIconInJLabel.setBounds(MainScreen.getWidth() / 2 - 250, 20, 500, 375);
@@ -95,12 +91,43 @@ public class MainScreen {
 
 		objsWithinStrip2(whiteStrip2);
 
+		rentBtn(backPanel);
 		closeBtn(backPanel);
 
 		JLabel background = new JLabel();
 		background.setIcon(new ImageIcon("img\\background.jpg"));
 		background.setBounds(0, 0, backPanel.getWidth(), backPanel.getHeight());
 		backPanel.add(background);
+		
+		
+	}
+	
+	public void rentBtn(JPanel backPanel) {
+		
+		rentBtn = new JButton();
+		rentBtn.setIcon(new ImageIcon("img\\btn\\newrentbtn.png"));
+		rentBtn.setBounds(15, 15, 230, 230);
+		rentBtn.setBorderPainted(false);
+		rentBtn.setContentAreaFilled(false);
+		rentBtn.setFocusPainted(false);
+		rentBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new RentScreen();
+			}
+		});
+		backPanel.add(rentBtn);
+		rentBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				rentBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				rentBtn.setIcon(new ImageIcon("img\\btn\\hover\\newrentbtnhover.png"));
+				rentBtn.setBounds(10, 10, 240, 240);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				rentBtn.setIcon(new ImageIcon("img\\btn\\newrentbtn.png"));
+				rentBtn.setBounds(15, 15, 230, 230);
+			}
+		});
 	}
 
 	public void objsWithinStrip1(JPanel whiteStrip1) {
@@ -148,7 +175,7 @@ public class MainScreen {
 		whiteStrip1.add(searchCustomerBtn);
 		searchCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchCustomer = new SearchCustomerScreen();
+				new SearchCustomerScreen();
 			}
 		});
 		searchCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -174,7 +201,7 @@ public class MainScreen {
 		whiteStrip1.add(updateCustomerBtn);
 		updateCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateCustomer = new UpdateCustomerScreen();
+				new UpdateCustomerScreen();
 			}
 		});
 		updateCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -200,7 +227,7 @@ public class MainScreen {
 		whiteStrip1.add(deleteCustomerBtn);
 		deleteCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteCustomer = new DeleteCustomerScreen();
+				new DeleteCustomerScreen();
 			}
 		});
 		deleteCustomerBtn.addMouseListener(new MouseAdapter() {

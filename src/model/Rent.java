@@ -19,19 +19,19 @@ final class Rent {
 	private Customer customer;
 	private MembershipCard membershipCard;
 
-	private int id;
+	private int rentID;
 	private double totalPrice;
 	private Date startDate;
 	private Date returnDate;
 
-	private Collection<Object> rentingTitles = new ArrayList<>();
+	private ArrayList<Object> rentingTitles = new ArrayList<>();
 	
 	public Rent(Title title, MembershipCard mc) {
 		
 	}
 
 	public Rent(int id) {
-		this.id = id;
+		this.rentID = id;
 	}
 	
 	public Rent() {
@@ -131,10 +131,17 @@ final class Rent {
 	}
 
 	/**
-	 * @return the rent_id
+	 * @return the rentID
 	 */
-	public int getId() {
-		return id;
+	public int getRentID() {
+		return rentID;
+	}
+	
+	/**
+	 * @param rentID to set int
+	 */
+	public void setRentID(int rentID) {
+		this.rentID = rentID;
 	}
 
 	public double getTotalPrice() {

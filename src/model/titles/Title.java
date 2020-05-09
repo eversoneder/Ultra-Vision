@@ -20,9 +20,6 @@ public class Title implements DiscFormat, TitleType {
 	private double price;
 	private String genre;
 	private int yearOfRelease;
-	private int subscriptionPlan;
-
-	private Collection<Title> titleList;
 
 	private MusicOrLive ml;
 	private Movie vl;
@@ -166,20 +163,6 @@ public class Title implements DiscFormat, TitleType {
 			}
 		}
 		this.titleTypeID = titleID;
-	}
-
-	/**
-	 * @return title list
-	 */
-	public Collection<Title> getTitleList() {
-		return titleList;
-	}
-
-	/**
-	 * @param titleList
-	 */
-	public void setTitleList(Collection<Title> titleList) {
-		this.titleList = titleList;
 	}
 
 	/**

@@ -112,28 +112,28 @@ public class MusicOrLive extends Title {
 	}
 
 	/**
-	 * @return the band
+	 * @return the band String
 	 */
 	public String getBand() {
 		return band;
 	}
 
 	/**
-	 * @param band the band to set
+	 * @param band the band to set String
 	 */
 	public void setBand(String band) {
 		this.band = band;
 	}
 
 	/**
-	 * @return singer
+	 * @return singer String
 	 */
 	public String getSinger() {
 		return singer;
 	}
 
 	/**
-	 * @param singer to set
+	 * @param singer to set String
 	 */
 	private void setSinger(String singer) {
 		this.singer = singer;
@@ -147,7 +147,7 @@ public class MusicOrLive extends Title {
 	}
 
 	/**
-	 * @param isLiveConcert the isLiveConcert to set
+	 * @param isLiveConcert the isLiveConcert to set int
 	 */
 	public void setIsLiveConcert(int isLiveConcert) {
 		this.isLiveConcert = isLiveConcert;
@@ -161,7 +161,7 @@ public class MusicOrLive extends Title {
 	}
 
 	/**
-	 * @param musicOrLiveID the musicOrLiveID to set
+	 * @param musicOrLiveID the musicOrLiveID to set int
 	 */
 	public void setMusicOrLiveID(int musicOrLiveID) {
 		this.musicOrLiveID = musicOrLiveID;
