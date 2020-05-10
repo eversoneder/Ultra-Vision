@@ -25,46 +25,130 @@ public class UltraVisionManagementSystem {
 
 	public UltraVisionManagementSystem(int instanceWithoutMainScreenBeingStarted) {
 	}
+	
+	public int rentTitle(int TitleID, MembershipCard card) {
+		db = new UltraVisionDB();
+		return db.rentTitle(TitleID, card);
+	}
+	
+	public int rentTitle(MusicOrLive musicOrLive, MembershipCard card) {
+		db = new UltraVisionDB();
+		return db.rentTitle(musicOrLive, card);
+	}
+	
+	public int rentTitle(Movie movie, MembershipCard card) {
+		db = new UltraVisionDB();
+		return db.rentTitle(movie, card);
+	}
+	
+	public int rentTitle(BoxSet boxSet, MembershipCard card) {
+		db = new UltraVisionDB();
+		return db.rentTitle(boxSet, card);
+	}
+	
+	public int returnTitle(MusicOrLive returningTitle) {
+		db = new UltraVisionDB();
+		return db.returnTitle(returningTitle);
+	}
+	
+	public int returnTitle(Movie returningTitle) {
+		db = new UltraVisionDB();
+		int flag = 0;
+		
+		
+		
+		
+		return flag;
+	}
 
+	public int returnTitle(BoxSet returningTitle) {
+		db = new UltraVisionDB();
+		int flag = 0;
+	
+	
+	
+	
+	return flag;
+}
+	/**
+	 * @param customerID to query DB
+	 * @return Customer from ID given
+	 */
+	public Customer getCustomerInfoByID(int customerID) {
+		db = new UltraVisionDB();
+		return db.getCustomerInfoByID(customerID);
+	}
+	
+	/**
+	 * @param cardID to query DB
+	 * @return MembershipCard from ID given
+	 */
+	public MembershipCard getCardInfoByID(int cardID) {
+		db = new UltraVisionDB();
+		return db.getCardInfoByID(cardID);
+	}
+	
+	public ArrayList<Object> getTitleInfoByID(int titleID){
+		db = new UltraVisionDB();
+		return db.getTitleInfoByID(titleID);
+	}
+
+	/**
+	 * @param search to query DB
+	 * @param filter to set (music, live, movie or box set)
+	 * @return ArrayList<Object> of titles
+	 */
 	public ArrayList<Object> setSearchGetTitleList(String search, String filter) {
 		db = new UltraVisionDB();
 		return db.setSearchGetTitleList(search,filter);
 	}
 	
+	/**
+	 * @param search to query DB
+	 * @return ArrayList<Object> of customers
+	 */
 	public ArrayList<Object> setSearchGetCustomerList(String search){
 		db = new UltraVisionDB();
 		return db.setSearchGetCustomerList(search);
 	}
 
+	/**
+	 * @param customer to upload DB
+	 * @return customer uploaded with ID
+	 */
 	public Customer addNewCustomer(Customer customer) {
 		db = new UltraVisionDB();
 		return db.addNewCustomer(customer);
 	}
 	
 	/**
-	 * @param customerinfo customer to set the account_id, account_number & account_balance 
-	 * @return int 1 if succeeded, 0 if failed
+	 * @param customer and account to upload DB
+	 * @return account and customer with ID
 	 */
 	public Customer addNewAccount(Customer customerinfo) {
 		db = new UltraVisionDB();
 		return db.addNewAccount(customerinfo);
 	}
 	
+	/**
+	 * @param card to upload DB
+	 * @return card with ID
+	 */
 	public MembershipCard addNewMembershipCard(MembershipCard card) {
 		db = new UltraVisionDB();
 		return db.addNewMembershipCard(card);
 	}
 	
 	/**
-	 * @param newTitle add new BoxSet to db
-	 * @return int 1 if succeeded, 0 if failed
+	 * @param newTitle to upload DB
+	 * @return Title with ID
 	 */
 	public Title addNewTitle(Title newTitle) {// polymorphism of overload
 		return db.addNewTitle(newTitle);
 	}
 
 	/**
-	 * @param newTitle add new BoxSet to db
+	 * @param newMusicOrLive to upload DB
 	 * @return int 1 if succeeded, 0 if failed
 	 */
 	public int addNewTitle(MusicOrLive newMusicOrLive) {// polymorphism of overload
@@ -73,7 +157,7 @@ public class UltraVisionManagementSystem {
 	}
 	
 	/**
-	 * @param newTitle add new BoxSet to db
+	 * @param newMovie to upload DB
 	 * @return int 1 if succeeded, 0 if failed
 	 */
 	public int addNewTitle(Movie newMovie) {// polymorphism of overload
@@ -82,16 +166,11 @@ public class UltraVisionManagementSystem {
 	}
 
 	/**
-	 * @param newTitle add new BoxSet to db
+	 * @param newBoxSet to upload DB
 	 * @return int 1 if succeeded, 0 if failed
 	 */
-	public int addNewTitle(BoxSet newTitle) {// polymorphism of overload
+	public int addNewTitle(BoxSet newBoxSet) {// polymorphism of overload
 		db = new UltraVisionDB();
-		return db.addNewTitle(newTitle);
-	}
-
-	public int searchTitle(String entity, String filter, String search) {
-
-		return db.searchTitle(entity, filter, search);
+		return db.addNewTitle(newBoxSet);
 	}
 }

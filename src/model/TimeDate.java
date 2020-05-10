@@ -15,6 +15,11 @@ public class TimeDate {
 	 * @currentDate now date
 	 */
 	private Date currentDate;
+
+	
+	public TimeDate() {
+		
+	}
 	
 	/**
 	 * @return String of now date
@@ -24,6 +29,10 @@ public class TimeDate {
 		currentDate = c.getTime();
 		hourFormat.format(currentDate).toString();
 		
+		return currentDate;
+	}
+	
+	public Date getStartedDate() {
 		return currentDate;
 	}
 

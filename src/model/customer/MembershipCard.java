@@ -3,21 +3,25 @@ package model.customer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import controller.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.interfaces.TitleType;
+import model.titles.BoxSet;
+import model.titles.Movie;
+import model.titles.MusicOrLive;
 import model.titles.Title;
 
 public class MembershipCard implements TitleType {
 
-	private ArrayList<Object> rentingList;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private int cardID;
 	private int points;
-	private int hasFreeRent;
 	private int freeRents;
 	private int password;
 	private AccessLevel subscriptionEnum;
 	private int subscriptionID;
+	private int onGoingRents;
 
 	private int accountID;
 
@@ -28,11 +32,11 @@ public class MembershipCard implements TitleType {
 	 * @param plan
 	 * @param password
 	 */
-	public MembershipCard(int id, int password, int hasFreeRent, int freeRents, int points, int accountID,
+	public MembershipCard(int id, int password, int card_ongoing_rents, int freeRents, int points, int accountID,
 			int subscriptionID) {
 		this.cardID = id;
 		this.password = password;
-		this.hasFreeRent = hasFreeRent;
+		this.onGoingRents = card_ongoing_rents;
 		this.freeRents = freeRents;
 		this.points = points;
 		this.accountID = accountID;
@@ -43,42 +47,48 @@ public class MembershipCard implements TitleType {
 	public MembershipCard(AccessLevel planEnum) {
 		this.setTitleTypeGUI(planEnum);
 		this.points = 0;
-		this.hasFreeRent = 0;
+		this.onGoingRents = 0;
 		this.freeRents = 0;
-
 	}
 
-	/**
-	 * @param rentingTitle the title to rent
-	 */
-	public void recordRent(Title rentingTitle) {
-		rentingList.add(rentingTitle);
-		addLoyaltyPoints(10);
-		rentingTitle.setAvailable(0);
+	public MembershipCard() {
+		this.cardID = 0;
 	}
-
-	/**
-	 * @return return false as maximum renting limit has reached.
-	 */
-	public boolean rentingLimit() {
-		System.out.println("Rent limit reached (4). Customer needs to return 1 title in order to rent another.");
-		return false;
+	
+	public int rentTitle(MusicOrLive rentingTitle){
+		return managementSystem.rentTitle(rentingTitle, this);
+	}
+	
+	public int rentTitle(Movie rentingTitle){
+		return managementSystem.rentTitle(rentingTitle, this);
+	}
+	
+	public int rentTitle(BoxSet rentingTitle){
+		return managementSystem.rentTitle(rentingTitle, this);
 	}
 
 	/**
 	 * @param returningTitle the title to return
 	 */
-	public void returnRent(Title returningTitle) {
-		rentingList.remove(returningTitle);
+	public int returnRent(MusicOrLive returningTitle) {
 		returningTitle.setAvailable(1);
-		System.out.println("Title successfully returned.");
+		return managementSystem.returnTitle(returningTitle);
 	}
-
+	
 	/**
-	 * @return current renting number
+	 * @param returningTitle the title to return
 	 */
-	public int getCurrentRentingCount() {
-		return rentingList.size();
+	public int returnRent(Movie returningTitle) {
+		returningTitle.setAvailable(1);
+		return managementSystem.returnTitle(returningTitle);
+	}
+	
+	/**
+	 * @param returningTitle the title to return
+	 */
+	public int returnRent(BoxSet returningTitle) {
+		returningTitle.setAvailable(1);
+		return managementSystem.returnTitle(returningTitle);
 	}
 
 	/**
@@ -98,51 +108,44 @@ public class MembershipCard implements TitleType {
 	/**
 	 * @return number of available free rents
 	 */
-	public int availFreeRent() {
-		hasFreeRent = freeRents > 0 ? 1 : 0;
-		return this.hasFreeRent;
+	public int hasFreeRents() {
+		int hasFreeRents = 0;
+		hasFreeRents = freeRents > 0 ? 1 : 0;
+		return hasFreeRents;
 	}
 
 	/**
 	 * @param rentintTitle title to rent for free
-	 * @return true if > 100 points && < than 4 current renting titles
+	 * @return 0 if has no free rents / 1 if has free rents & < 4 ongoing rents / 2 if > 4 ongoing rents. 
 	 */
-	public boolean retrieveFreeRental(Title rentingTitle) {
+	public int hasFreeRentsAndIsLessThan4Check() {
 
-		int hasFreeRent = 0;
-		hasFreeRent = availFreeRent(); // check if customer has freeRent to claim
-
-		boolean isLessThanFour = true;
+		int hasFreeRent = hasFreeRents(); // check if customer has freeRent to claim
 
 		switch (hasFreeRent) {
-		case 0: // if don't have free rent to claim return false
-			System.out.println("No available free rents.");
-			return false;
-		default:// if has free rent, check if is on limit (4 rents)
-			isLessThanFour = checkRentingLimit();
-			if (isLessThanFour) {//
-				rentingList.add(rentingTitle); // no points gains && no payment as it is free rental
-				System.out.println("Retrieval done.");
-			} else {
-				break;// if renting 4, break and return false to the method
+		case 0: // has no free rents to claim
+			return hasFreeRent;
+		case 1:// has free rents to claim
+			
+			int isLessThanFour = checkRentingLimit();
+			
+			if (isLessThanFour == 0) {//has 4 ongoing rents
+				hasFreeRent = 2;
 			}
+			break;
 		}
-		return isLessThanFour;
+		return hasFreeRent;//return 1 or 2
 	}
 
 	/**
 	 * @return true if renting less than 4
 	 */
-	public boolean checkRentingLimit() {
+	public int checkRentingLimit() {
 
-		boolean isLessThanFour;
-		isLessThanFour = rentingList.size() < 4 ? true : rentingLimit();
+		int isLessThanFour;
+		isLessThanFour = onGoingRents < 4 ? 1 : 0;
 
 		return isLessThanFour;
-	}
-
-	public void subtractFreeRental() {
-		this.freeRents -= 1;
 	}
 
 	/**
@@ -155,40 +158,8 @@ public class MembershipCard implements TitleType {
 	/**
 	 * @param points the points to set
 	 */
-	public void setPoints(int points) {
-		this.points = points;
-	}
-
-	/**
-	 * @return the hasFreeRent
-	 */
-	public int getHasFreeRent() {
-		return hasFreeRent;
-	}
-
-	/**
-	 * @param hasFreeRent the hasFreeRent to set
-	 */
-	public void setHasFreeRent(int hasFreeRent) {
-		this.hasFreeRent = hasFreeRent;
-	}
-
-	/**
-	 * @return the freeRents
-	 */
-	public int getFreeRents() {
-		return freeRents;
-	}
-
-	/**
-	 * @param freeRents the freeRents to set
-	 */
-	public void setFreeRents(int freeRents) {
-		this.freeRents = freeRents;
-	}
-
-	public void addLoyaltyPoints(int points) {
-		this.points += points;
+	public void setPoints() {
+		this.points += 10;
 
 		if (this.points >= 100) {
 			updateFreeRents();
@@ -200,6 +171,7 @@ public class MembershipCard implements TitleType {
 	 */
 	private void updateFreeRents() {
 		this.freeRents += 1;
+		this.points -= 100;
 	}
 
 	/**
@@ -231,6 +203,24 @@ public class MembershipCard implements TitleType {
 		}
 	}
 
+	public int payWithPoints() {
+		int flag = 0;
+		
+		if (this.freeRents > 0) {
+			this.freeRents -= 1;
+			flag = 1;
+			
+		}
+		
+		return flag;
+	}
+	
+	public int payByCash(double price) {
+		
+		
+		return 1;
+	}
+
 //	public void setCardPlan(AccessLevel plan) {//here gets the subs classification
 //		AccessLevel values[] = AccessLevel.values();// get instance of all subscription plans
 //		for (AccessLevel value : values) {// go one by one
@@ -259,7 +249,7 @@ public class MembershipCard implements TitleType {
 	public int getTitleTypeDB() {
 		return subscriptionID;
 	}
-	
+
 	/**
 	 * @return the accountID
 	 */
@@ -272,5 +262,20 @@ public class MembershipCard implements TitleType {
 	 */
 	public void setAccountID(int accountID) {
 		this.accountID = accountID;
+	}
+	
+	public int getOngoingRents() {
+		return onGoingRents;
+	}
+	
+	public int getFreeRents() {
+		return freeRents;
+	}
+	
+	/**
+	 * @param onGoingRents the onGoingRents to set
+	 */
+	public void setOngoingRents() {
+		this.onGoingRents += 1;
 	}
 }

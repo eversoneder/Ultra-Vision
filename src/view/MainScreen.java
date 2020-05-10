@@ -281,29 +281,29 @@ public class MainScreen {
 			}
 		});
 // ----------------Search Title Button----------------------------------------------
-		JButton searchCustomerBtn = new JButton();
-		searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\searchtitlebtn.png"));
-		searchCustomerBtn.setBackground(whiteStrip2.getBackground());
-		searchCustomerBtn.setBounds(484, 22, 230, 106);
-		searchCustomerBtn.setBorderPainted(false);
-		searchCustomerBtn.setContentAreaFilled(false);
-		searchCustomerBtn.setFocusPainted(false);
-		whiteStrip2.add(searchCustomerBtn);
-		searchCustomerBtn.addActionListener(new ActionListener() {
+		JButton searchTitleBtn = new JButton();
+		searchTitleBtn.setIcon(new ImageIcon("img\\btn\\searchtitlebtn.png"));
+		searchTitleBtn.setBackground(whiteStrip2.getBackground());
+		searchTitleBtn.setBounds(484, 22, 230, 106);
+		searchTitleBtn.setBorderPainted(false);
+		searchTitleBtn.setContentAreaFilled(false);
+		searchTitleBtn.setFocusPainted(false);
+		whiteStrip2.add(searchTitleBtn);
+		searchTitleBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new SearchTitleScreen();
 			}
 		});
-		searchCustomerBtn.addMouseListener(new MouseAdapter() {
+		searchTitleBtn.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
-				searchCustomerBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\hover\\searchtitlebtnhover.png"));
-				searchCustomerBtn.setBounds(480, 20, 239, 110);
+				searchTitleBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				searchTitleBtn.setIcon(new ImageIcon("img\\btn\\hover\\searchtitlebtnhover.png"));
+				searchTitleBtn.setBounds(480, 20, 239, 110);
 			}
 
 			public void mouseExited(MouseEvent evt) {
-				searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\searchtitlebtn.png"));
-				searchCustomerBtn.setBounds(484, 22, 230, 106);
+				searchTitleBtn.setIcon(new ImageIcon("img\\btn\\searchtitlebtn.png"));
+				searchTitleBtn.setBounds(484, 22, 230, 106);
 			}
 		});
 // ----------------Return Title Button----------------------------------------------

@@ -10,7 +10,6 @@ public class Movie extends Title {
 
 	private int movieID;
 	private String director;
-	private int subscriptionPlan;
 	
 	private ArrayList<Movie> movies;
 
@@ -41,7 +40,7 @@ public class Movie extends Title {
 		super.setYearOfRelease(yor);
 
 		this.setDirector(director);
-		this.setSubscriptionPlan(plan);
+		super.setSubscriptionID(plan);
 	}
 
 	/**
@@ -69,7 +68,7 @@ public class Movie extends Title {
 		
 		this.setMovieID(movieID);
 		this.setDirector(director);
-		this.setSubscriptionPlan(plan);
+		super.setSubscriptionID(plan);
 	}
 
 	/**
@@ -103,15 +102,15 @@ public class Movie extends Title {
 	/**
 	 * @return the subscriptionPlan
 	 */
-	public int getSubscriptionPlan() {
-		return subscriptionPlan;
+	public int getSubscriptionID() {
+		return super.getSubscriptionID();
 	}
 
 	/**
 	 * @param subscriptionPlan the subscriptionplan to set
 	 */
-	public void setSubscriptionPlan(int subscriptionPlan) {
-		this.subscriptionPlan = subscriptionPlan;
+	public void setSubscriptionID(int subscriptionPlan) {
+		super.setSubscriptionID(subscriptionPlan);
 	}
 	
 	/**

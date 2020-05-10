@@ -10,7 +10,6 @@ public class BoxSet extends Title {
 
 	private int boxSetID;
 	private int numOfDiscs;
-	private int subscriptionplan;
 	
 	private ArrayList<BoxSet> movies;
 	
@@ -41,7 +40,7 @@ public class BoxSet extends Title {
 		super.setGenre(genre);
 		
 		this.setNumOfDiscs(numofdiscs);
-		this.setSubscriptionPlan(plan);
+		super.setSubscriptionID(plan);
 	}
 
 	/**
@@ -69,7 +68,7 @@ public class BoxSet extends Title {
 
 		this.setBoxSetID(boxSetID);
 		this.setNumOfDiscs(numofdiscs);
-		this.setSubscriptionPlan(plan);
+		super.setSubscriptionID(plan);
 	}
 	
 	/**
@@ -89,15 +88,15 @@ public class BoxSet extends Title {
 	/**
 	 * @return the subscriptionplan
 	 */
-	public int getSubscriptionplan() {
-		return subscriptionplan;
+	public int getSubscriptionID() {
+		return super.getSubscriptionID();
 	}
 
 	/**
 	 * @param subscriptionplan the subscriptionplan to set
 	 */
-	public void setSubscriptionPlan(int subscriptionplan) {
-		this.subscriptionplan = subscriptionplan;
+	public void setSubscriptionID(int subscriptionplan) {
+		super.setSubscriptionID(subscriptionplan);
 	}
 	
 	/**

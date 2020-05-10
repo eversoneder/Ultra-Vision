@@ -12,10 +12,8 @@ import model.titles.Movie;
 import model.titles.MusicOrLive;
 import model.titles.Title;
 
-final class Rent {
+public final class Rent extends TimeDate{
 
-	private TimeDate timeDate;
-	
 	private Customer customer;
 	private MembershipCard membershipCard;
 
@@ -23,19 +21,34 @@ final class Rent {
 	private double totalPrice;
 	private Date startDate;
 	private Date returnDate;
+	private int cardID;
+	private int titleID;
+	private String startDateString;
+	private String returnDateString;
+
+	/**
+	 * @param titleID the titleID to set
+	 */
+	public void setTitleID(int titleID) {
+		this.titleID = titleID;
+	}
 
 	private ArrayList<Object> rentingTitles = new ArrayList<>();
 	
-	public Rent(Title title, MembershipCard mc) {
-		
-	}
-
 	public Rent(int id) {
 		this.rentID = id;
 	}
 	
+	public Rent (int rentID, String startDate, String returnDate, double totalPrice, int cardID, int titleID) {
+		this.rentID = rentID;
+		this.startDateString = startDate;
+		this.returnDateString = returnDate;
+		this.totalPrice = totalPrice;
+		this.cardID = cardID;
+		this.titleID = titleID;
+	}
+	
 	public Rent() {
-		
 	}
 	
 	/**
@@ -102,13 +115,15 @@ final class Rent {
 		this.membershipCard = membershipCard;
 	}
 
-	public void removeTitleRent(Title delT) {
-		rentingTitles.remove(delT);
-		removeFromTotalPrice(delT);
+	private void removeFromTotalPrice(double price) {
+		this.totalPrice -= price;
 	}
-
-	private void removeFromTotalPrice(Title delTprice) {
-		this.totalPrice -= delTprice.getPrice();
+	
+	/**
+	 * @param price to add to total price
+	 */
+	private void appendTotalPrice(double priceToAppend) {
+		this.totalPrice += priceToAppend;
 	}
 
 	/**
@@ -118,18 +133,7 @@ final class Rent {
 		rentingTitles.add(title);
 		appendTotalPrice(title.getPrice());
 	}
-
-	/**
-	 * @param price to add to total price
-	 */
-	private void appendTotalPrice(double priceToAppend) {
-		this.totalPrice += priceToAppend;
-	}
 	
-	private void addLoyaltyPoints(MembershipCard card) {
-		 card.addLoyaltyPoints(10);
-	}
-
 	/**
 	 * @return the rentID
 	 */
@@ -158,10 +162,12 @@ final class Rent {
 	/**
 	 * @param set now time to start renting
 	 */
-	public void setStartDate() {
-		timeDate = new TimeDate();
-		this.startDate = timeDate.getNowDate();
-		this.returnDate = timeDate.getReturnDateOf(startDate);
+	public Date setStartDate() {
+		
+		this.startDate = super.getNowDate();
+		this.returnDate = super.getReturnDateOf(startDate);
+		
+		return startDate;
 	}
 
 	/**
@@ -169,5 +175,26 @@ final class Rent {
 	 */
 	public Date getReturnDate() {
 		return this.returnDate;
+	}
+	
+	/**
+	 * @return the cardID
+	 */
+	public int getCardID() {
+		return cardID;
+	}
+
+	/**
+	 * @param cardID the cardID to set
+	 */
+	public void setCardID(int cardID) {
+		this.cardID = cardID;
+	}
+
+	/**
+	 * @return the titleID
+	 */
+	public int getTitleID() {
+		return titleID;
 	}
 }

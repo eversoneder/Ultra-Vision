@@ -104,7 +104,7 @@ public class DeleteCustomerScreen implements FocusListener {
 		backPanel.add(closeBtn);
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				deleteCustomerScreen.dispose();
+				deleteCustomerScreen.dispose();
 			}
 		});
 		closeBtn.addMouseListener(new MouseAdapter() {
@@ -159,7 +159,8 @@ public class DeleteCustomerScreen implements FocusListener {
 				backRectangle.add(deleteBtn);
 				deleteBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						deleteCustomerScreen.dispose();
+//						deleteCustomerScreen.dispose();
+						System.out.println("delete customer section in construction.");
 					}
 				});
 				deleteBtn.addMouseListener(new MouseAdapter() {

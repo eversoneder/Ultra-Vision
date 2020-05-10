@@ -13,7 +13,6 @@ public class MusicOrLive extends Title {
 	private String singer;
 	private String band;
 	private int isLiveConcert;
-	private int subscriptionplan;
 
 	private ArrayList<MusicOrLive> mlTitles;
 
@@ -45,7 +44,7 @@ public class MusicOrLive extends Title {
 		// music/live concert attributes
 		this.setSinger(singer);
 		this.setBand(band);
-		this.setSubscriptionPlan(plan);
+		super.setSubscriptionID(plan);
 		
 	}
 
@@ -76,7 +75,7 @@ public class MusicOrLive extends Title {
 		this.setMusicOrLiveID(MusicOrLiveID);
 		this.setSinger(singer);
 		this.setBand(band);
-		this.setSubscriptionPlan(plan);
+		super.setSubscriptionID(plan);
 	}
 
 	/**
@@ -87,17 +86,17 @@ public class MusicOrLive extends Title {
 	}
 	
 	/**
-	 * @return the subscriptionplan
+	 * @return the subscriptionID
 	 */
-	public int getSubscriptionplan() {
-		return subscriptionplan;
+	public int getSubscriptionID() {
+		return super.getSubscriptionID();
 	}
 
 	/**
-	 * @param subscriptionplan the subscriptionplan to set
+	 * @param subscriptionID the subscriptionplan to set
 	 */
-	public void setSubscriptionPlan(int subscriptionplan) {
-		this.subscriptionplan = subscriptionplan;
+	public void setSubscriptionID(int subscriptionID) {
+		super.setSubscriptionID(subscriptionID);
 	}
 
 	/**

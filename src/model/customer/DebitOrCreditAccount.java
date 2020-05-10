@@ -26,7 +26,7 @@ public abstract class DebitOrCreditAccount {
 	/**
 	 * @param quantity to subtract
 	 */
-	public void setTransaction(double quantity) {
+	public void setPayment(double quantity) {
 		this.AccountBalance -= quantity;
 	}
 

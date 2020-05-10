@@ -54,9 +54,9 @@ public class SearchCustomerScreen implements FocusListener {
 		validation();
 	}
 
-	public static void main(String[] args) {
-		new SearchCustomerScreen();
-	}
+//	public static void main(String[] args) {
+//		new SearchCustomerScreen();
+//	}
 
 	public void setAttributes() {
 		searchCustomerScreen.setSize(1000, 650);
@@ -272,7 +272,7 @@ public class SearchCustomerScreen implements FocusListener {
 			tablePopulation[3] = customerList.get(i).getEmail();
 
 			tablePopulation[4] = membershipCardList.get(i).getCardID();
-			tablePopulation[5] = membershipCardList.get(i).getHasFreeRent();
+			tablePopulation[5] = membershipCardList.get(i).getOngoingRents();
 			tablePopulation[6] = membershipCardList.get(i).getFreeRents();
 			tablePopulation[7] = membershipCardList.get(i).getPoints();
 			switch (membershipCardList.get(i).getTitleTypeDB()) {

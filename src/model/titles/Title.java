@@ -20,9 +20,7 @@ public class Title implements DiscFormat, TitleType {
 	private double price;
 	private String genre;
 	private int yearOfRelease;
-
-	private MusicOrLive ml;
-	private Movie vl;
+	private int SubscriptionID;
 
 	/**
 	 * Constructor for New title by user
@@ -76,6 +74,9 @@ public class Title implements DiscFormat, TitleType {
 
 	public Title() {
 //		this.setTitleTypeDB(3);
+	}
+	public Title(int id) {
+		this.id = id;
 	}
 
 	@Override
@@ -166,14 +167,14 @@ public class Title implements DiscFormat, TitleType {
 	}
 
 	/**
-	 * @return the id
+	 * @return the title id
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id the title id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -279,6 +280,20 @@ public class Title implements DiscFormat, TitleType {
 	 */
 	public void setYearOfRelease(int yor) {
 		this.yearOfRelease = yor;
+	}
+	
+	/**
+	 * @return the subscriptionID
+	 */
+	public int getSubscriptionID() {
+		return SubscriptionID;
+	}
+
+	/**
+	 * @param subscriptionID the subscriptionID to set
+	 */
+	public void setSubscriptionID(int subscriptionID) {
+		SubscriptionID = subscriptionID;
 	}
 
 	@Override
