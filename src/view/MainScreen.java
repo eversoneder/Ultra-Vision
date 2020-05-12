@@ -61,7 +61,12 @@ public class MainScreen {
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
+		
+		// The problem is that the Key listener only works when the window is on focus
+		// if another window pops up, the focus is lost and has to be regained.
+		// So I added a window listner -Just integrated into the same keylistener class
 		MainScreen.addKeyListener(keyListener);
+		MainScreen.addWindowListener(keyListener);
 		
 	}
 
