@@ -49,7 +49,7 @@ public class SearchTitleScreen implements FocusListener {
 	private JComboBox<String> filter;
 
 	private JTable table;
-	private DefaultTableModel model;
+	private DefaultTableModel model; //global model
 	private String[] ColumnNames;
 	private JPanel panelToLayTable;
 	
@@ -215,6 +215,10 @@ public class SearchTitleScreen implements FocusListener {
 					populateModel();
 					tableInit();
 					
+					
+					//here i reset all data from lists when populated already the table
+					//yes
+					//maybe i should reset model??
 					titleList = new ArrayList<>();
 					musicOrLiveList = new ArrayList<>();
 					movieList = new ArrayList<>();
@@ -263,7 +267,7 @@ public class SearchTitleScreen implements FocusListener {
 
 	public void setColumnHeaders() {
 
-		model = new DefaultTableModel();	
+		model = new DefaultTableModel();
 		
 		switch (filter.getSelectedItem().toString()) {
 		case "Music":

@@ -937,50 +937,6 @@ public class UltraVisionDB {
 		return boxSetInsert;
 	}
 	
-	public int updateReturn_Card_and_Title_DELRent(int titleID) {
-		
-		String queryRent = "SELECT * FROM rent r "
-				+ "INNER JOIN title t ON r.title_id = t.title_id "
-				+ "INNER JOIN membership_card m ON r.card_id = m.card_id WHERE t.title_id = '"+titleID+"';";
-		//get card by inner join with title id
-		membershipCard = loadCardInfoByID(queryRent);
-		
-		if(membershipCard.getCardID() == 0) {
-			return 0;
-		}
-		//set ongoingRent -1 (returned)
-		membershipCard.addOngoingRents();
-		//upload updated
-		membershipCard = updateCardInfoGetID(membershipCard);
-		
-		Title title = loadRawTitle(queryRent);
-		if(title.getId() == 0) {
-			return 0;
-		}
-		title.setAvailable(1);
-		setTitleAvailableByID(title.getId());
-		
-		//get card by inner join with title id
-		membershipCard = loadCardInfoByID(queryRent);
-				
-		if(membershipCard.getCardID() == 0) {
-			return 0;
-		}
-		//set ongoingRent -1 (returned)
-		membershipCard.addOngoingRents();
-		//upload updated
-		membershipCard = updateCardInfoGetID(membershipCard);
-		
-		
-		
-		//delete Rent Row and set Title available 1
-		
-		
-		Rent rent = loadRentInfo(queryRent);
-		
-		return 1;
-	}
-	
 	public Customer uploadCardRentedTitle(Customer customer) {
 
 		String query = "SELECT * FROM customer c INNER JOIN debit_or_credit_account acc ON c.customer_id = acc.customer_id WHERE "
@@ -1035,15 +991,8 @@ public class UltraVisionDB {
 		String alterTitle = "UPDATE title SET title_available = '0' WHERE title_id = '"+newRent.getTitleID()+"';";
 		executeUpdateRS(alterTitle);
 		
-		String updateCustomer = "UPDATE debit_or_credit_account "
-				+ "SET account_balance = '"+customer.getAccountBalance()+"' "
-				+ "WHERE account_id = '"+customer.getAccountID()+"';";
-		executeUpdateRS(updateCustomer);
-		
 		String updateCard = "UPDATE membership_card "
-				+ "SET card_ongoing_rents = '"+card.getOngoingRents()+"', "
-				+ "card_free_rents = '"+card.getFreeRents()+"', "
-				+ "card_points = '"+card.getPoints()+"' "
+				+ "SET card_ongoing_rents = '"+card.getOngoingRents()+"' "
 				+ "WHERE card_id = '"+card.getCardID()+"';";
 		executeUpdateRS(updateCard);
 		
@@ -1053,22 +1002,67 @@ public class UltraVisionDB {
 				+ "'"+newRent.getRentPrice()+"', "
 				+ "'"+newRent.getCardID()+"', "
 				+ "'"+newRent.getTitleID()+"');";
-		
+		executeUpdateRS(insertRent);
 	}
 	
-	public int returnTitle(MusicOrLive returningTitle){
+	public Rent getRentByTitleID(int titleID){
 		
-		int flag = 0;
+		String queryRent = "SELECT * FROM rent WHERE title_id = "+titleID+";";
 		
-		int performReturn = updateReturn_Card_and_Title_DELRent(returningTitle.getId());
+		ResultSet rs = executeQueryRS(queryRent);
+		Rent rent = null;
 		
-		String queryRent = "SELECT * FROM rent r "
-				+ "INNER JOIN title t ON r.title_id = t.title_id "
-				+ "INNER JOIN membership_card m ON r.card_id = m.card_id WHERE t.title_id = "+returningTitle.getId()+";";
+		try {
+			if(!rs.wasNull()) {
+				rent = new Rent(
+						rs.getInt("rent_id"), 
+						rs.getString("rent_start_date"), 
+						rs.getString("rent_return_date"),
+						rs.getDouble("rent_price"),
+						rs.getInt("card_id"),
+						rs.getInt("title_id")
+						);
+			}
+			closings();
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
+		return rent;
+	}
+	
+	/**
+	 * @param returnRent
+	 * @param card
+	 * @return
+	 */
+	public int returnTitle(Rent returnRent, MembershipCard card){
+		int flag = 1;
 		
+		String alterTitle = "UPDATE title SET title_available = '1' WHERE title_id = '"+returnRent.getTitleID()+"';";
+		flag = executeUpdateRS(alterTitle);
 		
+		if(flag == 0) {
+			return 2;
+		}
 		
+		String updateCard = "UPDATE membership_card "
+				+ "SET card_ongoing_rents = '"+card.getOngoingRents()+"' "
+				+ "WHERE card_id = '"+card.getCardID()+"';";
+		flag = executeUpdateRS(updateCard);
+		
+		if(flag == 0) {
+			return 3;
+		}
+		
+		String insertRent = "DELETE FROM rent WHERE rent_id = '"+returnRent.getRentID()+"';";
+		flag = executeUpdateRS(insertRent);
+		
+		if(flag == 0) {
+			return 4;
+		}
 		return flag;
 	}
 	

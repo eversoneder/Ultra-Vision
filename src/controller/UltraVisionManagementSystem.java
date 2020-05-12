@@ -42,29 +42,16 @@ public class UltraVisionManagementSystem {
 		db.rentTitleByPoints(newRent, customer, card);
 	}
 	
-	public int returnTitle(MusicOrLive returningTitle) {
+	public Rent getRentByTitleID(int titleID) {
 		db = new UltraVisionDB();
-		return db.returnTitle(returningTitle);
+		return db.getRentByTitleID(titleID);
 	}
 	
-	public int returnTitle(Movie returningTitle) {
+	public int returnTitle(Rent returningRent, MembershipCard card) {
 		db = new UltraVisionDB();
-		int flag = 0;
-		
-		
-		
-		return flag;
+		return db.returnTitle(returningRent, card);
 	}
-
-	public int returnTitle(BoxSet returningTitle) {
-		db = new UltraVisionDB();
-		int flag = 0;
 	
-	
-	
-	
-	return flag;
-}
 	/**
 	 * @param customerID to query DB
 	 * @return Customer from ID given
