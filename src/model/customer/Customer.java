@@ -39,14 +39,14 @@ public class Customer extends DebitOrCreditAccount {
 		this.name = name;
 		this.phone = phone;
 		this.email = address;
-		this.setAccountBalance(5000.00);
+		super.setAccountBalance(5000.00);
 	}
 	
 	public Customer() {
 		this.id = 0;
 		
 	}
-
+	
 	/**
 	 * @return the customer_id
 	 */

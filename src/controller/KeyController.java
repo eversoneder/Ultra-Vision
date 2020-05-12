@@ -13,6 +13,7 @@ public class KeyController implements KeyListener{
 	private JButton btn;
 	private JFrame currentScreen;
 	
+
 	public KeyController(JFrame frame) {
 		this.currentScreen = frame;
 	}
@@ -29,6 +30,8 @@ public class KeyController implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
+		System.out.println("q");
+		//81 is letter q
 		if (e.getKeyCode() == 10 || e.getKeyCode() == 13) {
 			btn.doClick();
 		}

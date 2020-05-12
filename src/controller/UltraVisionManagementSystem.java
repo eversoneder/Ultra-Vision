@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.swing.JFrame;
 
+import model.Rent;
 import model.UltraVisionDB;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -26,24 +27,19 @@ public class UltraVisionManagementSystem {
 	public UltraVisionManagementSystem(int instanceWithoutMainScreenBeingStarted) {
 	}
 	
-	public int rentTitle(int TitleID, MembershipCard card) {
+//	public int rentTitle(int TitleID, MembershipCard card) {
+//		db = new UltraVisionDB();
+//		return db.rentTitle(TitleID, card);
+//	}
+	
+	public void rentTitleByCash(Rent newRent, Customer customer, MembershipCard card) {
 		db = new UltraVisionDB();
-		return db.rentTitle(TitleID, card);
+		db.rentTitleByCash(newRent, customer, card);
 	}
 	
-	public int rentTitle(MusicOrLive musicOrLive, MembershipCard card) {
+	public void rentTitleByPoints(Rent newRent, Customer customer, MembershipCard card) {
 		db = new UltraVisionDB();
-		return db.rentTitle(musicOrLive, card);
-	}
-	
-	public int rentTitle(Movie movie, MembershipCard card) {
-		db = new UltraVisionDB();
-		return db.rentTitle(movie, card);
-	}
-	
-	public int rentTitle(BoxSet boxSet, MembershipCard card) {
-		db = new UltraVisionDB();
-		return db.rentTitle(boxSet, card);
+		db.rentTitleByPoints(newRent, customer, card);
 	}
 	
 	public int returnTitle(MusicOrLive returningTitle) {
@@ -54,7 +50,6 @@ public class UltraVisionManagementSystem {
 	public int returnTitle(Movie returningTitle) {
 		db = new UltraVisionDB();
 		int flag = 0;
-		
 		
 		
 		

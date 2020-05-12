@@ -20,37 +20,25 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.UltraVisionManagementSystem;
-import model.TimeDate;
 import model.customer.Customer;
 import model.customer.MembershipCard;
-import model.titles.BoxSet;
-import model.titles.Movie;
-import model.titles.MusicOrLive;
 import model.titles.Title;
 import view.customer.CustomerAuthenticationScreen;
 import view.customer.SearchCustomerScreen;
 import view.title.SearchTitleScreen;
-import model.Rent;
 
 public class RentScreen implements FocusListener {
 
 	private JFrame rentScreen = new JFrame();
-	private UltraVisionManagementSystem managementSystem;
-
-	private MembershipCard card = new MembershipCard();
-	private Customer customer = new Customer(); 
-	private ArrayList<Object> title;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField customerIDtf;
 	private JTextField titleIDtf;
 
-	private ArrayList<Object> UnknownTitleType;
-	private MusicOrLive musicOrLive = new MusicOrLive();
-	private Movie movie = new Movie();
-	private BoxSet boxSet = new BoxSet();
+	private MembershipCard card = new MembershipCard();
+	private Customer customer = new Customer();
 
-	private Rent rent = new Rent();
-	
+	private Title title;
 
 //	public static void main(String[] args) {
 //		new RentScreen();
@@ -61,12 +49,10 @@ public class RentScreen implements FocusListener {
 		setComponents();
 		validation();
 	}
-	
+
 //	public RentScreen(Customer customer, MembershipCard card) {
 //		this.customer = customer;
 //		this.card = card;
-//		 
-//		
 //	}
 
 	public void setAttributes() {
@@ -74,7 +60,7 @@ public class RentScreen implements FocusListener {
 		rentScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		rentScreen.setVisible(true);
 		rentScreen.setResizable(false);
-		rentScreen.setTitle("Subscription Plan");
+		rentScreen.setTitle("Rental Issue");
 		rentScreen.setLocationRelativeTo(null);
 	}
 
@@ -84,6 +70,8 @@ public class RentScreen implements FocusListener {
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
 		rentScreen.add(backPanel);
+		
+		closeBtn(backPanel);
 
 		JLabel issueRentalLabel = new JLabel("Issue Title Rental");
 		issueRentalLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -109,6 +97,34 @@ public class RentScreen implements FocusListener {
 
 		textFields(backRectangle);
 		buttons(backRectangle);
+	}
+	
+	public void closeBtn(JPanel backPanel) {
+
+		JButton closeBtn = new JButton();
+		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+		closeBtn.setBounds(740, 14, 30, 30);
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setFocusPainted(false);
+		backPanel.add(closeBtn);
+		closeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rentScreen.dispose();
+			}
+		});
+		closeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnsmallhover.png"));
+				closeBtn.setBounds(737, 10, 36, 36);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+				closeBtn.setBounds(740, 14, 30, 30);
+			}
+		});
 	}
 
 	public void textFields(JPanel backRectangle) {
@@ -225,42 +241,100 @@ public class RentScreen implements FocusListener {
 			public void actionPerformed(ActionEvent e) {
 
 				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
-				managementSystem = new UltraVisionManagementSystem(0);
 
 				if (!customerIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "Enter an existing customer ID please.",
 							"Customer ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
+					return;
 				}
 
 				if (!titleIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "Enter an existing Title ID please.", "Title ID Error.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
 				}
+
 				// -----------GET CUSTOMER INFO TO DO VALIDATIONS----------
 				customer = new Customer();
-				customer = managementSystem.getCustomerInfoByID(Integer.parseInt(customerIDtf.getText()));
-				card = new MembershipCard();
-				card = managementSystem.getCardInfoByID(customer.getCardID());
-
-				if (customer.getCustomer_id() == 0 || card.getCardID() == 0) {
+				try {
+					customer = managementSystem.getCustomerInfoByID(Integer.parseInt(customerIDtf.getText()));
+				} catch (Exception exx) {
+					exx.getMessage();
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null,
 							"There's no customer ID " + customerIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-				} else {
-
-					// -----------GET TITLE INFO TO DO VALIDATIONS----------
-//							UnknownTitleType = new ArrayList<>();
-					UnknownTitleType = managementSystem.getTitleInfoByID(Integer.parseInt(titleIDtf.getText()));
-
-//							unwrapTitles(UnknownTitleType);
-
-					new CustomerAuthenticationScreen(customer, card, UnknownTitleType);
+					return;
 				}
 
+				// -----------GET CARD INFO TO DO VALIDATIONS----------
+				card = new MembershipCard();
+				try {
+					card = managementSystem.getCardInfoByID(customer.getCardID());
+				} catch (Exception ex) {
+					ex.getMessage();
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"There's no customer ID " + customerIDtf.getText() + " in the System.", "Non-Existent ID.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+				}
+
+				// -----------GET TITLE INFO TO DO VALIDATIONS----------
+				ArrayList<Object> UnknownTitleType;
+				try {
+					UnknownTitleType = managementSystem.getTitleInfoByID(Integer.parseInt(titleIDtf.getText()));
+
+					if (UnknownTitleType.isEmpty()) {
+						Object[] btns = { "Ok" };
+						int i = JOptionPane.showOptionDialog(null,
+								"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
+								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+						return;
+					}
+				} catch (Exception exc) {
+					exc.getMessage();
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+
+				}
+
+				unwrapTitle(UnknownTitleType);
+
+				if (card.getTitleTypeDB() == title.getSubscriptionID() || card.getTitleTypeDB() == 4) {
+
+					// -------CHECK RENT LIMIT---------
+					int canRentMore = card.checkRentingLimit();
+
+					switch (canRentMore) {
+					
+					case 0:// has 4 ongoing rents
+						Object[] ongoing = { "Ok" };
+						int x = JOptionPane.showOptionDialog(null, "Can't proceed, customer has 4 ongoing rents \nregistered in the Membership Card.",
+								"Maximum ongoing rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+								logoIcon, ongoing, ongoing[0]);
+						return;
+						
+					case 1:// can rent more titles
+						new CustomerAuthenticationScreen(customer, card, UnknownTitleType);
+						break;
+					}
+
+				} else {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"Customer is not allowed to rent " + title.getTitleTypeGUI()
+									+ " \nas the Customer's subscription is " + card.getSubscriptionPlan() + ".",
+							"Title Access Level Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+							btns, btns[0]);
+					return;
+				}
 			}
 		});
 		confirmBtn.addMouseListener(new MouseAdapter() {
@@ -278,20 +352,20 @@ public class RentScreen implements FocusListener {
 	}
 
 	/**
-	 * @param titles ArrayList of titles to unwrap
+	 * @param unknowntitletype the ArrayList of object title types
 	 */
-	public void unwrapTitles(ArrayList<Object> titles) {
+	public void unwrapTitle(ArrayList<Object> unknowntitletype) {
 
-		for (Object obj : titles) {
-			switch (obj.getClass().getName()) {
+		for (Object obj : unknowntitletype) {
+			switch (obj.getClass().getName()) {// or filter.getName()
 			case "model.titles.MusicOrLive":
-				musicOrLive = (MusicOrLive) obj;
+				title = (Title) obj;
 				break;
 			case "model.titles.Movie":
-				movie = (Movie) obj;
+				title = (Title) obj;
 				break;
 			case "model.titles.BoxSet":
-				boxSet = (BoxSet) obj;
+				title = (Title) obj;
 				break;
 			}
 		}

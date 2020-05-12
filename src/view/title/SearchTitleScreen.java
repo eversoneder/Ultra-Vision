@@ -59,9 +59,9 @@ public class SearchTitleScreen implements FocusListener {
 		validation();
 	}
 	
-	public static void main (String[]args) {
-		new SearchTitleScreen();
-	}
+//	public static void main (String[]args) {
+//		new SearchTitleScreen();
+//	}
 
 	public void setAttributes() {
 		searchTitleScreen.setSize(1000, 650);
@@ -253,30 +253,12 @@ public class SearchTitleScreen implements FocusListener {
 		table.setFont(new Font("Tahoma", Font.BOLD, 12));
 		table.setEnabled(false);
 		
-		JScrollPane scrollpane = new JScrollPane();
+		JScrollPane scrollpane = new JScrollPane(table);
 		scrollpane.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
-		scrollpane.getViewport().add(table);
 		table.setPreferredScrollableViewportSize(new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight())); 
 		table.setFillsViewportHeight(true); 
 		
 		panelToLayTable.add(scrollpane);
-		
-//		table = new JTable();
-//
-//		table.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
-//		table.setRowHeight(30);
-//		table.setFont(new Font("Tahoma", Font.BOLD, 16));
-//		table.setGridColor(new Color(0, 80, 110));
-//		table.setEnabled(false);// non-editable cells
-//
-//		JScrollPane scrollpane = new JScrollPane();
-//		table.add(scrollpane);
-//
-//		table.setModel(model);
-//		panelToLayTable.add(table);
-//
-//		table.repaint();
-//		table.revalidate();
 	}
 
 	public void setColumnHeaders() {

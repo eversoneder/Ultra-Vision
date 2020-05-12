@@ -220,24 +220,13 @@ public class SearchCustomerScreen implements FocusListener {
 		table.setGridColor(new Color(0, 80, 110));
 		table.setFont(new Font("Tahoma", Font.BOLD, 12));
 		table.setEnabled(false);
-		JScrollPane scrollpane = new JScrollPane();
+		
+		JScrollPane scrollpane = new JScrollPane(table);
 		scrollpane.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
-		scrollpane.getViewport().add(table);
-		table.setPreferredScrollableViewportSize(
-				new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight()));
+		table.setPreferredScrollableViewportSize(new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight()));
 		table.setFillsViewportHeight(true);
 
 		panelToLayTable.add(scrollpane);
-
-//		table = new JTable(model);
-//		table.setRowHeight(30);
-//		table.setFont(new Font("Tahoma", Font.BOLD, 12));
-//		table.setGridColor(new Color(0, 80, 110));
-//
-//		JScrollPane scrollpane = new JScrollPane(table);
-//		scrollpane.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
-//
-//		panelToLayTable.add(scrollpane);
 	}
 
 	public void unwrapTitles(ArrayList<Object> customerInfo) {

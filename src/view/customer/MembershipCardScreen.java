@@ -262,13 +262,13 @@ public class MembershipCardScreen implements FocusListener {
 			}
 		}
 // ------------------membership card TextField-------------------------
-		if (memberCardPasstf.getText().matches("create a password for your membership card")) {
+		if (String.valueOf(memberCardPasstf.getPassword()).matches("create a password for your membership card")) {
 			memberCardPasstf.setText("");
 			memberCardPasstf.setEchoChar((char) '*');
 			memberCardPasstf.setForeground(new Color(0, 80, 110));
 		}
 		if (!memberCardPasstf.hasFocus()) {
-			if (memberCardPasstf.getText().matches("")) {
+			if (String.valueOf(memberCardPasstf.getPassword()).matches("")) {
 				memberCardPasstf.setText("create a password for your membership card");
 				memberCardPasstf.setEchoChar((char) 0);
 				memberCardPasstf.setForeground(new Color(180, 180, 180));

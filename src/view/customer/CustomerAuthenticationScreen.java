@@ -18,39 +18,41 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 import model.Payment;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 import model.titles.Title;
-import view.RentScreen;
 
 public class CustomerAuthenticationScreen implements FocusListener {
 
-	private JFrame authenticationScreen = new JFrame();
-	private MembershipCard card = new MembershipCard();
-	private Customer customer = new Customer();
-	private String flag;
+	ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 	
-	private ArrayList<Object> unknowntitletype;
+	private JFrame authenticationScreen = new JFrame();
+
+	private MembershipCard card;
+	private Customer customer;
+
+	private ArrayList<Object> UnknownTitleType;
+	private Title title = new Title();
 
 	private JPasswordField passwordtf;
 
-	public CustomerAuthenticationScreen(Customer customer, MembershipCard card, ArrayList<Object> unknowntitletype) {
+	public CustomerAuthenticationScreen(Customer customer, MembershipCard card, ArrayList<Object> UnknownTitleType) {
 		this.customer = customer;
 		this.card = card;
-		this.unknowntitletype = unknowntitletype;
-		flag = "";
+		this.UnknownTitleType = UnknownTitleType;
+
+		unwrapTitle();
 		setAttributes();
 		setComponents();
 		validation();
 	}
-	
+
 	public CustomerAuthenticationScreen(int a) {
-		
+
 	}
-	
+
 	public void setComponents() {
 
 		JPanel backPanel = new JPanel();
@@ -68,12 +70,12 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		customerIcon.setIcon(new ImageIcon("img\\icons\\customercardiconsmall2.png"));
 		customerIcon.setBounds(380, 5, 210, 110);
 		backPanel.add(customerIcon);
-		
+
 		JLabel customerScreenIcon = new JLabel();
 		customerScreenIcon.setIcon(new ImageIcon("img\\icons\\customerscreenbig2.png"));
 		customerScreenIcon.setBounds(40, 40, 250, 250);
 		backPanel.add(customerScreenIcon);
-		
+
 		passwordtf = new JPasswordField();
 		passwordtf.setText("enter password");
 		passwordtf.setForeground(new Color(180, 180, 180));
@@ -82,14 +84,14 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		passwordtf.setBorder(null);
 		passwordtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		backPanel.add(passwordtf);
-		
+
 		buttons(backPanel);
 
 		JLabel background = new JLabel();
 		background.setIcon(new ImageIcon("img\\authenticationbackground.jpg"));
 		background.setBounds(0, 0, backPanel.getWidth(), backPanel.getHeight());
 		backPanel.add(background);
-		
+
 	}
 
 	public void setAttributes() {
@@ -97,7 +99,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		authenticationScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		authenticationScreen.setVisible(true);
 		authenticationScreen.setResizable(false);
-		authenticationScreen.setTitle("Subscription Plan");
+		authenticationScreen.setTitle("Customer Authentication");
 		authenticationScreen.setLocationRelativeTo(null);
 	}
 
@@ -107,18 +109,70 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	}
 
 	/**
-	 * 
-	 * @return 1 if correct pass, 0 if wrong
+	 * @param unknowntitletype ArrayList of titles to unwrap
 	 */
-	public String isCorrectPassword() {
-		return flag;
+	public void unwrapTitle() {
+
+		for (Object obj : UnknownTitleType) {
+			switch (obj.getClass().getName()) {// or filter.getName()
+			case "model.titles.MusicOrLive":
+				title = (Title) obj;
+				break;
+			case "model.titles.Movie":
+				title = (Title) obj;
+				break;
+			case "model.titles.BoxSet":
+				title = (Title) obj;
+				break;
+			}
+		}
 	}
 
-//	public static void main(String[] args) {
-//		MembershipCard a = new MembershipCard();
-//		a.setPassword(8);
-//		new CustomerAuthenticationScreen(a);
-//	}
+	public void promptPayment() {
+
+
+		Object[] payment = { "Pay by Points", "Cancel Transaction", "Pay by Cash" };
+		int i = JOptionPane.showOptionDialog(null,
+				"Choose payment form for \n" + title.getName() + ". Price: " + title.getPrice() + " €.",
+				"Payment Form.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, payment, payment[2]);
+
+		if (i == 2) {// pay by cash
+			// final check up & finally payment
+			checkBalanceAndPay();
+		}
+		if (i == 0) {// pay by points
+
+			Payment newPayment = new Payment(customer, card, title);
+			newPayment.payByPoints();
+
+		}
+
+		if (i == 1 || i == -1) {// cancel or closed
+			authenticationScreen.dispose();
+		}
+
+	}
+
+	public void checkBalanceAndPay() {
+
+
+		// -------CHECK IF HAS MONEY---------
+		if (!customer.checkFunds(title.getPrice())) {
+			Object[] noMoneyBtn = { "Ok" };
+			int j = JOptionPane.showOptionDialog(null,
+					"Customer has no enough funds to rent: \n" + title.getName() + ". Price: " + title.getPrice()
+							+ " €.",
+					"Insuficient Funds.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, noMoneyBtn,
+					noMoneyBtn[0]);
+			return;
+		} else {
+
+			Payment newPayment = new Payment(customer, card, title);
+			newPayment.payByCash();
+
+		}
+
+	}
 
 	public void buttons(JPanel backPanel) {
 
@@ -159,26 +213,23 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		backPanel.add(confirmBtn);
 		confirmBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				String cardPass = Integer.toString(card.getPassword());
+				String enteredPass = String.valueOf(passwordtf.getPassword());
 				
-				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
-				
-				String enteredPass = Integer.toString(card.getPassword());
-				
-				if(enteredPass.equals(passwordtf.getText())) {//validate card pass
+				if (cardPass.equals(enteredPass)) {// validate card pass
+
+					promptPayment();
 					authenticationScreen.dispose();
-					new Payment(customer, card, unknowntitletype);
+
 				} else {
-					flag = "0";
-					
 					Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null,
-								"Sorry " + customer.getCustomer_name() + ", invalid password, try again.",
-								"Wrong Password.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
-								btns, btns[0]);
+					int i = JOptionPane.showOptionDialog(null,
+							"Sorry " + customer.getCustomer_name() + ", invalid password, try again.",
+							"Wrong Password.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
 					return;
 				}
-					
-						
 			}
 		});
 		confirmBtn.addMouseListener(new MouseAdapter() {
@@ -198,20 +249,20 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
 //------------------Password TextField-------------------------
-		if (passwordtf.getText().matches("enter password")) {
+		if (String.valueOf(passwordtf.getPassword()).matches("enter password")) {
 			passwordtf.setText("");
 			passwordtf.setEchoChar((char) '*');
 			passwordtf.setForeground(new Color(0, 80, 110));
 		}
 		if (!passwordtf.hasFocus()) {
-			if (passwordtf.getText().matches("")) {
+			if (String.valueOf(passwordtf.getPassword()).matches("")) {
 				passwordtf.setText("enter password");
 				passwordtf.setEchoChar((char) 0);
 				passwordtf.setForeground(new Color(180, 180, 180));
 			}
 		}
 	}
-	
+
 	@Override
 	public void focusLost(FocusEvent e) {
 		// TODO Auto-generated method stub

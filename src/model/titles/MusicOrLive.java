@@ -41,15 +41,14 @@ public class MusicOrLive extends Title {
 		super.setPrice(price);
 		super.setGenre(genre);
 		super.setYearOfRelease(yor);
-		// music/live concert attributes
+		super.setSubscriptionID(plan);
+
 		this.setSinger(singer);
 		this.setBand(band);
-		super.setSubscriptionID(plan);
-		
 	}
 
 	/**
-	 * Load titles from database
+	 * download titles from database
 	 * 
 	 * @param titleID
 	 * @param name
@@ -71,11 +70,12 @@ public class MusicOrLive extends Title {
 		super.setPrice(price);
 		super.setGenre(genre);
 		super.setYearOfRelease(yor);
+		super.setSubscriptionID(plan);
+		
 		// music/live concert attributes
 		this.setMusicOrLiveID(MusicOrLiveID);
 		this.setSinger(singer);
 		this.setBand(band);
-		super.setSubscriptionID(plan);
 	}
 
 	/**
@@ -85,20 +85,6 @@ public class MusicOrLive extends Title {
 		return mlTitles;
 	}
 	
-	/**
-	 * @return the subscriptionID
-	 */
-	public int getSubscriptionID() {
-		return super.getSubscriptionID();
-	}
-
-	/**
-	 * @param subscriptionID the subscriptionplan to set
-	 */
-	public void setSubscriptionID(int subscriptionID) {
-		super.setSubscriptionID(subscriptionID);
-	}
-
 	/**
 	 * @param mlTitles the mlTitles to set
 	 */

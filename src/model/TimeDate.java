@@ -1,43 +1,38 @@
 package model;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class TimeDate {
 
-	/**
-	 * @hourFormat the format of hours, mins, day, month and year to show (hh:mm a dd/MM/yyyy)
-	 */
-	private SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm a dd/MM/yyyy");
-	
-	/**
-	 * @currentDate now date
-	 */
-	private Date currentDate;
+	private Date startDate;
+	private Date returnDate;
 
-	
+	/**
+	 * @hourFormat the format of hours, mins, day, month and year to show (hh:mm
+	 *             dd/MM/yyyy)
+	 */
+	private SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm dd/MM/yyyy");
+
 	public TimeDate() {
-		
-	}
-	
-	/**
-	 * @return String of now date
-	 */
-	public Date getNowDate() {
-		Calendar c = Calendar.getInstance();
-		currentDate = c.getTime();
-		hourFormat.format(currentDate).toString();
-		
-		return currentDate;
-	}
-	
-	public Date getStartedDate() {
-		return currentDate;
+
 	}
 
 	/**
-	 * @return String of three days later from now time
+	 * sets now date for rent
+	 */
+	public void setNowDate() {
+		Calendar c = Calendar.getInstance();
+		this.startDate = c.getTime();
+		hourFormat.format(startDate).toString();
+		
+		this.returnDate = getReturnDateOf(startDate);
+	}
+
+	/**
+	 * @return String of three days later from date given
 	 */
 	public Date getReturnDateOf(Date date) {
 		Calendar c = Calendar.getInstance();
@@ -46,5 +41,37 @@ public class TimeDate {
 
 		hourFormat.format(date = c.getTime());
 		return date;
+	}
+
+	/**
+	 * @param startDate to set (from DB)
+	 * @throws ParseException
+	 */
+	public void setStartDate(String startDate) throws ParseException {
+		Date date = hourFormat.parse(startDate);
+		this.startDate = date;
+	}
+
+	/**
+	 * @return start date String
+	 */
+	public String getStartDate() {
+		return startDate.toString();
+	}
+	
+	/**
+	 * @param returnDate to set (from DB)
+	 * @throws ParseException
+	 */
+	public void setReturnDate(String returnDate) throws ParseException {
+		Date date = hourFormat.parse(returnDate);
+		this.returnDate = date;
+	}
+
+	/**
+	 * @return return date String
+	 */
+	public String getReturnDate() {
+		return returnDate.toString();
 	}
 }

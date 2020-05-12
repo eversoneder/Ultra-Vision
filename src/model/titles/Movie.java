@@ -14,7 +14,7 @@ public class Movie extends Title {
 	private ArrayList<Movie> movies;
 
 	public Movie() {
-
+		super.setId(0);
 	}
 
 	/**
@@ -38,13 +38,13 @@ public class Movie extends Title {
 		super.setPrice(price);
 		super.setGenre(genre);
 		super.setYearOfRelease(yor);
-
-		this.setDirector(director);
 		super.setSubscriptionID(plan);
+		
+		this.setDirector(director);
 	}
 
 	/**
-	 * Load titles from database
+	 * download titles from database
 	 * 
 	 * @param titleID        the id to set
 	 * @param name      the name to set
@@ -65,10 +65,10 @@ public class Movie extends Title {
 		super.setPrice(price);
 		super.setGenre(genre);
 		super.setYearOfRelease(yor);
+		super.setSubscriptionID(plan);
 		
 		this.setMovieID(movieID);
 		this.setDirector(director);
-		super.setSubscriptionID(plan);
 	}
 
 	/**
@@ -97,20 +97,6 @@ public class Movie extends Title {
 	 */
 	public void setDirector(String director) {
 		this.director = director;
-	}
-	
-	/**
-	 * @return the subscriptionPlan
-	 */
-	public int getSubscriptionID() {
-		return super.getSubscriptionID();
-	}
-
-	/**
-	 * @param subscriptionPlan the subscriptionplan to set
-	 */
-	public void setSubscriptionID(int subscriptionPlan) {
-		super.setSubscriptionID(subscriptionPlan);
 	}
 	
 	/**

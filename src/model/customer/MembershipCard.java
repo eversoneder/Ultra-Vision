@@ -22,6 +22,7 @@ public class MembershipCard implements TitleType {
 	private AccessLevel subscriptionEnum;
 	private int subscriptionID;
 	private int onGoingRents;
+	private String SubscriptionPlan;
 
 	private int accountID;
 
@@ -55,42 +56,6 @@ public class MembershipCard implements TitleType {
 		this.cardID = 0;
 	}
 	
-	public int rentTitle(MusicOrLive rentingTitle){
-		return managementSystem.rentTitle(rentingTitle, this);
-	}
-	
-	public int rentTitle(Movie rentingTitle){
-		return managementSystem.rentTitle(rentingTitle, this);
-	}
-	
-	public int rentTitle(BoxSet rentingTitle){
-		return managementSystem.rentTitle(rentingTitle, this);
-	}
-
-	/**
-	 * @param returningTitle the title to return
-	 */
-	public int returnRent(MusicOrLive returningTitle) {
-		returningTitle.setAvailable(1);
-		return managementSystem.returnTitle(returningTitle);
-	}
-	
-	/**
-	 * @param returningTitle the title to return
-	 */
-	public int returnRent(Movie returningTitle) {
-		returningTitle.setAvailable(1);
-		return managementSystem.returnTitle(returningTitle);
-	}
-	
-	/**
-	 * @param returningTitle the title to return
-	 */
-	public int returnRent(BoxSet returningTitle) {
-		returningTitle.setAvailable(1);
-		return managementSystem.returnTitle(returningTitle);
-	}
-
 	/**
 	 * @return the id
 	 */
@@ -106,35 +71,11 @@ public class MembershipCard implements TitleType {
 	}
 
 	/**
-	 * @return number of available free rents
+	 * @param rentintTitle title to rent for free
+	 * @return 0 if has no free rents / 1 if has free rents
 	 */
 	public int hasFreeRents() {
-		int hasFreeRents = 0;
-		hasFreeRents = freeRents > 0 ? 1 : 0;
-		return hasFreeRents;
-	}
-
-	/**
-	 * @param rentintTitle title to rent for free
-	 * @return 0 if has no free rents / 1 if has free rents & < 4 ongoing rents / 2 if > 4 ongoing rents. 
-	 */
-	public int hasFreeRentsAndIsLessThan4Check() {
-
-		int hasFreeRent = hasFreeRents(); // check if customer has freeRent to claim
-
-		switch (hasFreeRent) {
-		case 0: // has no free rents to claim
-			return hasFreeRent;
-		case 1:// has free rents to claim
-			
-			int isLessThanFour = checkRentingLimit();
-			
-			if (isLessThanFour == 0) {//has 4 ongoing rents
-				hasFreeRent = 2;
-			}
-			break;
-		}
-		return hasFreeRent;//return 1 or 2
+		return freeRents;
 	}
 
 	/**
@@ -142,10 +83,10 @@ public class MembershipCard implements TitleType {
 	 */
 	public int checkRentingLimit() {
 
-		int isLessThanFour;
-		isLessThanFour = onGoingRents < 4 ? 1 : 0;
+		int canRentMore;
+		canRentMore = onGoingRents < 4 ? 1 : 0;
 
-		return isLessThanFour;
+		return canRentMore;
 	}
 
 	/**
@@ -164,6 +105,8 @@ public class MembershipCard implements TitleType {
 		if (this.points >= 100) {
 			updateFreeRents();
 		}
+		
+		addOngoingRents();
 	}
 
 	/**
@@ -209,29 +152,11 @@ public class MembershipCard implements TitleType {
 		if (this.freeRents > 0) {
 			this.freeRents -= 1;
 			flag = 1;
-			
 		}
 		
 		return flag;
 	}
 	
-	public int payByCash(double price) {
-		
-		
-		return 1;
-	}
-
-//	public void setCardPlan(AccessLevel plan) {//here gets the subs classification
-//		AccessLevel values[] = AccessLevel.values();// get instance of all subscription plans
-//		for (AccessLevel value : values) {// go one by one
-//
-//			if (value.name().equals(plan.name())) {
-//				this.subscriptionEnum = plan;
-//				break;
-//			}
-//		}
-//	}
-
 	@Override
 	public void setTitleTypeDB(int titleType) {
 		this.subscriptionID = titleType;
@@ -272,10 +197,24 @@ public class MembershipCard implements TitleType {
 		return freeRents;
 	}
 	
-	/**
-	 * @param onGoingRents the onGoingRents to set
-	 */
-	public void setOngoingRents() {
+	public void addOngoingRents() {
 		this.onGoingRents += 1;
+	}
+	
+	public void removeOngoingRents() {
+		this.onGoingRents -= 1;
+	}
+	/**
+	 * @return the subscriptionPlan
+	 */
+	public String getSubscriptionPlan() {
+		return SubscriptionPlan;
+	}
+
+	/**
+	 * @param subscriptionPlan the subscriptionPlan to set
+	 */
+	public void setSubscriptionPlan(String subscriptionPlan) {
+		SubscriptionPlan = subscriptionPlan;
 	}
 }

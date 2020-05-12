@@ -1,5 +1,6 @@
 package model;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -14,124 +15,69 @@ import model.titles.Title;
 
 public final class Rent extends TimeDate{
 
-	private Customer customer;
-	private MembershipCard membershipCard;
-
 	private int rentID;
-	private double totalPrice;
-	private Date startDate;
-	private Date returnDate;
+	private double rentPrice;
 	private int cardID;
 	private int titleID;
-	private String startDateString;
-	private String returnDateString;
 
-	/**
-	 * @param titleID the titleID to set
-	 */
-	public void setTitleID(int titleID) {
-		this.titleID = titleID;
-	}
-
-	private ArrayList<Object> rentingTitles = new ArrayList<>();
-	
 	public Rent(int id) {
 		this.rentID = id;
 	}
 	
-	public Rent (int rentID, String startDate, String returnDate, double totalPrice, int cardID, int titleID) {
+	/**
+	 * download rent from DB
+	 * 
+	 * @param rentID to set
+	 * @param startDate to set
+	 * @param returnDate to set
+	 * @param totalPrice to set
+	 * @param cardID to set
+	 * @param titleID to set
+	 * @throws ParseException 
+	 */
+	public Rent (int rentID, String startDate, String returnDate, double rentPrice, int cardID, int titleID) throws ParseException {
 		this.rentID = rentID;
-		this.startDateString = startDate;
-		this.returnDateString = returnDate;
-		this.totalPrice = totalPrice;
+		super.setStartDate(startDate);
+		super.setReturnDate(returnDate);
+		this.rentPrice = rentPrice;
+		this.cardID = cardID;
+		this.titleID = titleID;
+	}
+	
+	/**
+	 * adding new Rent by cash
+	 *  
+	 * @param startDate to set
+	 * @param returnDate to set
+	 * @param rentPrice to set
+	 * @param cardID to set
+	 * @param titleID to set
+	 * @throws ParseException
+	 */
+	public Rent (double rentPrice, int cardID, int titleID) throws ParseException {//pay by cash
+		super.setNowDate();
+		this.rentPrice = rentPrice;
+		this.cardID = cardID;
+		this.titleID = titleID;
+	}
+	
+	/**
+	 * adding new Rent by points
+	 *  
+	 * @param startDate to set
+	 * @param returnDate to set
+	 * @param rentPrice to set
+	 * @param cardID to set
+	 * @param titleID to set
+	 * @throws ParseException
+	 */
+	public Rent (int cardID, int titleID) throws ParseException {//pay by points
+		super.setNowDate();
 		this.cardID = cardID;
 		this.titleID = titleID;
 	}
 	
 	public Rent() {
-	}
-	
-	/**
-	 * @param title
-	 * @return
-	 */
-	public void setNewRent(ArrayList<Object> titles) {
-
-		MusicOrLive mu = new MusicOrLive();
-		Movie mo = new Movie();
-		BoxSet bs = new BoxSet();
-		
-		totalPrice = 0;
-		
-		for(Object obj : titles) {
-			
-			switch(obj.getClass().getName()) {
-			case "model.titles.MusicOrLive":
-				mu = (MusicOrLive) obj;
-				totalPrice += mu.getPrice();
-				break;
-			case "model.titles.Movie":
-				mo = (Movie) obj;
-				totalPrice += mo.getPrice();
-				break;
-			case "model.titles.BoxSet":
-				bs = (BoxSet) obj;
-				totalPrice += bs.getPrice();
-				break;
-			}
-			System.out.println(totalPrice);
-		}
-		
-//		boolean hasMoney = checkFunds(title.getPrice());
-
-//		if (hasMoney) {
-//			hasMoney = rentingList.size() < 4 ? makePayment(title.getPrice(), title) : rentingLimit();
-//			return hasMoney;
-//		} else {
-//			System.out.println("No sufficient money in account.");
-//		}
-//		return false;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-	/**
-	 * @return the membershipCard
-	 */
-	public MembershipCard getMembershipCard() {
-		return membershipCard;
-	}
-
-	/**
-	 * @param membershipCard the membershipCard to set
-	 */
-	public void setMembershipCard(MembershipCard membershipCard) {
-		this.membershipCard = membershipCard;
-	}
-
-	private void removeFromTotalPrice(double price) {
-		this.totalPrice -= price;
-	}
-	
-	/**
-	 * @param price to add to total price
-	 */
-	private void appendTotalPrice(double priceToAppend) {
-		this.totalPrice += priceToAppend;
-	}
-
-	/**
-	 * @param title to add in renting list
-	 */
-	public void addNewTitleRent(Title title) {
-		rentingTitles.add(title);
-		appendTotalPrice(title.getPrice());
 	}
 	
 	/**
@@ -142,41 +88,26 @@ public final class Rent extends TimeDate{
 	}
 	
 	/**
-	 * @param rentID to set int
+	 * @param rentID to set
 	 */
 	public void setRentID(int rentID) {
 		this.rentID = rentID;
 	}
-
-	public double getTotalPrice() {
-		return this.totalPrice;
-	}
-
+	
 	/**
-	 * @return the date of rent start
+	 * @param rentPrice to set
 	 */
-	public Date getStartDate() {
-		return this.startDate;
-	}
-
-	/**
-	 * @param set now time to start renting
-	 */
-	public Date setStartDate() {
-		
-		this.startDate = super.getNowDate();
-		this.returnDate = super.getReturnDateOf(startDate);
-		
-		return startDate;
-	}
-
-	/**
-	 * @return date of title return
-	 */
-	public Date getReturnDate() {
-		return this.returnDate;
+	public void setRentPrice(double rentPrice) {
+		this.rentPrice = rentPrice;
 	}
 	
+	/**
+	 * @return the rentPrice
+	 */
+	public double getRentPrice() {
+		return rentPrice;
+	}
+
 	/**
 	 * @return the cardID
 	 */
@@ -191,6 +122,13 @@ public final class Rent extends TimeDate{
 		this.cardID = cardID;
 	}
 
+	/**
+	 * @param titleID the titleID to set
+	 */
+	public void setTitleID(int titleID) {
+		this.titleID = titleID;
+	}
+	
 	/**
 	 * @return the titleID
 	 */

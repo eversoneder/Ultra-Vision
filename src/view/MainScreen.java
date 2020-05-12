@@ -38,7 +38,7 @@ public class MainScreen {
 	// the screen closes, but if you run, click a button, back, try to press 'q'
 	// to close the program, it won't work. I'd like a feedback on that, no clue why
 	// it's not working. I was going to do this for all screens for faster UX
-//	private KeyController keyListener = new KeyController(MainScreen);
+	private KeyController keyListener = new KeyController(MainScreen);
 
 	private UltraVisionManagementSystem controller;
 
@@ -46,6 +46,7 @@ public class MainScreen {
 		setAttributes();
 		setComponents();
 		validation();
+		
 	}
 	
 	public static void main (String[]args) {
@@ -60,7 +61,8 @@ public class MainScreen {
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
-//		MainScreen.addKeyListener(keyListener);
+		MainScreen.addKeyListener(keyListener);
+		
 	}
 
 	public void setComponents() {

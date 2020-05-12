@@ -14,7 +14,7 @@ public class BoxSet extends Title {
 	private ArrayList<BoxSet> movies;
 	
 	public BoxSet() {
-
+		super.setId(0);
 	}
 
 	/**
@@ -38,13 +38,13 @@ public class BoxSet extends Title {
 		super.setPrice(price);
 		super.setYearOfRelease(yor);
 		super.setGenre(genre);
+		super.setSubscriptionID(plan);
 		
 		this.setNumOfDiscs(numofdiscs);
-		super.setSubscriptionID(plan);
 	}
 
 	/**
-	 * database load
+	 * database download
 	 * 
 	 * @param id
 	 * @param titleType
@@ -65,10 +65,10 @@ public class BoxSet extends Title {
 		super.setPrice(price);
 		super.setYearOfRelease(yor);
 		super.setGenre(genre);
+		super.setSubscriptionID(plan);
 
 		this.setBoxSetID(boxSetID);
 		this.setNumOfDiscs(numofdiscs);
-		super.setSubscriptionID(plan);
 	}
 	
 	/**
@@ -85,20 +85,6 @@ public class BoxSet extends Title {
 		this.movies = new ArrayList<>(vlTitles);
 	}
 
-	/**
-	 * @return the subscriptionplan
-	 */
-	public int getSubscriptionID() {
-		return super.getSubscriptionID();
-	}
-
-	/**
-	 * @param subscriptionplan the subscriptionplan to set
-	 */
-	public void setSubscriptionID(int subscriptionplan) {
-		super.setSubscriptionID(subscriptionplan);
-	}
-	
 	/**
 	 * @return the numOfDiscs
 	 */

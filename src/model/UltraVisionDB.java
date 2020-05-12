@@ -29,7 +29,6 @@ public class UltraVisionDB {
 
 	Connection con = null;
 	Statement st = null;
-	private int tableSize;
 
 	private ArrayList<Object> titleList = new ArrayList<>();
 	
@@ -199,6 +198,7 @@ public class UltraVisionDB {
 						rs.getInt("account_id"),
 						rs.getInt("subscription_id")
 						);
+				newCard.setSubscriptionPlan(rs.getString("subscription_plan"));
 			}
 			closings();
 		} catch (SQLException sqle) {
@@ -216,7 +216,7 @@ public class UltraVisionDB {
 				+ "INNER JOIN title_type tt ON t.title_type_id = tt.title_type_id "
 				+ "WHERE t.title_id = '"+titleID+"';";
 		
-		Title title = new Title();
+		Title title;
 		title = loadRawTitle(query);
 		
 		switch(title.getTitleTypeDB()) {
@@ -224,7 +224,7 @@ public class UltraVisionDB {
 			String queryMusic = "SELECT * FROM title t "
 					+ "INNER JOIN music m ON t.title_id = m.title_id "
 					+ "WHERE t.title_id = '"+titleID+"';";
-			MusicOrLive music = new MusicOrLive();
+			MusicOrLive music;
 			music = loadMusic(queryMusic);
 			titleList.add(music);
 			break;
@@ -232,7 +232,7 @@ public class UltraVisionDB {
 			String queryLive = "SELECT * FROM title t "
 					+ "INNER JOIN live_concert lc ON t.title_id = lc.title_id "
 					+ "WHERE t.title_id = '"+titleID+"';";
-			MusicOrLive live = new MusicOrLive();
+			MusicOrLive live;
 			live = loadLive(queryLive);
 			titleList.add(live);
 			break;
@@ -240,7 +240,7 @@ public class UltraVisionDB {
 			String queryMovie = "SELECT * FROM title t "
 					+ "INNER JOIN movie m ON t.title_id = m.title_id "
 					+ "WHERE t.title_id = '"+titleID+"';";
-			Movie movie = new Movie();
+			Movie movie;
 			movie = loadMovie(queryMovie);
 			titleList.add(movie);
 			break;
@@ -248,7 +248,7 @@ public class UltraVisionDB {
 			String queryBoxSet = "SELECT * FROM title t "
 					+ "INNER JOIN box_set b ON t.title_id = b.title_id "
 					+ "WHERE t.title_id '"+titleID+"';";
-			BoxSet boxSet = new BoxSet();
+			BoxSet boxSet;
 			boxSet = loadBoxSet(queryBoxSet);
 			titleList.add(boxSet);
 			break;
@@ -420,6 +420,10 @@ public class UltraVisionDB {
 			}
 			
 			return newTitle;
+	}
+	
+	public void uploadRawTitle(String query) {
+		
 	}
 	
 	/**
@@ -945,7 +949,7 @@ public class UltraVisionDB {
 			return 0;
 		}
 		//set ongoingRent -1 (returned)
-		membershipCard.setOngoingRents();
+		membershipCard.addOngoingRents();
 		//upload updated
 		membershipCard = updateCardInfoGetID(membershipCard);
 		
@@ -963,7 +967,7 @@ public class UltraVisionDB {
 			return 0;
 		}
 		//set ongoingRent -1 (returned)
-		membershipCard.setOngoingRents();
+		membershipCard.addOngoingRents();
 		//upload updated
 		membershipCard = updateCardInfoGetID(membershipCard);
 		
@@ -1000,52 +1004,56 @@ public class UltraVisionDB {
 		return customer;
 	}
 	
-	public int rentTitle(int TitleID, MembershipCard card){
+	public void rentTitleByCash(Rent newRent, Customer customer, MembershipCard card){
 		
-		String query = "INSERT INTO rent (rent_start_date, rent_return_date, rent_price, card_id, title_id) VALUES ();";
+		String alterTitle = "UPDATE title SET title_available = '0' WHERE title_id = '"+newRent.getTitleID()+"';";
+		executeUpdateRS(alterTitle);
 		
+		String updateCustomer = "UPDATE debit_or_credit_account "
+				+ "SET account_balance = '"+customer.getAccountBalance()+"' "
+				+ "WHERE account_id = '"+customer.getAccountID()+"';";
+		executeUpdateRS(updateCustomer);
 		
+		String updateCard = "UPDATE membership_card "
+				+ "SET card_ongoing_rents = '"+card.getOngoingRents()+"', "
+				+ "card_free_rents = '"+card.getFreeRents()+"', "
+				+ "card_points = '"+card.getPoints()+"' "
+				+ "WHERE card_id = '"+card.getCardID()+"';";
+		executeUpdateRS(updateCard);
 		
-		int flag = 0;
-		
-		
-		
-		
-		return flag;
+		String insertRent = "INSERT INTO rent (rent_start_date, rent_return_date, rent_price, card_id, title_id) VALUES ("
+				+ "'"+newRent.getStartDate()+"', "
+				+ "'"+newRent.getReturnDate()+"', "
+				+ "'"+newRent.getRentPrice()+"', "
+				+ "'"+newRent.getCardID()+"', "
+				+ "'"+newRent.getTitleID()+"');";
+		executeUpdateRS(insertRent);
 	}
 	
-	public int rentTitle(MusicOrLive musicOrLive, MembershipCard card){
+	public void rentTitleByPoints(Rent newRent, Customer customer, MembershipCard card){
 		
+		String alterTitle = "UPDATE title SET title_available = '0' WHERE title_id = '"+newRent.getTitleID()+"';";
+		executeUpdateRS(alterTitle);
 		
-		musicOrLive.setAvailable(0);
+		String updateCustomer = "UPDATE debit_or_credit_account "
+				+ "SET account_balance = '"+customer.getAccountBalance()+"' "
+				+ "WHERE account_id = '"+customer.getAccountID()+"';";
+		executeUpdateRS(updateCustomer);
 		
+		String updateCard = "UPDATE membership_card "
+				+ "SET card_ongoing_rents = '"+card.getOngoingRents()+"', "
+				+ "card_free_rents = '"+card.getFreeRents()+"', "
+				+ "card_points = '"+card.getPoints()+"' "
+				+ "WHERE card_id = '"+card.getCardID()+"';";
+		executeUpdateRS(updateCard);
 		
-		int flag = 0;
+		String insertRent = "INSERT INTO rent (rent_start_date, rent_return_date, rent_price, card_id, title_id) VALUES ("
+				+ "'"+newRent.getStartDate()+"', "
+				+ "'"+newRent.getReturnDate()+"', "
+				+ "'"+newRent.getRentPrice()+"', "
+				+ "'"+newRent.getCardID()+"', "
+				+ "'"+newRent.getTitleID()+"');";
 		
-		
-		
-		
-		return flag;
-	}
-	
-	public int rentTitle(Movie movie, MembershipCard card){
-		
-		int flag = 0;
-		
-		
-		
-		
-		return flag;
-	}
-	
-	public int rentTitle(BoxSet boxSet, MembershipCard card){
-		
-		int flag = 0;
-		
-		
-		
-		
-		return flag;
 	}
 	
 	public int returnTitle(MusicOrLive returningTitle){

@@ -15,7 +15,7 @@ public abstract class DebitOrCreditAccount {
 	public int getAccountID() {
 		return accountID;
 	}
-
+	
 	/**
 	 * @param id the id to set
 	 */
@@ -45,14 +45,6 @@ public abstract class DebitOrCreditAccount {
 	}
 
 	/**
-	 * @param amount the amount to check in balance
-	 * @return if contains passed value in balance
-	 */
-	public boolean hasMoney(double amount) {
-		return AccountBalance > amount ? true : false;
-	}
-
-	/**
 	 * @return the accountNumber
 	 */
 	public String getAccountNumber() {
@@ -71,13 +63,6 @@ public abstract class DebitOrCreditAccount {
 	 * @return true if balance contains title price money
 	 */
 	public boolean checkFunds(double titlePrice) {
-		
-		boolean hasMoney = false; 
-		
-		if(this.getAccountBalance() >= titlePrice) {
-			hasMoney = true;
-		}
-		
-		return hasMoney;
+		return AccountBalance >= titlePrice ? true : false;
 	}
 }
