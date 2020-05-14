@@ -33,11 +33,12 @@ public class KeyController implements KeyListener, WindowListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		System.out.println("q");
-		//81 is letter q
+//		System.out.println("q");
+		
 		if (e.getKeyCode() == 10 || e.getKeyCode() == 13) {
 			btn.doClick();
 		}
+		//81 is letter q
 		if (e.getKeyCode() == 81) {
 			currentScreen.dispose();
 		}

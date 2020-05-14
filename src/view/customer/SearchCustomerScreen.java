@@ -32,9 +32,9 @@ import model.customer.MembershipCard;
 public class SearchCustomerScreen implements FocusListener {
 
 	private JFrame searchCustomerScreen = new JFrame();
-	KeyController keyListener = new KeyController(searchCustomerScreen);
+	private KeyController keyListener = new KeyController(searchCustomerScreen);
 
-	private UltraVisionManagementSystem managementSystem;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private ArrayList<Object> customerInfo;
 	private ArrayList<Customer> customerList = new ArrayList<>();
@@ -65,7 +65,9 @@ public class SearchCustomerScreen implements FocusListener {
 		searchCustomerScreen.setResizable(false);
 		searchCustomerScreen.setTitle("Ultra-Vision | Customer Search");
 		searchCustomerScreen.setLocationRelativeTo(null);
+		
 		searchCustomerScreen.addKeyListener(keyListener);
+		searchCustomerScreen.addWindowListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -131,7 +133,7 @@ public class SearchCustomerScreen implements FocusListener {
 
 		JButton closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
-		closeBtn.setBounds(780, 20, 222, 65);
+		closeBtn.setBounds(770, 20, 222, 65);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setFocusPainted(false);
@@ -145,12 +147,12 @@ public class SearchCustomerScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closepagebtnhover.png"));
-				closeBtn.setBounds(778, 15, 230, 75);
+				closeBtn.setBounds(768, 15, 230, 75);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
-				closeBtn.setBounds(780, 20, 222, 65);
+				closeBtn.setBounds(770, 20, 222, 65);
 			}
 		});
 	}
@@ -169,8 +171,6 @@ public class SearchCustomerScreen implements FocusListener {
 			public void actionPerformed(ActionEvent e) {
 
 				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
-
-				managementSystem = new UltraVisionManagementSystem(0);
 
 				if (searchCustomertf.getText().equals("search customer")) {
 					Object[] btns = { "Ok" };
@@ -247,7 +247,7 @@ public class SearchCustomerScreen implements FocusListener {
 
 		model = new DefaultTableModel();
 
-		ColumnNames = new String[] { "ID", "Name", "Phone", "E-mail", "Card ID", "Has Free Rents?",
+		ColumnNames = new String[] { "ID", "Name", "Phone", "E-mail", "Card ID", "Ongoing Rents",
 				"Available Free Rents", "Points", "Subscription" };
 
 		model.setColumnIdentifiers(ColumnNames);

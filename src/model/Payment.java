@@ -35,8 +35,7 @@ public class Payment {
 		//Account state changes for PayByCash
 		customer.setPayment(title.getPrice());
 		
-		//title state change
-		title.setAvailable(0);
+		//title state change are done straight in Query as it is only 0 or 1 to available
 		
 		//set new rent
 		Rent newRent = null;
@@ -60,28 +59,37 @@ public class Payment {
 	
 	public void payByPoints() {
 		
-		Rent newRent = null;
-		try {
-			newRent = new Rent(card.getCardID(), title.getId());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		int haspoints = card.hasFreeRents();
 
 		switch (haspoints) {
+		
 		case 0:// has no free rents
 			Object[] freerents = { "Ok" };
 			int j = JOptionPane.showOptionDialog(null, "Customer has no free rents available yet.",
 					"No available free rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 					logoIcon, freerents, freerents[0]);
 			return;
+			
 		case 1:// has free rents to claim
 
-			Payment newPayment = new Payment(customer, card, title);
-			newPayment.payByPoints();
-
+			card.payWithPoints();
+			
+			Rent newRent = null;
+			try {
+				newRent = new Rent(card.getCardID(), title.getId());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			managementSystem.rentTitleByPoints(newRent, customer, card);
+			
+			Object[] transactionSucceeded = { "Ok" };
+			int k = JOptionPane.showOptionDialog(null,
+					"Free Rent Registered! \n" + customer.getCustomer_name() + " is now renting: " + title.getName()
+							+ ".\nFrom: " + newRent.getStartDate() + " \nUntil: " + newRent.getReturnDate() + ".",
+					"Rent Issued.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+					transactionSucceeded, transactionSucceeded[0]);
+			
 			break;
 		case 2:// has 4 ongoing rents
 			Object[] ongoing = { "Ok" };
@@ -90,12 +98,5 @@ public class Payment {
 					logoIcon, ongoing, ongoing[0]);
 			return;
 		}
-		
-		managementSystem.rentTitleByPoints(newRent, customer, card);
-		
-	}
-	
-	public void setRentState(Customer customer, MembershipCard card, Title title) {
-
 	}
 }

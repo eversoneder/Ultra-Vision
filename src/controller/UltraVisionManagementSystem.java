@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import model.Rent;
 import model.UltraVisionDB;
 import model.customer.Customer;
+import model.customer.DebitOrCreditAccount;
 import model.customer.MembershipCard;
 import model.titles.BoxSet;
 import model.titles.Movie;
@@ -52,6 +53,21 @@ public class UltraVisionManagementSystem {
 		return db.returnTitle(returningRent, card);
 	}
 	
+	public DebitOrCreditAccount getAccountInfoByID(int accountID) {
+		db = new UltraVisionDB();
+		return db.getAccountInfoByID(accountID);
+	}
+	
+	public int updateCustomer(Customer customer) {
+		db = new UltraVisionDB();
+		return db.updateCustomer(customer);	
+	}
+	
+	public int updateCard(MembershipCard card) {
+		db = new UltraVisionDB();
+		return db.updateCard(card);	
+	}
+	
 	/**
 	 * @param customerID to query DB
 	 * @return Customer from ID given
@@ -59,6 +75,16 @@ public class UltraVisionManagementSystem {
 	public Customer getCustomerInfoByID(int customerID) {
 		db = new UltraVisionDB();
 		return db.getCustomerInfoByID(customerID);
+	}
+	
+	public int deleteCustomer(Customer customer) {
+		db = new UltraVisionDB();
+		return db.deleteCustomer(customer);
+	}
+	
+	public int deleteTitle(Title title) {
+		db = new UltraVisionDB();
+		return db.deleteTitle(title);
 	}
 	
 	/**

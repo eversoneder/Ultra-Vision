@@ -34,9 +34,9 @@ import model.titles.MusicOrLive;
 public class SearchTitleScreen implements FocusListener {
 
 	private JFrame searchTitleScreen = new JFrame();
-	KeyController keyListener = new KeyController(searchTitleScreen);
+	private KeyController keyListener = new KeyController(searchTitleScreen);
 
-	private UltraVisionManagementSystem managementSystem;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private ArrayList<Object> titleList = new ArrayList<>();
 	private ArrayList<MusicOrLive> musicOrLiveList = new ArrayList<>();
@@ -70,8 +70,11 @@ public class SearchTitleScreen implements FocusListener {
 		searchTitleScreen.setResizable(false);
 		searchTitleScreen.setTitle("Ultra-Vision | Title Search");
 		searchTitleScreen.setLocationRelativeTo(null);
+		
 		searchTitleScreen.addKeyListener(keyListener);
+		searchTitleScreen.addWindowListener(keyListener);
 	}
+	
 
 	public void setComponents() {
 
@@ -136,7 +139,7 @@ public class SearchTitleScreen implements FocusListener {
 
 		JButton closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
-		closeBtn.setBounds(780, 20, 222, 65);
+		closeBtn.setBounds(770, 20, 222, 65);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setFocusPainted(false);
@@ -150,12 +153,12 @@ public class SearchTitleScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closepagebtnhover.png"));
-				closeBtn.setBounds(778, 15, 230, 75);
+				closeBtn.setBounds(768, 15, 230, 75);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
-				closeBtn.setBounds(780, 20, 222, 65);
+				closeBtn.setBounds(770, 20, 222, 65);
 			}
 		});
 	}
@@ -174,8 +177,6 @@ public class SearchTitleScreen implements FocusListener {
 			public void actionPerformed(ActionEvent e) {
 
 				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
-
-				managementSystem = new UltraVisionManagementSystem(0);
 
 				String entityName = "";
 				switch (filter.getSelectedItem().toString()) {

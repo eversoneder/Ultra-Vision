@@ -31,9 +31,8 @@ import model.titles.Title;
 
 public class NewMovieScreen implements FocusListener {
 
-	private JButton cancelBtn;
 	private JFrame newLiveConcertScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newLiveConcertScreen, cancelBtn);
+	private KeyController keyListener = new KeyController(newLiveConcertScreen);
 
 	private Movie newMovie;
 
@@ -44,7 +43,7 @@ public class NewMovieScreen implements FocusListener {
 	private JTextField moviegenretf;
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
-	private JComboBox mediaComboBox;
+	private JComboBox<Media> mediaComboBox;
 
 	public NewMovieScreen() {
 		setAttributes();
@@ -59,7 +58,9 @@ public class NewMovieScreen implements FocusListener {
 		newLiveConcertScreen.setResizable(false);
 		newLiveConcertScreen.setTitle("Title Registration");
 		newLiveConcertScreen.setLocationRelativeTo(null);
+		
 		newLiveConcertScreen.addKeyListener(keyListener);
+		newLiveConcertScreen.addWindowListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -180,7 +181,7 @@ public class NewMovieScreen implements FocusListener {
 			}
 		});
 // ---------------------------CANCEL BUTTON-------------------------------
-		cancelBtn = new JButton();
+		JButton cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
 		cancelBtn.setBounds(420, 295, 230, 106);

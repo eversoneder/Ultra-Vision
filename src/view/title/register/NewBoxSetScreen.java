@@ -32,9 +32,8 @@ import model.titles.Title;
 
 public class NewBoxSetScreen implements FocusListener {
 
-	private JButton cancelBtn;
 	private JFrame newBoxSetScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newBoxSetScreen, cancelBtn);
+	private KeyController keyListener = new KeyController(newBoxSetScreen);
 
 	private BoxSet newBoxSet;
 
@@ -45,7 +44,7 @@ public class NewBoxSetScreen implements FocusListener {
 	private JTextField boxsetgenretf;
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
-	private JComboBox mediaComboBox;
+	private JComboBox<Media> mediaComboBox;
 
 	public NewBoxSetScreen() {
 		setAttributes();
@@ -60,7 +59,9 @@ public class NewBoxSetScreen implements FocusListener {
 		newBoxSetScreen.setResizable(false);
 		newBoxSetScreen.setTitle("Title Registration");
 		newBoxSetScreen.setLocationRelativeTo(null);
+		
 		newBoxSetScreen.addKeyListener(keyListener);
+		newBoxSetScreen.addWindowListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -147,7 +148,7 @@ public class NewBoxSetScreen implements FocusListener {
 
 		Media[] mediaformats = Media.values();
 
-		mediaComboBox = new JComboBox<Media>(mediaformats);
+		mediaComboBox = new JComboBox<>(mediaformats);
 		mediaComboBox.setBounds(655, 175, 225, 45);
 		backRectangle.add(mediaComboBox);
 
@@ -181,7 +182,7 @@ public class NewBoxSetScreen implements FocusListener {
 			}
 		});
 // ---------------------------CANCEL BUTTON-------------------------------
-		cancelBtn = new JButton();
+		JButton cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
 		cancelBtn.setBounds(420, 295, 230, 106);

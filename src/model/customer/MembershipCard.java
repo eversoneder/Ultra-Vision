@@ -21,6 +21,7 @@ public class MembershipCard implements TitleType {
 	private int password;
 	private AccessLevel subscriptionEnum;
 	private int subscriptionID;
+
 	private int onGoingRents;
 	private String SubscriptionPlan;
 
@@ -55,7 +56,7 @@ public class MembershipCard implements TitleType {
 	public MembershipCard() {
 		this.cardID = 0;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -105,7 +106,7 @@ public class MembershipCard implements TitleType {
 		if (this.points >= 100) {
 			updateFreeRents();
 		}
-		
+
 		addOngoingRents();
 	}
 
@@ -146,17 +147,10 @@ public class MembershipCard implements TitleType {
 		}
 	}
 
-	public int payWithPoints() {
-		int flag = 0;
-		
-		if (this.freeRents > 0) {
-			this.freeRents -= 1;
-			flag = 1;
-		}
-		
-		return flag;
+	public void payWithPoints() {
+		this.freeRents -= 1;
 	}
-	
+
 	@Override
 	public void setTitleTypeDB(int titleType) {
 		this.subscriptionID = titleType;
@@ -188,22 +182,23 @@ public class MembershipCard implements TitleType {
 	public void setAccountID(int accountID) {
 		this.accountID = accountID;
 	}
-	
+
 	public int getOngoingRents() {
 		return onGoingRents;
 	}
-	
+
 	public int getFreeRents() {
 		return freeRents;
 	}
-	
+
 	public void addOngoingRents() {
 		this.onGoingRents += 1;
 	}
-	
+
 	public void removeOngoingRents() {
 		this.onGoingRents -= 1;
 	}
+
 	/**
 	 * @return the subscriptionPlan
 	 */
@@ -216,5 +211,19 @@ public class MembershipCard implements TitleType {
 	 */
 	public void setSubscriptionPlan(String subscriptionPlan) {
 		SubscriptionPlan = subscriptionPlan;
+	}
+
+	/**
+	 * @return the subscriptionID
+	 */
+	public int getSubscriptionID() {
+		return subscriptionID;
+	}
+
+	/**
+	 * @param subscriptionID the subscriptionID to set
+	 */
+	public void setSubscriptionID(int subscriptionID) {
+		this.subscriptionID = subscriptionID;
 	}
 }

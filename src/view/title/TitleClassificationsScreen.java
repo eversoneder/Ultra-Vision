@@ -31,6 +31,7 @@ import view.title.register.NewMusicScreen;
 public class TitleClassificationsScreen {
 
 	private JFrame titleClassifications = new JFrame();
+	private KeyController keyListener = new KeyController(titleClassifications);
 
 	private JTextField accounttf;
 	private JTextField memberCardPasstf;
@@ -82,7 +83,9 @@ public class TitleClassificationsScreen {
 		titleClassifications.setResizable(false);
 		titleClassifications.setTitle("Choose Title Classification");
 		titleClassifications.setLocationRelativeTo(null);
-
+		
+		titleClassifications.addKeyListener(keyListener);
+		titleClassifications.addWindowListener(keyListener);
 	}
 
 	public void buttons(JPanel backPanel) {

@@ -9,6 +9,8 @@ public class TimeDate {
 
 	private Date startDate;
 	private Date returnDate;
+	private String startDateString;
+	private String returnDateString;
 
 	/**
 	 * @hourFormat the format of hours, mins, day, month and year to show (hh:mm
@@ -47,9 +49,8 @@ public class TimeDate {
 	 * @param startDate to set (from DB)
 	 * @throws ParseException
 	 */
-	public void setStartDate(String startDate) throws ParseException {
-		Date date = hourFormat.parse(startDate);
-		this.startDate = date;
+	public void setStartDateString(String startDate) {
+		this.startDateString = startDate;
 	}
 
 	/**
@@ -63,9 +64,8 @@ public class TimeDate {
 	 * @param returnDate to set (from DB)
 	 * @throws ParseException
 	 */
-	public void setReturnDate(String returnDate) throws ParseException {
-		Date date = hourFormat.parse(returnDate);
-		this.returnDate = date;
+	public void setReturnDateString(String returnDate) {
+		this.returnDateString = returnDate;
 	}
 
 	/**

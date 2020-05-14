@@ -14,27 +14,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.KeyController;
+import controller.UltraVisionManagementSystem;
+import model.customer.Customer;
 
 public class DeleteCustomerScreen implements FocusListener {
 
 	private JFrame deleteCustomerScreen = new JFrame();
-	KeyController keyListener = new KeyController(deleteCustomerScreen);
+	private KeyController keyListener = new KeyController(deleteCustomerScreen);
 
-	private JTextField IDtf;
-	private JButton deleteBtn;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
+
+	private JTextField customerIDtf;
+
+	private Customer customer = new Customer();
 
 	public DeleteCustomerScreen() {
 		setAttributes();
 		setComponents();
 		validation();
-	}
-
-	public static void main(String[] args) {
-		new DeleteCustomerScreen();
 	}
 
 	public void setAttributes() {
@@ -43,8 +45,10 @@ public class DeleteCustomerScreen implements FocusListener {
 		deleteCustomerScreen.setVisible(true);
 		deleteCustomerScreen.setResizable(false);
 		deleteCustomerScreen.setTitle("Ultra-Vision | Cancel Customer Subscription");
-		deleteCustomerScreen.addKeyListener(keyListener);
 		deleteCustomerScreen.setLocationRelativeTo(null);
+
+		deleteCustomerScreen.addKeyListener(keyListener);
+		deleteCustomerScreen.addWindowListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -58,7 +62,7 @@ public class DeleteCustomerScreen implements FocusListener {
 
 		JLabel deleteCustomerIcon = new JLabel();
 		deleteCustomerIcon.setIcon(new ImageIcon("img\\icons\\deletecustomericon.png"));
-		deleteCustomerIcon.setBounds(30, 60, 170, 170);
+		deleteCustomerIcon.setBounds(40, 60, 170, 170);
 		backPanel.add(deleteCustomerIcon);
 
 		JLabel newCustomerLabel = new JLabel("Delete Customer");
@@ -75,22 +79,21 @@ public class DeleteCustomerScreen implements FocusListener {
 		backRectangle.setBounds(0, 50, deleteCustomerScreen.getWidth(), deleteCustomerScreen.getHeight() - 110);
 		backPanel.add(backRectangle);
 
-
 		JLabel searchIDLabel = new JLabel("Search to get ID");
 		searchIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		searchIDLabel.setBounds(320, 10, 350, 35);
 		searchIDLabel.setForeground(Color.WHITE);
 		backRectangle.add(searchIDLabel);
 
-		IDtf = new JTextField();
-		IDtf.setText("enter customer id to delete");
-		IDtf.setHorizontalAlignment(JTextField.CENTER);
-		IDtf.setForeground(new Color(180, 180, 180));
-		IDtf.addFocusListener(this);
-		IDtf.setBounds(570, 40, 250, 45);
-		IDtf.setBorder(null);
-		IDtf.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		backRectangle.add(IDtf);
+		customerIDtf = new JTextField();
+		customerIDtf.setText("enter customer id to delete");
+		customerIDtf.setHorizontalAlignment(JTextField.CENTER);
+		customerIDtf.setForeground(new Color(180, 180, 180));
+		customerIDtf.addFocusListener(this);
+		customerIDtf.setBounds(570, 40, 250, 45);
+		customerIDtf.setBorder(null);
+		customerIDtf.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		backRectangle.add(customerIDtf);
 	}
 
 	public void closeBtn(JPanel backPanel) {
@@ -143,40 +146,82 @@ public class DeleteCustomerScreen implements FocusListener {
 				searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\hover\\searchcustomerbtnhover.png"));
 				searchCustomerBtn.setBounds(260, 110, 239, 110);
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\searchcustomerbtn.png"));
 				searchCustomerBtn.setBounds(264, 112, 230, 106);
 			}
 		});
-// ---------------------------CANCEL BUTTON-------------------------------
-				deleteBtn = new JButton();
-				deleteBtn.setIcon(new ImageIcon("img\\btn\\deletebtn.png"));
-				deleteBtn.setBackground(backRectangle.getBackground());
-				deleteBtn.setBounds(580, 120, 230, 106);
-				deleteBtn.setBorderPainted(false);
-				deleteBtn.setContentAreaFilled(false);
-				deleteBtn.setFocusPainted(false);
-				backRectangle.add(deleteBtn);
-				deleteBtn.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-//						deleteCustomerScreen.dispose();
-						System.out.println("delete customer section in construction.");
-					}
-				});
-				deleteBtn.addMouseListener(new MouseAdapter() {
-					public void mouseEntered(MouseEvent evt) {
-						deleteBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-						deleteBtn.setIcon(new ImageIcon("img\\btn\\hover\\deletebtnhover.png"));
-						deleteBtn.setBounds(576, 118, 239, 110);
-					}
+// ---------------------------DELETE BUTTON-------------------------------
+		JButton deleteBtn = new JButton();
+		deleteBtn.setIcon(new ImageIcon("img\\btn\\deletebtn.png"));
+		deleteBtn.setBackground(backRectangle.getBackground());
+		deleteBtn.setBounds(580, 120, 230, 106);
+		deleteBtn.setBorderPainted(false);
+		deleteBtn.setContentAreaFilled(false);
+		deleteBtn.setFocusPainted(false);
+		backRectangle.add(deleteBtn);
+		deleteBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-					public void mouseExited(MouseEvent evt) {
-						deleteBtn.setIcon(new ImageIcon("img\\btn\\deletebtn.png"));
-						deleteBtn.setBounds(580, 120, 230, 106);
-					}
-				});
-		
-		
+				ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
+
+				if (!customerIDtf.getText().matches("[0-9]{1,3}")) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
+							"Title ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
+					return;
+				}
+				try {
+					customer = managementSystem.getCustomerInfoByID(Integer.parseInt(customerIDtf.getText()));
+				} catch (Exception exc) {
+					exc.getMessage();
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"There's no customer of ID " + customerIDtf.getText() + ".", "Non-Existent Customer.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+				}
+				if (customer == null) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"Customer of ID " + customerIDtf.getText() + " doesn't exist.", "Error.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+				}
+
+				int a = managementSystem.deleteCustomer(customer);
+
+				switch (a) {
+				case 0:
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "Customer of ID " + customerIDtf + " doesn't exist.",
+							"Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+				case 1:
+					Object[] btnss = { "Ok" };
+					int ii = JOptionPane.showOptionDialog(null,
+							"Customer: " + customer.getCustomer_name() + ", ID: " + customer.getCustomer_id()
+									+ " was successfully deleted from the system.",
+							"Customer Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+							btnss, btnss[0]);
+					break;
+				}
+			}
+		});
+		deleteBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				deleteBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				deleteBtn.setIcon(new ImageIcon("img\\btn\\hover\\deletebtnhover.png"));
+				deleteBtn.setBounds(576, 118, 239, 110);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				deleteBtn.setIcon(new ImageIcon("img\\btn\\deletebtn.png"));
+				deleteBtn.setBounds(580, 120, 230, 106);
+			}
+		});
 
 	}
 
@@ -188,14 +233,14 @@ public class DeleteCustomerScreen implements FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
 		// ------------------movie genre TextField-------------------------
-		if (IDtf.getText().matches("enter customer id to delete")) {
-			IDtf.setText("");
-			IDtf.setForeground(new Color(0, 80, 110));
+		if (customerIDtf.getText().matches("enter customer id to delete")) {
+			customerIDtf.setText("");
+			customerIDtf.setForeground(new Color(0, 80, 110));
 		}
-		if (!IDtf.hasFocus()) {
-			if (IDtf.getText().matches("")) {
-				IDtf.setText("enter customer id to delete");
-				IDtf.setForeground(new Color(180, 180, 180));
+		if (!customerIDtf.hasFocus()) {
+			if (customerIDtf.getText().matches("")) {
+				customerIDtf.setText("enter customer id to delete");
+				customerIDtf.setForeground(new Color(180, 180, 180));
 			}
 		}
 	}

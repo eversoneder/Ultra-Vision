@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import controller.KeyController;
 import controller.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -30,8 +31,10 @@ import view.title.SearchTitleScreen;
 public class RentScreen implements FocusListener {
 
 	private JFrame rentScreen = new JFrame();
-	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
+	private KeyController keyListener = new KeyController(rentScreen);
 
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
+	
 	private JTextField customerIDtf;
 	private JTextField titleIDtf;
 
@@ -39,21 +42,12 @@ public class RentScreen implements FocusListener {
 	private Customer customer = new Customer();
 
 	private Title title;
-
-//	public static void main(String[] args) {
-//		new RentScreen();
-//	}
-
+	
 	public RentScreen() {
 		setAttributes();
 		setComponents();
 		validation();
 	}
-
-//	public RentScreen(Customer customer, MembershipCard card) {
-//		this.customer = customer;
-//		this.card = card;
-//	}
 
 	public void setAttributes() {
 		rentScreen.setSize(800, 330);
@@ -62,6 +56,9 @@ public class RentScreen implements FocusListener {
 		rentScreen.setResizable(false);
 		rentScreen.setTitle("Rental Issue");
 		rentScreen.setLocationRelativeTo(null);
+		
+		rentScreen.addKeyListener(keyListener);
+		rentScreen.addWindowListener(keyListener);
 	}
 
 	private void setComponents() {
@@ -269,6 +266,8 @@ public class RentScreen implements FocusListener {
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
+				
+				
 
 				// -----------GET CARD INFO TO DO VALIDATIONS----------
 				card = new MembershipCard();
@@ -302,11 +301,18 @@ public class RentScreen implements FocusListener {
 							"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
-
 				}
 
 				unwrapTitle(UnknownTitleType);
 
+				if(title.getAvailable() == 0) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null,
+							"The Title of ID number "+title.getId()+" is already being rented.", "Can't Rent A Rented Title.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					return;
+				}
+				
 				if (card.getTitleTypeDB() == title.getSubscriptionID() || card.getTitleTypeDB() == 4) {
 
 					// -------CHECK RENT LIMIT---------

@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
+import controller.KeyController;
 import model.Payment;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -29,7 +30,8 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 	
 	private JFrame authenticationScreen = new JFrame();
-
+	private KeyController keyListener = new KeyController(authenticationScreen);
+	
 	private MembershipCard card;
 	private Customer customer;
 
@@ -47,6 +49,9 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		setAttributes();
 		setComponents();
 		validation();
+		
+		authenticationScreen.addKeyListener(keyListener);
+		authenticationScreen.addWindowListener(keyListener);
 	}
 
 	public CustomerAuthenticationScreen(int a) {

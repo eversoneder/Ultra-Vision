@@ -22,6 +22,7 @@ import view.customer.CustomerClassificationsScreen;
 import view.customer.DeleteCustomerScreen;
 import view.customer.NewCustomerScreen;
 import view.customer.SearchCustomerScreen;
+import view.customer.UpdateCustomerEnterIDScreen;
 import view.customer.UpdateCustomerScreen;
 import view.title.DeleteTitleScreen;
 import view.title.ReturnTitleScreen;
@@ -47,10 +48,6 @@ public class MainScreen {
 		setComponents();
 		validation();
 		
-	}
-	
-	public static void main (String[]args) {
-		new MainScreen();
 	}
 
 	public void setAttributes() {
@@ -105,6 +102,7 @@ public class MainScreen {
 		background.setIcon(new ImageIcon("img\\background.jpg"));
 		background.setBounds(0, 0, backPanel.getWidth(), backPanel.getHeight());
 		backPanel.add(background);
+		
 		
 		
 	}
@@ -208,7 +206,7 @@ public class MainScreen {
 		whiteStrip1.add(updateCustomerBtn);
 		updateCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new UpdateCustomerScreen();
+				new UpdateCustomerEnterIDScreen();
 			}
 		});
 		updateCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -396,7 +394,7 @@ public class MainScreen {
 	}
 
 	public void validation() {
-		MainScreen.repaint();
 		MainScreen.validate();
+		MainScreen.repaint();
 	}
 }

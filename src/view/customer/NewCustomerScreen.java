@@ -27,21 +27,15 @@ import model.customer.MembershipCard;
 
 public class NewCustomerScreen implements FocusListener {
 
-	private JButton cancelBtn;
 	private JFrame newCustomerScreen = new JFrame();
-
-	private UltraVisionManagementSystem managementSystem;
-
+	private KeyController keyListener = new KeyController(newCustomerScreen);
+	
 	private JTextField nametf;
 	private JTextField emailtf;
 	private JTextField phonetf;
 
 	private Customer newCustomer;
 	private MembershipCard newMembershipCard;
-
-//	public static void main(String[] args) {
-//		new NewCustomerScreen();
-//	}
 
 	public NewCustomerScreen(MembershipCard newMembershipCard) {
 		this.newMembershipCard = newMembershipCard;
@@ -63,6 +57,9 @@ public class NewCustomerScreen implements FocusListener {
 		newCustomerScreen.setResizable(false);
 		newCustomerScreen.setTitle("Customer Registration");
 		newCustomerScreen.setLocationRelativeTo(null);
+		
+		newCustomerScreen.addKeyListener(keyListener);
+		newCustomerScreen.addWindowListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -175,7 +172,7 @@ public class NewCustomerScreen implements FocusListener {
 
 //---------------------------CANCEL BUTTON-------------------------------
 
-		cancelBtn = new JButton();
+		JButton cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
 		cancelBtn.setBounds(420, 335, 230, 106);
@@ -249,7 +246,6 @@ public class NewCustomerScreen implements FocusListener {
 				newCustomer = new Customer(name, phonelong, email);
 //------SEND CUSTOMER TO MEMBERCARDSCREEN TO GATHER INFO WITH ACC NUM & MEMBER PASS TO UPLOAD DB
 				new MembershipCardScreen(newCustomer, newMembershipCard);
-				
 				
 			}
 		});

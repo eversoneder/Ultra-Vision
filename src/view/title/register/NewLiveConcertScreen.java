@@ -30,9 +30,8 @@ import model.titles.Title;
 
 public class NewLiveConcertScreen implements FocusListener {
 
-	private JButton cancelBtn;
 	private JFrame newLiveConcertScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newLiveConcertScreen, cancelBtn);
+	private KeyController keyListener = new KeyController(newLiveConcertScreen);
 
 	private MusicOrLive newLiveConcert;
 
@@ -44,7 +43,7 @@ public class NewLiveConcertScreen implements FocusListener {
 	private JTextField liveconcertgenretf;
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
-	private JComboBox mediaComboBox;
+	private JComboBox<Media> mediaComboBox;
 
 	public NewLiveConcertScreen() {
 		setAttributes();
@@ -59,7 +58,9 @@ public class NewLiveConcertScreen implements FocusListener {
 		newLiveConcertScreen.setResizable(false);
 		newLiveConcertScreen.setTitle("Title Registration");
 		newLiveConcertScreen.setLocationRelativeTo(null);
+		
 		newLiveConcertScreen.addKeyListener(keyListener);
+		newLiveConcertScreen.addWindowListener(keyListener);
 	}
 
 	public void setComponents() {
@@ -155,7 +156,7 @@ public class NewLiveConcertScreen implements FocusListener {
 
 		Media[] mediaformats = Media.values();
 
-		mediaComboBox = new JComboBox<Media>(mediaformats);
+		mediaComboBox = new JComboBox<>(mediaformats);
 		mediaComboBox.setBounds(655, 175, 225, 45);
 		backRectangle.add(mediaComboBox);
 
@@ -189,7 +190,7 @@ public class NewLiveConcertScreen implements FocusListener {
 			}
 		});
 // ---------------------------CANCEL BUTTON-------------------------------
-		cancelBtn = new JButton();
+		JButton cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtn.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
 		cancelBtn.setBounds(420, 295, 230, 106);
@@ -235,8 +236,7 @@ public class NewLiveConcertScreen implements FocusListener {
 				String yor = yearofreleasetf.getText();
 				String price = pricetf.getText();
 
-				if (name.equals("music name") || singer.equals("music singer") || band.equals("music band")
-						|| genre.equals("music genre") || yor.equals("year of release") || price.equals("price")) {
+				if (name.equals("music name") || genre.equals("music genre") || yor.equals("year of release") || price.equals("price")) {
 
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
@@ -244,6 +244,14 @@ public class NewLiveConcertScreen implements FocusListener {
 							logoIcon, btns, btns[0]);
 					return;
 				}
+				if(singer.equals("music singer") && band.equals("music band")) {
+					Object[] btns = { "Ok" };
+					int i = JOptionPane.showOptionDialog(null, "A music should at least have one singer or one band.",
+							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+							logoIcon, btns, btns[0]);
+					return;
+				}
+				
 				if (!yor.matches("(18|19|20)[0-9]{2}")) {
 					Object[] btns = { "Ok" };
 					int i = JOptionPane.showOptionDialog(null,
@@ -282,9 +290,8 @@ public class NewLiveConcertScreen implements FocusListener {
 					int yorint = Integer.parseInt(yor);
 
 					int planID = AccessLevel.ML.getSubscriptionID();
-					int titleType = new Title().getTitleTypeDB(AccessLevel.ML);
 
-					newLiveConcert = new MusicOrLive(titleType, selectedFormat, name, pricedouble, genre, yorint,
+					newLiveConcert = new MusicOrLive(2, selectedFormat, name, pricedouble, genre, yorint,
 							singer, band, planID);
 					managementSystem = new UltraVisionManagementSystem(0);
 					int musicInsert = managementSystem.addNewTitle(newLiveConcert);

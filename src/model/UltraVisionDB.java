@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.customer.Customer;
+import model.customer.DebitOrCreditAccount;
 import model.customer.MembershipCard;
 import model.enums.Media;
 import model.titles.BoxSet;
@@ -23,9 +24,13 @@ import model.titles.Title;
  */
 public class UltraVisionDB {
 
-	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb" + "?useSSL=false";
-	private String user = "root";
-	private String password = "pass1234!";
+	private String dbHost = "jdbc:mysql://apontejaj.com:3306/everson" + "?useSSL=false";
+	private String user = "everson";
+	private String password = "everson";
+//	
+//	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb" + "?useSSL=false";
+//	private String user = "root";
+//	private String password = "pass1234!";
 
 	Connection con = null;
 	Statement st = null;
@@ -163,6 +168,35 @@ public class UltraVisionDB {
 		return newCustomer;
 	}
 	
+	public int updateCustomer(Customer customer) {
+		
+		String getCardInfo = "UPDATE customer"
+				+ " SET customer_name = '"+customer.getCustomer_name()+"', "
+				+ "customer_phone = '"+customer.getCustomer_phone()+"', "
+				+ "customer_email = '"+customer.getEmail()+"' "
+				+ "WHERE customer_id = "+customer.getCustomer_id()+";";
+		
+		int a = executeUpdateRS(getCardInfo);
+		
+		return a;
+	}
+	
+	public int updateCard(MembershipCard card) {
+		
+		String getCardInfo = "UPDATE membership_card "
+				+ "SET card_password = '"+card.getPassword()+"', "
+				+ "card_ongoing_rents = '"+card.getOngoingRents()+"', "
+				+ "card_free_rents = '"+card.getFreeRents()+"', "
+				+ "card_points = '"+card.getPoints()+"', "
+				+ "account_id = '"+card.getAccountID()+"', "
+				+ "subscription_id = '"+card.getSubscriptionID()+"' "
+				+ "WHERE card_id = '"+card.getCardID()+"';";
+		
+		int a = executeUpdateRS(getCardInfo);
+		
+		return a;
+	}
+	
 	/**
 	 * @param cardID to query DB
 	 * @return MembershipCard
@@ -247,7 +281,7 @@ public class UltraVisionDB {
 		case 4://TV(Box Set)
 			String queryBoxSet = "SELECT * FROM title t "
 					+ "INNER JOIN box_set b ON t.title_id = b.title_id "
-					+ "WHERE t.title_id '"+titleID+"';";
+					+ "WHERE t.title_id = '"+titleID+"';";
 			BoxSet boxSet;
 			boxSet = loadBoxSet(queryBoxSet);
 			titleList.add(boxSet);
@@ -420,10 +454,6 @@ public class UltraVisionDB {
 			}
 			
 			return newTitle;
-	}
-	
-	public void uploadRawTitle(String query) {
-		
 	}
 	
 	/**
@@ -992,7 +1022,8 @@ public class UltraVisionDB {
 		executeUpdateRS(alterTitle);
 		
 		String updateCard = "UPDATE membership_card "
-				+ "SET card_ongoing_rents = '"+card.getOngoingRents()+"' "
+				+ "SET card_ongoing_rents = '"+card.getOngoingRents()+"', "
+				+ "card_free_rents = '"+card.getFreeRents()+"' "
 				+ "WHERE card_id = '"+card.getCardID()+"';";
 		executeUpdateRS(updateCard);
 		
@@ -1033,6 +1064,33 @@ public class UltraVisionDB {
 		return rent;
 	}
 	
+	public DebitOrCreditAccount getAccountInfoByID(int accountID) {
+		
+		String getAccoundInfo = "";
+		
+		
+		
+		ResultSet rs = executeQueryRS(getAccoundInfo);
+		DebitOrCreditAccount accountRentingTitle = null;
+		try {
+			if(!rs.wasNull()) {
+				accountRentingTitle = new DebitOrCreditAccount(
+						rs.getInt("account_id"), 
+						rs.getString("account_number"), 
+						rs.getDouble("account_balance"),
+						rs.getInt("customer_id")
+						);
+			}
+			closings();
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return accountRentingTitle;
+	}
+	
 	/**
 	 * @param returnRent
 	 * @param card
@@ -1063,6 +1121,73 @@ public class UltraVisionDB {
 		if(flag == 0) {
 			return 4;
 		}
+		return flag;
+	}
+	
+	public int deleteCustomer(Customer custToDel) {
+		
+		String getAccountID = "SELECT * FROM debit_or_credit_account dc " + 
+				"INNER JOIN customer c ON dc.customer_id = c.customer_id " + 
+				"INNER JOIN membership_card m ON dc.account_id = m.account_id " + 
+				"WHERE c.customer_id = "+custToDel.getCustomer_id()+";";
+		
+		ResultSet rs = executeQueryRS(getAccountID);
+		int accID = 0;
+		try{
+			accID = rs.getInt("account_id");
+		}catch(SQLException sqle) {
+			exceptionMessages(sqle);
+		}
+
+		String deleteCard = "DELETE FROM membership_card WHERE account_id = '"+accID+"';";
+		int flag = executeUpdateRS(deleteCard);
+		
+		String deleteAccount = "DELETE FROM debit_or_credit_account WHERE customer_id = '"+custToDel.getCustomer_id()+"';";
+		flag = executeUpdateRS(deleteAccount);
+		
+		String deleteCust = "DELETE FROM customer WHERE customer_id = '"+custToDel.getCustomer_id()+"';";
+		flag = executeUpdateRS(deleteCust);
+		
+		closings();
+		return flag;
+	}
+
+	public int deleteTitle(Title title) {
+		
+		String getTitleType = "SELECT * FROM title WHERE title_id = '"+title.getId()+"';";
+		
+		ResultSet rs = executeQueryRS(getTitleType);
+		int titleType = 0;
+		try{
+			titleType = rs.getInt("title_type_id");
+		}catch(SQLException sqle) {
+			exceptionMessages(sqle);
+		}
+		
+		String entity = "";
+		
+		switch(titleType) {
+		case 1:
+			entity = "music";
+			break;
+		case 2:
+			entity = "live_concert";
+			break;
+		case 3:
+			entity = "movie";
+			break;
+		case 4:
+			entity = "box_set";
+			break;
+		}
+		
+		String childDelete = "DELETE FROM "+entity+" WHERE title_id = '"+title.getId()+"';";
+		int flag = executeUpdateRS(childDelete);
+
+		String titleDelete = "DELETE FROM title WHERE title_id = '"+title.getId()+"';";
+		flag = executeUpdateRS(titleDelete);
+		
+		closings();
 		return flag;
 	}
 	

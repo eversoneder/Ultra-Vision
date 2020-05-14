@@ -3,11 +3,51 @@ package model.customer;
 /**
  * Abstract class for each customer to extends
  */
-public abstract class DebitOrCreditAccount {
+public class DebitOrCreditAccount {
 
 	private int accountID;
 	private String AccountNumber;
 	private double AccountBalance;
+	private int customerID;
+
+	/**
+	 * DB download
+	 * 
+	 * @param accountID to set
+	 * @param accountNum to set
+	 * @param accBalance to set
+	 * @param custID to set
+	 */
+	public DebitOrCreditAccount(int accountID, String accountNum, double accBalance, int custID) {
+		this.accountID = accountID;
+		this.AccountNumber = accountNum;
+		this.AccountBalance = accBalance;
+		this.customerID = custID;
+	}
+	
+	/**
+	 * GUI interaction 
+	 * 
+	 * @param accountNum to set
+	 * @param accBalance to set
+	 * @param custID to set
+	 */
+	public DebitOrCreditAccount(String accountNum, double accBalance, int custID) {
+		this.AccountNumber = accountNum;
+		this.AccountBalance = accBalance;
+		this.customerID = custID;
+	}
+	
+	public DebitOrCreditAccount() {
+		
+	}
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setAccountID(int id) {
+		this.accountID = id;
+	}
 
 	/**
 	 * @return the id
@@ -17,10 +57,17 @@ public abstract class DebitOrCreditAccount {
 	}
 	
 	/**
-	 * @param id the id to set
+	 * @return the customerID
 	 */
-	public void setAccountID(int id) {
-		this.accountID = id;
+	public int getCustomerID() {
+		return customerID;
+	}
+
+	/**
+	 * @param customerID the customerID to set
+	 */
+	public void setCustomerID(int customerID) {
+		this.customerID = customerID;
 	}
 
 	/**

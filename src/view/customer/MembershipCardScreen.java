@@ -28,7 +28,7 @@ public class MembershipCardScreen implements FocusListener {
 
 	private JButton cancelBtn;
 	private JFrame membershipCardScreen = new JFrame();
-	private KeyController keyListener = new KeyController(membershipCardScreen, cancelBtn);
+	private KeyController keyListener = new KeyController(membershipCardScreen);
 
 	private UltraVisionManagementSystem managementSystem;
 
@@ -61,6 +61,7 @@ public class MembershipCardScreen implements FocusListener {
 		membershipCardScreen.setTitle("Card Issue");
 		membershipCardScreen.setLocationRelativeTo(null);
 		membershipCardScreen.addKeyListener(keyListener);
+		membershipCardScreen.addWindowListener(keyListener);
 	}
 
 	public void setComponents() {

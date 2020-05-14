@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.KeyController;
 import model.customer.MembershipCard;
 import model.enums.AccessLevel;
 import model.titles.MusicOrLive;
@@ -22,8 +23,7 @@ import view.title.register.NewBoxSetScreen;
 public class CustomerClassificationsScreen {
 
 	private JFrame customerClassifications = new JFrame();
-
-	private MembershipCard newMembershipCard;
+	private KeyController keyListener = new KeyController(customerClassifications);
 
 	public CustomerClassificationsScreen() {
 		setAttributes();
@@ -72,7 +72,9 @@ public class CustomerClassificationsScreen {
 		customerClassifications.setResizable(false);
 		customerClassifications.setTitle("Subscription Plan");
 		customerClassifications.setLocationRelativeTo(null);
-
+		
+		customerClassifications.addKeyListener(keyListener);
+		customerClassifications.addWindowListener(keyListener);
 	}
 
 	public void buttons(JPanel backPanel) {
