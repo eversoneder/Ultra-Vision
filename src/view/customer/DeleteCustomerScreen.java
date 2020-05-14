@@ -36,6 +36,7 @@ public class DeleteCustomerScreen implements FocusListener {
 	public DeleteCustomerScreen() {
 		setAttributes();
 		setComponents();
+		deleteCustomerScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -168,7 +169,7 @@ public class DeleteCustomerScreen implements FocusListener {
 
 				if (!customerIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
+					JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
 							"Title ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -178,14 +179,14 @@ public class DeleteCustomerScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"There's no customer of ID " + customerIDtf.getText() + ".", "Non-Existent Customer.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
 				if (customer == null) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Customer of ID " + customerIDtf.getText() + " doesn't exist.", "Error.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
@@ -196,12 +197,12 @@ public class DeleteCustomerScreen implements FocusListener {
 				switch (a) {
 				case 0:
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Customer of ID " + customerIDtf + " doesn't exist.",
+					JOptionPane.showOptionDialog(null, "Customer of ID " + customerIDtf + " doesn't exist.",
 							"Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				case 1:
 					Object[] btnss = { "Ok" };
-					int ii = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Customer: " + customer.getCustomer_name() + ", ID: " + customer.getCustomer_id()
 									+ " was successfully deleted from the system.",
 							"Customer Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,

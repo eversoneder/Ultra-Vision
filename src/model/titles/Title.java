@@ -1,7 +1,5 @@
 package model.titles;
 
-import java.util.Collection;
-
 import model.enums.AccessLevel;
 import model.enums.Media;
 import model.interfaces.DiscFormat;

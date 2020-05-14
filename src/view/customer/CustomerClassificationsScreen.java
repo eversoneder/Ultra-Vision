@@ -17,8 +17,6 @@ import javax.swing.JPanel;
 import controller.KeyController;
 import model.customer.MembershipCard;
 import model.enums.AccessLevel;
-import model.titles.MusicOrLive;
-import view.title.register.NewBoxSetScreen;
 
 public class CustomerClassificationsScreen {
 
@@ -28,6 +26,7 @@ public class CustomerClassificationsScreen {
 	public CustomerClassificationsScreen() {
 		setAttributes();
 		setComponents();
+		customerClassifications.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 

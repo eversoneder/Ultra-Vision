@@ -1,15 +1,8 @@
 package model.customer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import controller.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.interfaces.TitleType;
-import model.titles.BoxSet;
-import model.titles.Movie;
-import model.titles.MusicOrLive;
-import model.titles.Title;
 
 public class MembershipCard implements TitleType {
 

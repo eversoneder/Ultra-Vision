@@ -48,10 +48,8 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		unwrapTitle();
 		setAttributes();
 		setComponents();
+		authenticationScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
-		
-		authenticationScreen.addKeyListener(keyListener);
-		authenticationScreen.addWindowListener(keyListener);
 	}
 
 	public CustomerAuthenticationScreen(int a) {
@@ -106,6 +104,9 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		authenticationScreen.setResizable(false);
 		authenticationScreen.setTitle("Customer Authentication");
 		authenticationScreen.setLocationRelativeTo(null);
+		
+		authenticationScreen.addKeyListener(keyListener);
+		authenticationScreen.addWindowListener(keyListener);
 	}
 
 	public void validation() {
@@ -164,7 +165,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		// -------CHECK IF HAS MONEY---------
 		if (!customer.checkFunds(title.getPrice())) {
 			Object[] noMoneyBtn = { "Ok" };
-			int j = JOptionPane.showOptionDialog(null,
+			JOptionPane.showOptionDialog(null,
 					"Customer has no enough funds to rent: \n" + title.getName() + ". Price: " + title.getPrice()
 							+ " €.",
 					"Insuficient Funds.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, noMoneyBtn,
@@ -229,7 +230,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 
 				} else {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Sorry " + customer.getCustomer_name() + ", invalid password, try again.",
 							"Wrong Password.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);

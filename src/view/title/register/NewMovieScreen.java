@@ -9,8 +9,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,7 +24,6 @@ import controller.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.enums.Media;
 import model.titles.Movie;
-import model.titles.MusicOrLive;
 import model.titles.Title;
 
 public class NewMovieScreen implements FocusListener {
@@ -48,6 +45,7 @@ public class NewMovieScreen implements FocusListener {
 	public NewMovieScreen() {
 		setAttributes();
 		setComponents();
+		newLiveConcertScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -229,14 +227,14 @@ public class NewMovieScreen implements FocusListener {
 				if (name.equals("movie name") || genre.equals("movie genre") || director.equals("movie director")
 						|| yor.equals("year of release") || price.equals("price")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
+					JOptionPane.showOptionDialog(null, "All fields are required.",
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 							logoIcon, btns, btns[0]);
 					return;
 				}
 				if (!yor.matches("(18|19|20)[0-9]{2}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Invalid year of release number. \nEnter a valid year please.",
 							"Year of Release Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 							logoIcon, btns, btns[0]);
@@ -244,7 +242,7 @@ public class NewMovieScreen implements FocusListener {
 				}
 				if (!price.matches("(^([0-9]{1,2})[.]([0-9]{2})$)")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Invalid price number. \nEnter a valid price please.",
+					JOptionPane.showOptionDialog(null, "Invalid price number. \nEnter a valid price please.",
 							"Price Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -261,7 +259,7 @@ public class NewMovieScreen implements FocusListener {
 				}
 				if (selectedFormat.equals(Media.CD)) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Movies can't be recorded in CD's. \nChoose DVD or BLU-RAY only.",
+					JOptionPane.showOptionDialog(null, "Movies can't be recorded in CD's. \nChoose DVD or BLU-RAY only.",
 							"Title Media Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -279,12 +277,12 @@ public class NewMovieScreen implements FocusListener {
 					
 					if (musicInsert == 0) {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Registration of: " + name + ", couldn't be done.",
+						JOptionPane.showOptionDialog(null, "Registration of: " + name + ", couldn't be done.",
 								"Error Registering Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 								logoIcon, btns, btns[0]);
 					} else {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Movie: " + name + ", Successfully registered!",
+						JOptionPane.showOptionDialog(null, "Movie: " + name + ", Successfully registered!",
 								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
 					}

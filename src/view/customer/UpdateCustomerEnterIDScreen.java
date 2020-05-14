@@ -21,7 +21,6 @@ import javax.swing.JTextField;
 
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
-import model.Rent;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 import model.titles.Title;
@@ -40,11 +39,11 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 	private MembershipCard card = new MembershipCard();
 	
 	private Title title = new Title();
-	private Rent rent = new Rent(0);
 
 	public UpdateCustomerEnterIDScreen() {
 		setAttributes();
 		setComponents();
+		returnTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -222,7 +221,7 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 
 				if (!customerIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
+					JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
 							"Title ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -232,27 +231,26 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"There's no customer of ID " + customerIDtf.getText() + ".", "Non-Existent Customer.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
 				if (customer == null) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Customer of ID " + customerIDtf.getText() + " doesn't exist.", "Error.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				} else {
 					
 					// -----------GET CARD INFO TO UPDATE PASSWORD----------
-					MembershipCard card;
 					try {
 						card = managementSystem.getCardInfoByID(customer.getCardID());
 					} catch (Exception ex) {
 						ex.getMessage();
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null,
+						JOptionPane.showOptionDialog(null,
 								"There's no Card ID " + customer.getCardID() + " in the System.", "Non-Existent card ID.",
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;

@@ -47,19 +47,8 @@ public class UpdateCustomerScreen implements FocusListener {
 		oldPass = card.getPassword();
 		setAttributes();
 		setComponents();
+		updateCustomerScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
-	}
-
-	public static void main(String[] args) {
-		Customer customer = new Customer();
-		customer.setCustomer_name("everssoo");
-		customer.setCustomer_phone(838431968);
-		customer.setEmail("everson@ever.ie");
-
-		MembershipCard card = new MembershipCard();
-		card.setPassword(12345678);
-
-		new UpdateCustomerScreen(customer, card);
 	}
 
 	public void setAttributes() {
@@ -243,14 +232,14 @@ public class UpdateCustomerScreen implements FocusListener {
 //----------------------VALIDATE NAME---------------------
 				if (!name.matches("[a-zA-Z]+")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Enter letters only please.", "Name Field Error.",
+					JOptionPane.showOptionDialog(null, "Enter letters only please.", "Name Field Error.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
 //----------------------VALIDATE PHONE NUMBER---------------------
 				if (!phone.matches("[0-9]{7,16}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Invalid phone number. \nEnter a valid number please.",
+					JOptionPane.showOptionDialog(null, "Invalid phone number. \nEnter a valid number please.",
 							"Phone Number Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 							btns, btns[0]);
 					return;
@@ -258,7 +247,7 @@ public class UpdateCustomerScreen implements FocusListener {
 //----------------------VALIDATE EMAIL ADDRESS---------------------
 				if (!email.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Invalid email addres. \nEnter a valid email please.",
+					JOptionPane.showOptionDialog(null, "Invalid email addres. \nEnter a valid email please.",
 							"Email Address Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 							btns, btns[0]);
 					return;
@@ -268,7 +257,7 @@ public class UpdateCustomerScreen implements FocusListener {
 				if (!password.equals("set new password")) {
 					if (!password.matches("[0-9]{8}")) {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.",
+						JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.",
 								"Password Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
 						return;
@@ -289,7 +278,7 @@ public class UpdateCustomerScreen implements FocusListener {
 					switch (custUpdate) {
 					case 0:// fail case name, phone, address
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Couldn't update customer information",
+						JOptionPane.showOptionDialog(null, "Couldn't update customer information",
 								"Customer Info Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
 						return;
@@ -304,13 +293,13 @@ public class UpdateCustomerScreen implements FocusListener {
 							switch (passUpdate) {
 							case 0:
 								Object[] btn = { "Ok" };
-								int a = JOptionPane.showOptionDialog(null, "Name, Phone & Email updated but password couldn't be modified.",
+								JOptionPane.showOptionDialog(null, "Name, Phone & Email updated but password couldn't be modified.",
 										"Changes", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn,
 										btn[0]);
 								return;
 							case 1:// 1 message for customer info updated AND pass updated
 								Object[] btnss = { "Ok" };
-								int b = JOptionPane.showOptionDialog(null,
+								JOptionPane.showOptionDialog(null,
 										"Customer Info and Password changed successfully.", "Customer Info Changed.",
 										JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btnss,
 										btnss[0]);
@@ -318,7 +307,7 @@ public class UpdateCustomerScreen implements FocusListener {
 							}
 						} else {// if password wasn't modified just prompt the customer info updated
 							Object[] btnss = { "Ok" };
-							int c = JOptionPane.showOptionDialog(null, "Customer Information changed successfully.",
+							JOptionPane.showOptionDialog(null, "Customer Information changed successfully.",
 									"Customer Info Changed.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 									logoIcon, btnss, btnss[0]);
 							break;
@@ -333,12 +322,12 @@ public class UpdateCustomerScreen implements FocusListener {
 					switch (passUpdate) {
 					case 0:
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null, "Couldn't update password", "Password Field Error",
+						JOptionPane.showOptionDialog(null, "Couldn't update password", "Password Field Error",
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;
 					case 1:
 						Object[] btnss = { "Ok" };
-						int ii = JOptionPane.showOptionDialog(null, "Password changed successfully.",
+						JOptionPane.showOptionDialog(null, "Password changed successfully.",
 								"Password Changed.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btnss, btnss[0]);
 

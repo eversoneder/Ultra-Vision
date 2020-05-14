@@ -6,14 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.customer.Customer;
 import model.customer.DebitOrCreditAccount;
 import model.customer.MembershipCard;
-import model.enums.Media;
 import model.titles.BoxSet;
 import model.titles.Movie;
 import model.titles.MusicOrLive;
@@ -27,7 +25,7 @@ public class UltraVisionDB {
 	private String dbHost = "jdbc:mysql://apontejaj.com:3306/everson" + "?useSSL=false";
 	private String user = "everson";
 	private String password = "everson";
-//	
+	
 //	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb" + "?useSSL=false";
 //	private String user = "root";
 //	private String password = "pass1234!";
@@ -36,9 +34,6 @@ public class UltraVisionDB {
 	Statement st = null;
 
 	private ArrayList<Object> titleList = new ArrayList<>();
-	
-	private ArrayList<Customer> customerList = new ArrayList<>();
-	private ArrayList<MembershipCard> cardList = new ArrayList<>();
 	private ArrayList<Object> customerInfo = new ArrayList<>();
 	
 	private Customer customer = new Customer();

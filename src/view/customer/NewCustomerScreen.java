@@ -10,18 +10,15 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 
@@ -47,6 +44,7 @@ public class NewCustomerScreen implements FocusListener {
 	public NewCustomerScreen() {
 		setAttributes();
 		setComponents();
+		newCustomerScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -219,7 +217,7 @@ public class NewCustomerScreen implements FocusListener {
 				if (name.equals("customer name") || phone.equals("customer phone")
 						|| email.equals("customer email")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
+					JOptionPane.showOptionDialog(null, "All fields are required.",
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 							logoIcon, btns, btns[0]);
 					return;
@@ -227,7 +225,7 @@ public class NewCustomerScreen implements FocusListener {
 //----------------------VALIDATE PHONE NUMBER---------------------
 				if (!phone.matches("[0-9]{7,16}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Invalid phone number. \nEnter a valid number please.",
+					JOptionPane.showOptionDialog(null, "Invalid phone number. \nEnter a valid number please.",
 							"Phone Number Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 							btns, btns[0]);
 					return;
@@ -235,7 +233,7 @@ public class NewCustomerScreen implements FocusListener {
 //----------------------VALIDATE EMAIL ADDRESS---------------------
 				if (!email.matches("\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Invalid email addres. \nEnter a valid email please.",
+					JOptionPane.showOptionDialog(null, "Invalid email addres. \nEnter a valid email please.",
 							"Email Address Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 							btns, btns[0]);
 					return;

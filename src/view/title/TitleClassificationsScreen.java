@@ -10,19 +10,11 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
-import model.enums.Media;
-import model.titles.BoxSet;
-import model.titles.Movie;
-import model.titles.MusicOrLive;
 import view.title.register.NewLiveConcertScreen;
 import view.title.register.NewMovieScreen;
 import view.title.register.NewBoxSetScreen;
@@ -33,12 +25,10 @@ public class TitleClassificationsScreen {
 	private JFrame titleClassifications = new JFrame();
 	private KeyController keyListener = new KeyController(titleClassifications);
 
-	private JTextField accounttf;
-	private JTextField memberCardPasstf;
-	
 	public TitleClassificationsScreen() {
 		setAttributes();
 		setComponents();
+		titleClassifications.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -89,7 +79,6 @@ public class TitleClassificationsScreen {
 	}
 
 	public void buttons(JPanel backPanel) {
-
 		// ---------------------------MUSIC BUTTON-------------------------------
 		JButton musicBtn = new JButton();
 		musicBtn.setIcon(new ImageIcon("img\\btn\\musicbtn.png"));

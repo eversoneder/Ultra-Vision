@@ -22,12 +22,8 @@ import javax.swing.JTextField;
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
 import model.Rent;
-import model.customer.Customer;
-import model.customer.DebitOrCreditAccount;
 import model.customer.MembershipCard;
 import model.titles.Title;
-import view.customer.CustomerAuthenticationScreen;
-import view.customer.SearchCustomerScreen;
 
 public class ReturnTitleScreen implements FocusListener {
 
@@ -46,11 +42,8 @@ public class ReturnTitleScreen implements FocusListener {
 	public ReturnTitleScreen() {
 		setAttributes();
 		setComponents();
+		returnTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
-	}
-
-	public static void main(String[] args) {
-		new ReturnTitleScreen();
 	}
 
 	public void setAttributes() {
@@ -185,7 +178,7 @@ public class ReturnTitleScreen implements FocusListener {
 
 				if (!titleIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Enter an existing Title ID please.", "Title ID Error.",
+					JOptionPane.showOptionDialog(null, "Enter an existing Title ID please.", "Title ID Error.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
@@ -195,7 +188,7 @@ public class ReturnTitleScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"The Title of ID " + rent.getRentID() + " is not being rented or doesn't exist.",
 							"Non-Existent Title ID in Rent Section.", JOptionPane.YES_NO_OPTION,
 							JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
@@ -210,7 +203,7 @@ public class ReturnTitleScreen implements FocusListener {
 
 					if (UnknownTitleType.isEmpty()) {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null,
+						JOptionPane.showOptionDialog(null,
 								"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;
@@ -218,7 +211,7 @@ public class ReturnTitleScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Title of ID " + titleIDtf.getText() + " is not being rented or doesn't exist.",
 							"Non-Existent Title ID in Rent Section.", JOptionPane.YES_NO_OPTION,
 							JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
@@ -229,7 +222,7 @@ public class ReturnTitleScreen implements FocusListener {
 
 				if (rent == null) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"The Title: " + title.getName() + " of ID " + title.getId() + " is not being rented.",
 							"Title" + title.getName() + " is available.", JOptionPane.YES_NO_OPTION,
 							JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
@@ -237,13 +230,12 @@ public class ReturnTitleScreen implements FocusListener {
 				}
 
 				// -----------GET CARD TO UPDATE----------
-				MembershipCard card;
 				try {
 					card = managementSystem.getCardInfoByID(rent.getCardID());
 				} catch (Exception ex) {
 					ex.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Error class ReturnTitle, GET CARD INFO section",
+					JOptionPane.showOptionDialog(null, "Error class ReturnTitle, GET CARD INFO section",
 							"Card Doesn't Exist", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -255,7 +247,7 @@ public class ReturnTitleScreen implements FocusListener {
 				switch (check) {
 				case 1:
 					Object[] btnz = { "Ok" };
-					int y = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Title: " + title.getName() + ", ID: " + title.getId() + " returned successfully",
 							"Title Returned.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btnz,
 							btnz[0]);
@@ -263,19 +255,19 @@ public class ReturnTitleScreen implements FocusListener {
 					break;
 				case 2:
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Error while setting back Title to available",
+					JOptionPane.showOptionDialog(null, "Error while setting back Title to available",
 							"Error Title Availability.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 							btns, btns[0]);
 					return;
 				case 3:
 					Object[] btnss = { "Ok" };
-					int ii = JOptionPane.showOptionDialog(null, "Error while setting back return Title on Card",
+					JOptionPane.showOptionDialog(null, "Error while setting back return Title on Card",
 							"Error Card Ongoing Rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 							btnss, btnss[0]);
 					return;
 				case 4:
 					Object[] btnsss = { "Ok" };
-					int iii = JOptionPane.showOptionDialog(null, "Error while deleting Rent from system",
+					JOptionPane.showOptionDialog(null, "Error while deleting Rent from system",
 							"Error Rent Deletion.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 							btnsss, btnsss[0]);
 					return;

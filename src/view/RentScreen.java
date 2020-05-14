@@ -46,6 +46,7 @@ public class RentScreen implements FocusListener {
 	public RentScreen() {
 		setAttributes();
 		setComponents();
+		rentScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -241,7 +242,7 @@ public class RentScreen implements FocusListener {
 
 				if (!customerIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Enter an existing customer ID please.",
+					JOptionPane.showOptionDialog(null, "Enter an existing customer ID please.",
 							"Customer ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -249,7 +250,7 @@ public class RentScreen implements FocusListener {
 
 				if (!titleIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Enter an existing Title ID please.", "Title ID Error.",
+					JOptionPane.showOptionDialog(null, "Enter an existing Title ID please.", "Title ID Error.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
@@ -261,7 +262,7 @@ public class RentScreen implements FocusListener {
 				} catch (Exception exx) {
 					exx.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"There's no customer ID " + customerIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
@@ -276,7 +277,7 @@ public class RentScreen implements FocusListener {
 				} catch (Exception ex) {
 					ex.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"There's no customer ID " + customerIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
@@ -289,7 +290,7 @@ public class RentScreen implements FocusListener {
 
 					if (UnknownTitleType.isEmpty()) {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null,
+						JOptionPane.showOptionDialog(null,
 								"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;
@@ -297,7 +298,7 @@ public class RentScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
@@ -307,7 +308,7 @@ public class RentScreen implements FocusListener {
 
 				if(title.getAvailable() == 0) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"The Title of ID number "+title.getId()+" is already being rented.", "Can't Rent A Rented Title.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
@@ -322,7 +323,7 @@ public class RentScreen implements FocusListener {
 					
 					case 0:// has 4 ongoing rents
 						Object[] ongoing = { "Ok" };
-						int x = JOptionPane.showOptionDialog(null, "Can't proceed, customer has 4 ongoing rents \nregistered in the Membership Card.",
+						JOptionPane.showOptionDialog(null, "Can't proceed, customer has 4 ongoing rents \nregistered in the Membership Card.",
 								"Maximum ongoing rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 								logoIcon, ongoing, ongoing[0]);
 						return;
@@ -334,7 +335,7 @@ public class RentScreen implements FocusListener {
 
 				} else {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Customer is not allowed to rent " + title.getTitleTypeGUI()
 									+ " \nas the Customer's subscription is " + card.getSubscriptionPlan() + ".",
 							"Title Access Level Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,

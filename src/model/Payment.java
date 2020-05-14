@@ -42,7 +42,6 @@ public class Payment {
 		try {
 			newRent = new Rent(title.getPrice(), card.getCardID(), title.getId());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -50,7 +49,7 @@ public class Payment {
 		managementSystem.rentTitleByCash(newRent, customer, card);
 
 		Object[] transactionSucceeded = { "Ok" };
-		int j = JOptionPane.showOptionDialog(null,
+		JOptionPane.showOptionDialog(null,
 				"Rent Registered! \n" + customer.getCustomer_name() + " is now renting: " + title.getName()
 						+ ".\nFrom: " + newRent.getStartDate() + " \nUntil: " + newRent.getReturnDate() + ".",
 				"Rent Issued.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
@@ -65,13 +64,13 @@ public class Payment {
 		
 		case 0:// has no free rents
 			Object[] freerents = { "Ok" };
-			int j = JOptionPane.showOptionDialog(null, "Customer has no free rents available yet.",
+			JOptionPane.showOptionDialog(null, "Customer has no free rents available yet.",
 					"No available free rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 					logoIcon, freerents, freerents[0]);
 			return;
 			
 		case 1:// has free rents to claim
-
+			card.addOngoingRents();
 			card.payWithPoints();
 			
 			Rent newRent = null;
@@ -84,7 +83,7 @@ public class Payment {
 			managementSystem.rentTitleByPoints(newRent, customer, card);
 			
 			Object[] transactionSucceeded = { "Ok" };
-			int k = JOptionPane.showOptionDialog(null,
+			JOptionPane.showOptionDialog(null,
 					"Free Rent Registered! \n" + customer.getCustomer_name() + " is now renting: " + title.getName()
 							+ ".\nFrom: " + newRent.getStartDate() + " \nUntil: " + newRent.getReturnDate() + ".",
 					"Rent Issued.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
@@ -93,7 +92,7 @@ public class Payment {
 			break;
 		case 2:// has 4 ongoing rents
 			Object[] ongoing = { "Ok" };
-			int x = JOptionPane.showOptionDialog(null, "Customer has 4 ongoing rents.",
+			JOptionPane.showOptionDialog(null, "Customer has 4 ongoing rents.",
 					"Maximum ongoing rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 					logoIcon, ongoing, ongoing[0]);
 			return;

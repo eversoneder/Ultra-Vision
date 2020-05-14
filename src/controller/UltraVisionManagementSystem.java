@@ -1,9 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JFrame;
 
 import model.Rent;
 import model.UltraVisionDB;

@@ -56,12 +56,9 @@ public class SearchTitleScreen implements FocusListener {
 	public SearchTitleScreen() {
 		setAttributes();
 		setComponents();
+		searchTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
-	
-//	public static void main (String[]args) {
-//		new SearchTitleScreen();
-//	}
 
 	public void setAttributes() {
 		searchTitleScreen.setSize(1000, 650);
@@ -196,7 +193,7 @@ public class SearchTitleScreen implements FocusListener {
 
 				if (searchTitletf.getText().equals("search title")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
+					JOptionPane.showOptionDialog(null, "Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
 							"No search given.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -206,7 +203,7 @@ public class SearchTitleScreen implements FocusListener {
 
 				if (titleList.isEmpty()) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"No results for search: " + searchTitletf.getText() + ".", "No Results.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;

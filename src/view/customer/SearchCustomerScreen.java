@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -51,6 +50,7 @@ public class SearchCustomerScreen implements FocusListener {
 	public SearchCustomerScreen() {
 		setAttributes();
 		setComponents();
+		searchCustomerScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -174,7 +174,7 @@ public class SearchCustomerScreen implements FocusListener {
 
 				if (searchCustomertf.getText().equals("search customer")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
 							"No search given.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
@@ -184,7 +184,7 @@ public class SearchCustomerScreen implements FocusListener {
 
 				if (customerInfo.isEmpty()) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"No results for search: " + searchCustomertf.getText() + ".", "No Results.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;

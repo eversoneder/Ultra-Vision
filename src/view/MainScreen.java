@@ -6,24 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
 import view.customer.CustomerClassificationsScreen;
 import view.customer.DeleteCustomerScreen;
-import view.customer.NewCustomerScreen;
 import view.customer.SearchCustomerScreen;
 import view.customer.UpdateCustomerEnterIDScreen;
-import view.customer.UpdateCustomerScreen;
 import view.title.DeleteTitleScreen;
 import view.title.ReturnTitleScreen;
 import view.title.SearchTitleScreen;
@@ -41,15 +35,14 @@ public class MainScreen {
 	// it's not working. I was going to do this for all screens for faster UX
 	private KeyController keyListener = new KeyController(MainScreen);
 
-	private UltraVisionManagementSystem controller;
 
 	public MainScreen() {
 		setAttributes();
 		setComponents();
+		MainScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
-		
 	}
-
+	
 	public void setAttributes() {
 //		this.setExtendedState(JFrame.MAXIMIZED_BOTH);//was trying to do full screen
 		MainScreen.setSize(1300, 800);
@@ -58,15 +51,13 @@ public class MainScreen {
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
-		
 		// The problem is that the Key listener only works when the window is on focus
 		// if another window pops up, the focus is lost and has to be regained.
-		// So I added a window listner -Just integrated into the same keylistener class
+		// So I added a window listener -Just integrated into the same keylistener class
 		MainScreen.addKeyListener(keyListener);
 		MainScreen.addWindowListener(keyListener);
-		
 	}
-
+	
 	public void setComponents() {
 
 		JPanel backPanel = new JPanel();
@@ -97,14 +88,11 @@ public class MainScreen {
 
 		rentBtn(backPanel);
 		closeBtn(backPanel);
-
+		//sometimes the close Btn and the background \/ doesn't show up, i don't know why
 		JLabel background = new JLabel();
 		background.setIcon(new ImageIcon("img\\background.jpg"));
 		background.setBounds(0, 0, backPanel.getWidth(), backPanel.getHeight());
 		backPanel.add(background);
-		
-		
-		
 	}
 	
 	public void rentBtn(JPanel backPanel) {

@@ -1,17 +1,6 @@
 package model;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-
-import model.customer.Customer;
-import model.customer.MembershipCard;
-import model.enums.Media;
-import model.titles.BoxSet;
-import model.titles.Movie;
-import model.titles.MusicOrLive;
-import model.titles.Title;
 
 public final class Rent extends TimeDate{
 

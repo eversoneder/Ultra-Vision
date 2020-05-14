@@ -1,7 +1,5 @@
 package model.customer;
 
-import java.util.Random;
-
 public class Customer extends DebitOrCreditAccount {
 
 	private int id;

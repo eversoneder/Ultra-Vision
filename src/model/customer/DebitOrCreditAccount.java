@@ -1,8 +1,5 @@
 package model.customer;
 
-/**
- * Abstract class for each customer to extends
- */
 public class DebitOrCreditAccount {
 
 	private int accountID;

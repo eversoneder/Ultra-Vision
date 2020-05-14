@@ -44,6 +44,7 @@ public class MembershipCardScreen implements FocusListener {
 		this.newMembershipCard = newMembershipCard;
 		setAttributes();
 		setComponents();
+		membershipCardScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 	
@@ -60,6 +61,7 @@ public class MembershipCardScreen implements FocusListener {
 		membershipCardScreen.setResizable(false);
 		membershipCardScreen.setTitle("Card Issue");
 		membershipCardScreen.setLocationRelativeTo(null);
+		
 		membershipCardScreen.addKeyListener(keyListener);
 		membershipCardScreen.addWindowListener(keyListener);
 	}
@@ -173,7 +175,7 @@ public class MembershipCardScreen implements FocusListener {
 						|| memberpass.equals("create a password for your membership card")) {
 
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "All fields are required.",
+					JOptionPane.showOptionDialog(null, "All fields are required.",
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 							logoIcon, btns, btns[0]);
 					return;
@@ -181,7 +183,7 @@ public class MembershipCardScreen implements FocusListener {
 				// -----------------VALIDATE ACCOUNT NUMBER--------------------
 				if (!account.matches("(\\d{4}[-. ]?){4}|\\d{4}[-. ]?\\d{6}[-. ]?\\d{5}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Invalid account number. \nEnter a valid account please.\n format: 1111.2222.3333.4444", "Account Field Error",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
@@ -189,7 +191,7 @@ public class MembershipCardScreen implements FocusListener {
 				// --------------VALIDATE PASSWORD TO BE 8 DIGITS INT--------------------
 				if (!memberpass.matches("[0-9]{8}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.",
+					JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.",
 							"Membership Card Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 							logoIcon, btns, btns[0]);
 					return;

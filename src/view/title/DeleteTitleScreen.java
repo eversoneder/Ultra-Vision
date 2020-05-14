@@ -22,8 +22,6 @@ import javax.swing.JTextField;
 import controller.KeyController;
 import controller.UltraVisionManagementSystem;
 import model.titles.Title;
-import view.customer.DeleteCustomerScreen;
-import view.customer.SearchCustomerScreen;
 
 public class DeleteTitleScreen implements FocusListener {
 
@@ -39,11 +37,8 @@ public class DeleteTitleScreen implements FocusListener {
 	public DeleteTitleScreen() {
 		setAttributes();
 		setComponents();
+		deleteTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
-	}
-
-	public static void main(String[] args) {
-		new DeleteTitleScreen();
 	}
 
 	public void setAttributes() {
@@ -178,7 +173,7 @@ public class DeleteTitleScreen implements FocusListener {
 
 				if (!titleIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
+					JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
 							"Title ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -192,7 +187,7 @@ public class DeleteTitleScreen implements FocusListener {
 
 					if (UnknownTitleType.isEmpty()) {
 						Object[] btns = { "Ok" };
-						int i = JOptionPane.showOptionDialog(null,
+						JOptionPane.showOptionDialog(null,
 								"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;
@@ -200,7 +195,7 @@ public class DeleteTitleScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
@@ -212,12 +207,12 @@ public class DeleteTitleScreen implements FocusListener {
 				switch (a) {
 				case 0:
 					Object[] btns = { "Ok" };
-					int i = JOptionPane.showOptionDialog(null, "Title of ID " + title.getId() + " doesn't exist.",
+					JOptionPane.showOptionDialog(null, "Title of ID " + title.getId() + " doesn't exist.",
 							"Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				case 1:
 					Object[] btnss = { "Ok" };
-					int ii = JOptionPane.showOptionDialog(null,
+					JOptionPane.showOptionDialog(null,
 							"Title: " + title.getName() + ", ID: " + title.getId()
 									+ " was successfully deleted from the system.",
 							"Title Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
