@@ -30,7 +30,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 	
 	private JFrame authenticationScreen = new JFrame();
-	private KeyController keyListener = new KeyController(authenticationScreen);
+	private KeyController keyAndWindowListener = new KeyController(authenticationScreen);
 	
 	private MembershipCard card;
 	private Customer customer;
@@ -48,12 +48,20 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		unwrapTitle();
 		setAttributes();
 		setComponents();
-		authenticationScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
-	public CustomerAuthenticationScreen(int a) {
-
+	public void setAttributes() {
+		authenticationScreen.setSize(730, 330);
+		authenticationScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		authenticationScreen.setVisible(true);
+		authenticationScreen.setResizable(false);
+		authenticationScreen.setTitle("Customer Authentication");
+		authenticationScreen.setLocationRelativeTo(null);
+		authenticationScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
+		
+		authenticationScreen.addKeyListener(keyAndWindowListener);
+		authenticationScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {
@@ -97,18 +105,6 @@ public class CustomerAuthenticationScreen implements FocusListener {
 
 	}
 
-	public void setAttributes() {
-		authenticationScreen.setSize(730, 330);
-		authenticationScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		authenticationScreen.setVisible(true);
-		authenticationScreen.setResizable(false);
-		authenticationScreen.setTitle("Customer Authentication");
-		authenticationScreen.setLocationRelativeTo(null);
-		
-		authenticationScreen.addKeyListener(keyListener);
-		authenticationScreen.addWindowListener(keyListener);
-	}
-
 	public void validation() {
 		authenticationScreen.repaint();
 		authenticationScreen.validate();
@@ -136,7 +132,6 @@ public class CustomerAuthenticationScreen implements FocusListener {
 
 	public void promptPayment() {
 
-
 		Object[] payment = { "Pay by Points", "Cancel Transaction", "Pay by Cash" };
 		int i = JOptionPane.showOptionDialog(null,
 				"Choose payment form for \n" + title.getName() + ". Price: " + title.getPrice() + " €.",
@@ -160,7 +155,6 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	}
 
 	public void checkBalanceAndPay() {
-
 
 		// -------CHECK IF HAS MONEY---------
 		if (!customer.checkFunds(title.getPrice())) {

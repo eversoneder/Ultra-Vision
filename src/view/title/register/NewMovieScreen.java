@@ -29,11 +29,11 @@ import model.titles.Title;
 public class NewMovieScreen implements FocusListener {
 
 	private JFrame newLiveConcertScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newLiveConcertScreen);
+	private KeyController keyAndWindowListener = new KeyController(newLiveConcertScreen);
 
 	private Movie newMovie;
 
-	private UltraVisionManagementSystem managementSystem;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField movienametf;
 	private JTextField moviedirectortf;
@@ -45,7 +45,6 @@ public class NewMovieScreen implements FocusListener {
 	public NewMovieScreen() {
 		setAttributes();
 		setComponents();
-		newLiveConcertScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -56,9 +55,10 @@ public class NewMovieScreen implements FocusListener {
 		newLiveConcertScreen.setResizable(false);
 		newLiveConcertScreen.setTitle("Title Registration");
 		newLiveConcertScreen.setLocationRelativeTo(null);
+		newLiveConcertScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		newLiveConcertScreen.addKeyListener(keyListener);
-		newLiveConcertScreen.addWindowListener(keyListener);
+		newLiveConcertScreen.addKeyListener(keyAndWindowListener);
+		newLiveConcertScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {
@@ -272,7 +272,6 @@ public class NewMovieScreen implements FocusListener {
 					int titleType = new Title().getTitleTypeDB(AccessLevel.VL);
 					
 					newMovie = new Movie(titleType, selectedFormat, 1, name, pricedouble, genre, yorint, director, planID);
-					managementSystem = new UltraVisionManagementSystem(0);
 					int musicInsert = managementSystem.addNewTitle(newMovie);
 					
 					if (musicInsert == 0) {

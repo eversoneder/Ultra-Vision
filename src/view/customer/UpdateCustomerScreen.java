@@ -27,7 +27,7 @@ import model.customer.MembershipCard;
 public class UpdateCustomerScreen implements FocusListener {
 
 	private JFrame updateCustomerScreen = new JFrame();
-	private KeyController keyListener = new KeyController(updateCustomerScreen);
+	private KeyController keyAndWindowListener = new KeyController(updateCustomerScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -47,7 +47,6 @@ public class UpdateCustomerScreen implements FocusListener {
 		oldPass = card.getPassword();
 		setAttributes();
 		setComponents();
-		updateCustomerScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -58,9 +57,10 @@ public class UpdateCustomerScreen implements FocusListener {
 		updateCustomerScreen.setResizable(false);
 		updateCustomerScreen.setTitle("Ultra-Vision | Customer Information Update");
 		updateCustomerScreen.setLocationRelativeTo(null);
+		updateCustomerScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 
-		updateCustomerScreen.addKeyListener(keyListener);
-		updateCustomerScreen.addWindowListener(keyListener);
+		updateCustomerScreen.addKeyListener(keyAndWindowListener);
+		updateCustomerScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	private void setComponents() {

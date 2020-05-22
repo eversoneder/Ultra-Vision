@@ -28,7 +28,7 @@ import model.titles.Title;
 public class ReturnTitleScreen implements FocusListener {
 
 	private JFrame returnTitleScreen = new JFrame();
-	private KeyController keyListener = new KeyController(returnTitleScreen);
+	private KeyController keyAndWindowListener = new KeyController(returnTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -42,7 +42,6 @@ public class ReturnTitleScreen implements FocusListener {
 	public ReturnTitleScreen() {
 		setAttributes();
 		setComponents();
-		returnTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -53,9 +52,10 @@ public class ReturnTitleScreen implements FocusListener {
 		returnTitleScreen.setResizable(false);
 		returnTitleScreen.setTitle("Ultra-Vision | Return Title");
 		returnTitleScreen.setLocationRelativeTo(null);
-
-		returnTitleScreen.addKeyListener(keyListener);
-		returnTitleScreen.addWindowListener(keyListener);
+		returnTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
+		
+		returnTitleScreen.addKeyListener(keyAndWindowListener);
+		returnTitleScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {

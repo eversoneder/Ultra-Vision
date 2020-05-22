@@ -31,7 +31,7 @@ import view.title.SearchTitleScreen;
 public class RentScreen implements FocusListener {
 
 	private JFrame rentScreen = new JFrame();
-	private KeyController keyListener = new KeyController(rentScreen);
+	private KeyController keyAndWindowListener = new KeyController(rentScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 	
@@ -46,7 +46,6 @@ public class RentScreen implements FocusListener {
 	public RentScreen() {
 		setAttributes();
 		setComponents();
-		rentScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -57,9 +56,10 @@ public class RentScreen implements FocusListener {
 		rentScreen.setResizable(false);
 		rentScreen.setTitle("Rental Issue");
 		rentScreen.setLocationRelativeTo(null);
+		rentScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		rentScreen.addKeyListener(keyListener);
-		rentScreen.addWindowListener(keyListener);
+		rentScreen.addKeyListener(keyAndWindowListener);
+		rentScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	private void setComponents() {

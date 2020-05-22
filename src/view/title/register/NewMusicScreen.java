@@ -28,11 +28,11 @@ import model.titles.MusicOrLive;
 public class NewMusicScreen implements FocusListener {
 
 	private JFrame newMusicScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newMusicScreen);
+	private KeyController keyAndWindowListener = new KeyController(newMusicScreen);
 
 	private MusicOrLive newMusic;
 
-	private UltraVisionManagementSystem managementSystem;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField musicnametf;
 	private JTextField musicsingertf;
@@ -45,7 +45,6 @@ public class NewMusicScreen implements FocusListener {
 	public NewMusicScreen() {
 		setAttributes();
 		setComponents();
-		newMusicScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -56,9 +55,10 @@ public class NewMusicScreen implements FocusListener {
 		newMusicScreen.setResizable(false);
 		newMusicScreen.setTitle("Title Registration");
 		newMusicScreen.setLocationRelativeTo(null);
+		newMusicScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		newMusicScreen.addKeyListener(keyListener);
-		newMusicScreen.addWindowListener(keyListener);
+		newMusicScreen.addKeyListener(keyAndWindowListener);
+		newMusicScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {
@@ -288,7 +288,6 @@ public class NewMusicScreen implements FocusListener {
 					int planID = AccessLevel.ML.getSubscriptionID();
 					
 					newMusic = new MusicOrLive(1, selectedFormat, name, pricedouble, genre, yorint, singer, band, planID);
-					managementSystem = new UltraVisionManagementSystem(0);
 					int musicInsert = managementSystem.addNewTitle(newMusic);
 			
 					if (musicInsert == 0) {

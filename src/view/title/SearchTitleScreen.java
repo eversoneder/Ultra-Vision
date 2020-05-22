@@ -34,11 +34,10 @@ import model.titles.MusicOrLive;
 public class SearchTitleScreen implements FocusListener {
 
 	private JFrame searchTitleScreen = new JFrame();
-	private KeyController keyListener = new KeyController(searchTitleScreen);
+	private KeyController keyAndWindowListener = new KeyController(searchTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
-	private ArrayList<Object> titleList = new ArrayList<>();
 	private ArrayList<MusicOrLive> musicOrLiveList = new ArrayList<>();
 	private ArrayList<Movie> movieList = new ArrayList<>();
 	private ArrayList<BoxSet> boxSetList = new ArrayList<>();
@@ -48,15 +47,14 @@ public class SearchTitleScreen implements FocusListener {
 
 	private JComboBox<String> filter;
 
-	private JTable table;
-	private DefaultTableModel model; //global model
 	private String[] ColumnNames;
 	private JPanel panelToLayTable;
-	
+
+	private JScrollPane scrollpane;
+
 	public SearchTitleScreen() {
 		setAttributes();
 		setComponents();
-		searchTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -67,11 +65,11 @@ public class SearchTitleScreen implements FocusListener {
 		searchTitleScreen.setResizable(false);
 		searchTitleScreen.setTitle("Ultra-Vision | Title Search");
 		searchTitleScreen.setLocationRelativeTo(null);
+		searchTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		searchTitleScreen.addKeyListener(keyListener);
-		searchTitleScreen.addWindowListener(keyListener);
+		searchTitleScreen.addKeyListener(keyAndWindowListener);
+		searchTitleScreen.addWindowListener(keyAndWindowListener);
 	}
-	
 
 	public void setComponents() {
 
@@ -110,7 +108,7 @@ public class SearchTitleScreen implements FocusListener {
 		searchbarPanel.setBackground(new Color(0, 80, 110));
 		searchbarPanel.setBounds(180, 0, 600, 70);
 		backRectangle.add(searchbarPanel);
-		
+
 		panelToLayTable = new JPanel();
 		panelToLayTable.setLayout(null);
 		panelToLayTable.setBackground(Color.WHITE);
@@ -193,34 +191,35 @@ public class SearchTitleScreen implements FocusListener {
 
 				if (searchTitletf.getText().equals("search title")) {
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null, "Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
+					JOptionPane.showOptionDialog(null,
+							"Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
 							"No search given.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
 				}
 
-				titleList = managementSystem.setSearchGetTitleList(searchTitletf.getText(), entityName);
+				ArrayList<Object> titleList = managementSystem.setSearchGetTitleList(searchTitletf.getText(),
+						entityName);
 
 				if (titleList.isEmpty()) {
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null,
-							"No results for search: " + searchTitletf.getText() + ".", "No Results.",
-							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					JOptionPane.showOptionDialog(null, "No results for search: " + searchTitletf.getText() + ".",
+							"No Results.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
 					return;
+
 				} else {
+
+					if (!musicOrLiveList.isEmpty() || !movieList.isEmpty() || !boxSetList.isEmpty()) {
+						musicOrLiveList.clear();// remove old list to initiate new one
+						movieList.clear();
+						boxSetList.clear();
+						panelToLayTable.remove(scrollpane);
+					}
+
 					unwrapTitles(titleList);
-					setColumnHeaders();
-					populateModel();
-					tableInit();
-					
-					
-					//here i reset all data from lists when populated already the table
-					//yes
-					//maybe i should reset model??
-					titleList = new ArrayList<>();
-					musicOrLiveList = new ArrayList<>();
-					movieList = new ArrayList<>();
-					boxSetList = new ArrayList<>();
+					tableInit(titleList);
+					titleList.clear();
 				}
 			}
 		});
@@ -246,47 +245,120 @@ public class SearchTitleScreen implements FocusListener {
 
 	}
 
-	public void tableInit() {
-		
-		table = new JTable(model);
-		
+	public void tableInit(ArrayList<Object> titleList) {
+
+		DefaultTableModel model = new DefaultTableModel();
+		model = populateModel(titleList, model);
+
+		JTable table = new JTable(model);
+
 		table.setRowHeight(30);
 		table.setGridColor(new Color(0, 80, 110));
 		table.setFont(new Font("Tahoma", Font.BOLD, 12));
 		table.setEnabled(false);
-		
-		JScrollPane scrollpane = new JScrollPane(table);
+
+		scrollpane = new JScrollPane(table);
 		scrollpane.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
-		table.setPreferredScrollableViewportSize(new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight())); 
-		table.setFillsViewportHeight(true); 
-		
+		table.setPreferredScrollableViewportSize(
+				new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight()));
+		table.setFillsViewportHeight(true);
+
 		panelToLayTable.add(scrollpane);
 	}
 
-	public void setColumnHeaders() {
+	public DefaultTableModel setColumnHeaders(DefaultTableModel model) {
 
-		model = new DefaultTableModel();
-		
 		switch (filter.getSelectedItem().toString()) {
 		case "Music":
-			ColumnNames = new String[] { "Title ID", "Music Name", "Music Singer", "Music Band", "Music Genre", "Year of Release",
-					"Disc Type", "Price", "Availability" };
+			ColumnNames = new String[] { "Title ID", "Music Name", "Music Singer", "Music Band", "Music Genre",
+					"Year of Release", "Disc Type", "Price", "Availability" };
 			break;
 		case "Live Concert":
 			ColumnNames = new String[] { "Title ID", "Concert Name", "Concert Singer", "Concert Band", "Concert Genre",
 					"Year of Release", "Disc Type", "Price", "Availability" };
 			break;
 		case "Movie":
-			ColumnNames = new String[] { "Title ID", "Movie Name", "Movie Genre", "Movie Director", "Year of Release", "Disc Type",
-					"Price", "Availability" };
+			ColumnNames = new String[] { "Title ID", "Movie Name", "Movie Genre", "Movie Director", "Year of Release",
+					"Disc Type", "Price", "Availability" };
 			break;
 		case "Box Set":
-			ColumnNames = new String[] { "Title ID", "Box Set Name", "Box Set Genre", "Number of Films", "Disc Type", "Price",
-					"Availability" };
+			ColumnNames = new String[] { "Title ID", "Box Set Name", "Box Set Genre", "Number of Films", "Disc Type",
+					"Price", "Availability" };
 			break;
 		}
 		model.setColumnIdentifiers(ColumnNames);
 		model.setColumnCount(ColumnNames.length);
+
+		return model;
+	}
+
+	public DefaultTableModel populateModel(ArrayList<Object> titleList, DefaultTableModel model) {
+
+		model = setColumnHeaders(model);
+
+		Object[] tablePopulation;
+
+		switch (filter.getSelectedItem().toString()) {
+		case "Music":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = musicOrLiveList.get(i).getId();
+				tablePopulation[1] = musicOrLiveList.get(i).getName();
+				tablePopulation[2] = musicOrLiveList.get(i).getSinger();
+				tablePopulation[3] = musicOrLiveList.get(i).getBand();
+				tablePopulation[4] = musicOrLiveList.get(i).getGenre();
+				tablePopulation[5] = musicOrLiveList.get(i).getYearOfRelease();
+				tablePopulation[6] = musicOrLiveList.get(i).getDiscFormatGUI();
+				tablePopulation[7] = musicOrLiveList.get(i).getPrice();
+				tablePopulation[8] = musicOrLiveList.get(i).getAvailable() == 1 ? "In-Stock" : "Rented";
+
+				model.addRow(tablePopulation);
+			}
+			break;
+		case "Live Concert":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = musicOrLiveList.get(i).getId();
+				tablePopulation[1] = musicOrLiveList.get(i).getName();
+				tablePopulation[2] = musicOrLiveList.get(i).getSinger();
+				tablePopulation[3] = musicOrLiveList.get(i).getBand();
+				tablePopulation[4] = musicOrLiveList.get(i).getGenre();
+				tablePopulation[5] = musicOrLiveList.get(i).getYearOfRelease();
+				tablePopulation[6] = musicOrLiveList.get(i).getDiscFormatGUI();
+				tablePopulation[7] = musicOrLiveList.get(i).getPrice();
+				tablePopulation[8] = musicOrLiveList.get(i).getAvailable() == 1 ? "In-Stock" : "Rented";
+				model.addRow(tablePopulation);
+			}
+			break;
+		case "Movie":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = movieList.get(i).getId();
+				tablePopulation[1] = movieList.get(i).getName();
+				tablePopulation[2] = movieList.get(i).getGenre();
+				tablePopulation[3] = movieList.get(i).getDirector();
+				tablePopulation[4] = movieList.get(i).getYearOfRelease();
+				tablePopulation[5] = movieList.get(i).getDiscFormatGUI();
+				tablePopulation[6] = movieList.get(i).getPrice();
+				tablePopulation[7] = movieList.get(i).getAvailable() == 1 ? "In-Stock" : "Rented";
+				model.addRow(tablePopulation);
+			}
+			break;
+		case "Box Set":
+			tablePopulation = new Object[ColumnNames.length];
+			for (int i = 0; i < titleList.size(); i++) {
+				tablePopulation[0] = boxSetList.get(i).getId();
+				tablePopulation[1] = boxSetList.get(i).getName();
+				tablePopulation[2] = boxSetList.get(i).getGenre();
+				tablePopulation[3] = boxSetList.get(i).getNumOfDiscs();
+				tablePopulation[4] = boxSetList.get(i).getDiscFormatGUI();
+				tablePopulation[5] = boxSetList.get(i).getPrice();
+				tablePopulation[6] = boxSetList.get(i).getAvailable() == 1 ? "In-Stock" : "Rented";
+				model.addRow(tablePopulation);
+			}
+			break;
+		}
+		return model;
 	}
 
 	public void unwrapTitles(ArrayList<Object> titles) {
@@ -306,76 +378,6 @@ public class SearchTitleScreen implements FocusListener {
 		}
 	}
 
-	public void populateModel() {
-		
-		Object[] tablePopulation;
-		switch (filter.getSelectedItem().toString()) {
-		case "Music":
-			tablePopulation = new Object[ColumnNames.length];
-			for (int i = 0; i < titleList.size(); i++) {
-				tablePopulation[0] = musicOrLiveList.get(i).getId();
-				tablePopulation[1] = musicOrLiveList.get(i).getName();
-				tablePopulation[2] = musicOrLiveList.get(i).getSinger();
-				tablePopulation[3] = musicOrLiveList.get(i).getBand();
-				tablePopulation[4] = musicOrLiveList.get(i).getGenre();
-				tablePopulation[5] = musicOrLiveList.get(i).getYearOfRelease();
-				tablePopulation[6] = musicOrLiveList.get(i).getDiscFormatGUI();
-				tablePopulation[7] = musicOrLiveList.get(i).getPrice();
-				tablePopulation[8] = musicOrLiveList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
-
-				model.addRow(tablePopulation);
-			}
-			break;
-		case "Live Concert":
-			tablePopulation = new Object[ColumnNames.length];
-			for (int i = 0; i < titleList.size(); i++) {
-				tablePopulation[0] = musicOrLiveList.get(i).getId();
-				tablePopulation[1] = musicOrLiveList.get(i).getName();
-				tablePopulation[2] = musicOrLiveList.get(i).getSinger();
-				tablePopulation[3] = musicOrLiveList.get(i).getBand();
-				tablePopulation[4] = musicOrLiveList.get(i).getGenre();
-				tablePopulation[5] = musicOrLiveList.get(i).getYearOfRelease();
-				tablePopulation[6] = musicOrLiveList.get(i).getDiscFormatGUI();
-				tablePopulation[7] = musicOrLiveList.get(i).getPrice();
-				tablePopulation[8] = musicOrLiveList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
-				model.addRow(tablePopulation);
-			}
-			break;
-		case "Movie":
-			tablePopulation = new Object[ColumnNames.length];
-			for (int i = 0; i < titleList.size(); i++) {
-				tablePopulation[0] = movieList.get(i).getId();
-				tablePopulation[1] = movieList.get(i).getName();
-				tablePopulation[2] = movieList.get(i).getGenre();
-				tablePopulation[3] = movieList.get(i).getDirector();
-				tablePopulation[4] = movieList.get(i).getYearOfRelease();
-				tablePopulation[5] = movieList.get(i).getDiscFormatGUI();
-				tablePopulation[6] = movieList.get(i).getPrice();
-				tablePopulation[7] = movieList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
-				model.addRow(tablePopulation);
-			}
-			break;
-		case "Box Set":
-			tablePopulation = new Object[ColumnNames.length];
-			for (int i = 0; i < titleList.size(); i++) {
-				tablePopulation[0] = boxSetList.get(i).getId();
-				tablePopulation[1] = boxSetList.get(i).getName();
-				tablePopulation[2] = boxSetList.get(i).getGenre();
-				tablePopulation[3] = boxSetList.get(i).getNumOfDiscs();
-				tablePopulation[4] = boxSetList.get(i).getDiscFormatGUI();
-				tablePopulation[5] = boxSetList.get(i).getPrice();
-				tablePopulation[6] = boxSetList.get(i).getAvailable() == 1? "In-Stock" : "Rented";
-				model.addRow(tablePopulation);
-			}
-			break;
-		}
-	}
-
-	public void validation() {
-		searchTitleScreen.repaint();
-		searchTitleScreen.validate();
-	}
-
 	/**
 	 * @return the searchTitletf
 	 */
@@ -388,6 +390,11 @@ public class SearchTitleScreen implements FocusListener {
 	 */
 	public void setSearchTitletf(JTextField searchTitletf) {
 		this.searchTitletf = searchTitletf;
+	}
+
+	public void validation() {
+		searchTitleScreen.repaint();
+		searchTitleScreen.validate();
 	}
 
 	@Override

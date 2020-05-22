@@ -29,11 +29,11 @@ import model.titles.Title;
 public class NewBoxSetScreen implements FocusListener {
 
 	private JFrame newBoxSetScreen = new JFrame();
-	private KeyController keyListener = new KeyController(newBoxSetScreen);
+	private KeyController keyAndWindowListener = new KeyController(newBoxSetScreen);
 
 	private BoxSet newBoxSet;
 
-	private UltraVisionManagementSystem managementSystem;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField boxSetnametf;
 	private JTextField numberoffilmstf;
@@ -45,7 +45,6 @@ public class NewBoxSetScreen implements FocusListener {
 	public NewBoxSetScreen() {
 		setAttributes();
 		setComponents();
-		newBoxSetScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -56,9 +55,10 @@ public class NewBoxSetScreen implements FocusListener {
 		newBoxSetScreen.setResizable(false);
 		newBoxSetScreen.setTitle("Title Registration");
 		newBoxSetScreen.setLocationRelativeTo(null);
+		newBoxSetScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		newBoxSetScreen.addKeyListener(keyListener);
-		newBoxSetScreen.addWindowListener(keyListener);
+		newBoxSetScreen.addKeyListener(keyAndWindowListener);
+		newBoxSetScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {
@@ -282,7 +282,6 @@ public class NewBoxSetScreen implements FocusListener {
 //					int titleType, Media discFormat, int available, String name, double price, int yor,
 //					int numOfDiscs, int plan) {
 					newBoxSet = new BoxSet(titleType, selectedFormat, 1, name, pricedouble, yorint, numdiscs, genre, planID);
-					managementSystem = new UltraVisionManagementSystem(0);
 					int musicInsert = managementSystem.addNewTitle(newBoxSet);
 
 					if (musicInsert == 0) {

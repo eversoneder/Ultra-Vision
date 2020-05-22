@@ -25,7 +25,7 @@ import model.customer.Customer;
 public class DeleteCustomerScreen implements FocusListener {
 
 	private JFrame deleteCustomerScreen = new JFrame();
-	private KeyController keyListener = new KeyController(deleteCustomerScreen);
+	private KeyController keyAndWindowListener = new KeyController(deleteCustomerScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -36,7 +36,6 @@ public class DeleteCustomerScreen implements FocusListener {
 	public DeleteCustomerScreen() {
 		setAttributes();
 		setComponents();
-		deleteCustomerScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -47,9 +46,10 @@ public class DeleteCustomerScreen implements FocusListener {
 		deleteCustomerScreen.setResizable(false);
 		deleteCustomerScreen.setTitle("Ultra-Vision | Cancel Customer Subscription");
 		deleteCustomerScreen.setLocationRelativeTo(null);
+		deleteCustomerScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 
-		deleteCustomerScreen.addKeyListener(keyListener);
-		deleteCustomerScreen.addWindowListener(keyListener);
+		deleteCustomerScreen.addKeyListener(keyAndWindowListener);
+		deleteCustomerScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {

@@ -29,26 +29,19 @@ import view.customer.SearchCustomerScreen;
 public class UpdateCustomerEnterIDScreen implements FocusListener {
 
 	private JFrame returnTitleScreen = new JFrame();
-	private KeyController keyListener = new KeyController(returnTitleScreen);
-
-	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
-
-	private JTextField customerIDtf;
-
+	private KeyController keyAndWindowListener = new KeyController(returnTitleScreen);
+	
 	private Customer customer = new Customer();
 	private MembershipCard card = new MembershipCard();
 	
-	private Title title = new Title();
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
+	private JTextField customerIDtf;
+	
 	public UpdateCustomerEnterIDScreen() {
 		setAttributes();
 		setComponents();
-		returnTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
-	}
-
-	public static void main(String[] args) {
-		new UpdateCustomerEnterIDScreen();
 	}
 
 	public void setAttributes() {
@@ -58,9 +51,10 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 		returnTitleScreen.setResizable(false);
 		returnTitleScreen.setTitle("Ultra-Vision | Update Customer");
 		returnTitleScreen.setLocationRelativeTo(null);
+		returnTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 
-		returnTitleScreen.addKeyListener(keyListener);
-		returnTitleScreen.addWindowListener(keyListener);
+		returnTitleScreen.addKeyListener(keyAndWindowListener);
+		returnTitleScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {
@@ -255,7 +249,6 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;
 					}
-					
 					new UpdateCustomerScreen(customer, card);
 				}
 
@@ -274,26 +267,6 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 				confirmBtn.setBounds(515, 123, 170, 80);
 			}
 		});
-	}
-
-	/**
-	 * @param unknowntitletype the ArrayList of object title types
-	 */
-	public void unwrapTitle(ArrayList<Object> unknowntitletype) {
-
-		for (Object obj : unknowntitletype) {
-			switch (obj.getClass().getName()) {// or filter.getName()
-			case "model.titles.MusicOrLive":
-				title = (Title) obj;
-				break;
-			case "model.titles.Movie":
-				title = (Title) obj;
-				break;
-			case "model.titles.BoxSet":
-				title = (Title) obj;
-				break;
-			}
-		}
 	}
 
 	public void validation() {

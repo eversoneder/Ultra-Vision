@@ -23,13 +23,25 @@ import view.title.register.NewMusicScreen;
 public class TitleClassificationsScreen {
 
 	private JFrame titleClassifications = new JFrame();
-	private KeyController keyListener = new KeyController(titleClassifications);
+	private KeyController keyAndWindowListener = new KeyController(titleClassifications);
 
 	public TitleClassificationsScreen() {
 		setAttributes();
 		setComponents();
-		titleClassifications.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
+	}
+
+	public void setAttributes() {
+		titleClassifications.setSize(950, 300);
+		titleClassifications.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		titleClassifications.setVisible(true);
+		titleClassifications.setResizable(false);
+		titleClassifications.setTitle("Choose Title Classification");
+		titleClassifications.setLocationRelativeTo(null);
+		titleClassifications.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
+		
+		titleClassifications.addKeyListener(keyAndWindowListener);
+		titleClassifications.addWindowListener(keyAndWindowListener);
 	}
 
 	private void setComponents() {
@@ -64,18 +76,6 @@ public class TitleClassificationsScreen {
 		backPanel.add(boxSetLabel);
 
 		buttons(backPanel);
-	}
-
-	public void setAttributes() {
-		titleClassifications.setSize(950, 300);
-		titleClassifications.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		titleClassifications.setVisible(true);
-		titleClassifications.setResizable(false);
-		titleClassifications.setTitle("Choose Title Classification");
-		titleClassifications.setLocationRelativeTo(null);
-		
-		titleClassifications.addKeyListener(keyListener);
-		titleClassifications.addWindowListener(keyListener);
 	}
 
 	public void buttons(JPanel backPanel) {

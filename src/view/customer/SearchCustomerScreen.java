@@ -31,32 +31,25 @@ import model.customer.MembershipCard;
 public class SearchCustomerScreen implements FocusListener {
 
 	private JFrame searchCustomerScreen = new JFrame();
-	private KeyController keyListener = new KeyController(searchCustomerScreen);
+	private KeyController keyAndWindowListener = new KeyController(searchCustomerScreen);
 
-	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
-
-	private ArrayList<Object> customerInfo;
 	private ArrayList<Customer> customerList = new ArrayList<>();
 	private ArrayList<MembershipCard> membershipCardList = new ArrayList<>();
+	
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField searchCustomertf;
 	private JButton searchBtn;
 
-	private JTable table;
-	private DefaultTableModel model;
-	private String[] ColumnNames;
 	private JPanel panelToLayTable;
+
+	private JScrollPane scrollpane;// the scroll pane that has the viewport(table)
 
 	public SearchCustomerScreen() {
 		setAttributes();
 		setComponents();
-		searchCustomerScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
-
-//	public static void main(String[] args) {
-//		new SearchCustomerScreen();
-//	}
 
 	public void setAttributes() {
 		searchCustomerScreen.setSize(1000, 650);
@@ -64,10 +57,11 @@ public class SearchCustomerScreen implements FocusListener {
 		searchCustomerScreen.setVisible(true);
 		searchCustomerScreen.setResizable(false);
 		searchCustomerScreen.setTitle("Ultra-Vision | Customer Search");
+		searchCustomerScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		searchCustomerScreen.setLocationRelativeTo(null);
-		
-		searchCustomerScreen.addKeyListener(keyListener);
-		searchCustomerScreen.addWindowListener(keyListener);
+
+		searchCustomerScreen.addKeyListener(keyAndWindowListener);
+		searchCustomerScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {
@@ -175,27 +169,35 @@ public class SearchCustomerScreen implements FocusListener {
 				if (searchCustomertf.getText().equals("search customer")) {
 					Object[] btns = { "Ok" };
 					JOptionPane.showOptionDialog(null,
-							"Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
+							"Write something to search. \nTip: if you want to see all customers let the \nsearch be \" \" (space).",
 							"No search given.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
-				}
-				customerInfo = managementSystem.setSearchGetCustomerList(searchCustomertf.getText());
 
-				if (customerInfo.isEmpty()) {
-					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null,
-							"No results for search: " + searchCustomertf.getText() + ".", "No Results.",
-							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-					return;
 				} else {
-					unwrapTitles(customerInfo);
-					populateModel();
-					tableInit();
+
+					ArrayList<Object> customerAndCard = managementSystem
+							.setSearchGetCustomerList(searchCustomertf.getText());
+
+					if (customerAndCard.isEmpty()) {
+						Object[] btns = { "Ok" };
+						JOptionPane.showOptionDialog(null, "No results for search: " + searchCustomertf.getText() + ".",
+								"No Results.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+								btns[0]);
+						return;
+					} else {
+						
+						if(!customerList.isEmpty()) {// remove old list to initiate new one
+							customerList.clear();
+							membershipCardList.clear();
+							panelToLayTable.remove(scrollpane);
+						}
+						
+						unwrapTitles(customerAndCard);
+						tableInit();
+						customerAndCard.clear();
+					}
 				}
-				customerInfo.clear();
-				customerList.clear();
-				membershipCardList.clear();
 			}
 		});
 		searchBtn.addMouseListener(new MouseAdapter() {
@@ -211,43 +213,10 @@ public class SearchCustomerScreen implements FocusListener {
 			}
 		});
 	}
+	
+	public DefaultTableModel populateModel(DefaultTableModel model) {
 
-	public void tableInit() {
-
-		table = new JTable(model);
-
-		table.setRowHeight(30);
-		table.setGridColor(new Color(0, 80, 110));
-		table.setFont(new Font("Tahoma", Font.BOLD, 12));
-		table.setEnabled(false);
-		
-		JScrollPane scrollpane = new JScrollPane(table);
-		scrollpane.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
-		table.setPreferredScrollableViewportSize(new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight()));
-		table.setFillsViewportHeight(true);
-
-		panelToLayTable.add(scrollpane);
-	}
-
-	public void unwrapTitles(ArrayList<Object> customerInfo) {
-
-		for (Object obj : customerInfo) {
-			switch (obj.getClass().getName()) {// or filter.getName()
-			case "model.customer.MembershipCard":
-				membershipCardList.add((MembershipCard) obj);
-				break;
-			case "model.customer.Customer":
-				customerList.add((Customer) obj);
-				break;
-			}
-		}
-	}
-
-	public void populateModel() {
-
-		model = new DefaultTableModel();
-
-		ColumnNames = new String[] { "ID", "Name", "Phone", "E-mail", "Card ID", "Ongoing Rents",
+		String[] ColumnNames = new String[] { "ID", "Name", "Phone", "E-mail", "Card ID", "Ongoing Rents",
 				"Available Free Rents", "Points", "Subscription" };
 
 		model.setColumnIdentifiers(ColumnNames);
@@ -280,11 +249,45 @@ public class SearchCustomerScreen implements FocusListener {
 			}
 			model.addRow(tablePopulation);
 		}
+		return model;
 	}
 
-	public void validation() {
-		searchCustomerScreen.repaint();
-		searchCustomerScreen.validate();
+	public void tableInit() {
+
+		DefaultTableModel model = new DefaultTableModel();
+		model = populateModel(model);
+
+		JTable table = new JTable(model);
+
+		table.setRowHeight(30);
+		table.setGridColor(new Color(0, 80, 110));
+		table.setFont(new Font("Tahoma", Font.BOLD, 12));
+		table.setEnabled(false);
+
+		scrollpane = new JScrollPane(table);
+		scrollpane.setBounds(0, 0, panelToLayTable.getWidth(), panelToLayTable.getHeight());
+		table.setPreferredScrollableViewportSize(
+				new Dimension(panelToLayTable.getWidth(), panelToLayTable.getHeight()));
+		table.setFillsViewportHeight(true);
+
+		panelToLayTable.add(scrollpane);
+	}
+
+	/**
+	 * @param customerAndCard to be unwrapped
+	 */
+	public void unwrapTitles(ArrayList<Object> customerAndCard) {
+
+		for (Object obj : customerAndCard) {
+			switch (obj.getClass().getName()) {// or filter.getName()
+			case "model.customer.MembershipCard":
+				membershipCardList.add((MembershipCard) obj);
+				break;
+			case "model.customer.Customer":
+				customerList.add((Customer) obj);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -299,6 +302,11 @@ public class SearchCustomerScreen implements FocusListener {
 	 */
 	public void setSearchTitletf(JTextField searchCustomertf) {
 		this.searchCustomertf = searchCustomertf;
+	}
+
+	public void validation() {
+		searchCustomerScreen.repaint();
+		searchCustomerScreen.validate();
 	}
 
 	@Override

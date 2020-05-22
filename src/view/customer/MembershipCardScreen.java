@@ -28,9 +28,9 @@ public class MembershipCardScreen implements FocusListener {
 
 	private JButton cancelBtn;
 	private JFrame membershipCardScreen = new JFrame();
-	private KeyController keyListener = new KeyController(membershipCardScreen);
+	private KeyController keyAndWindowListener = new KeyController(membershipCardScreen);
 
-	private UltraVisionManagementSystem managementSystem;
+	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private MembershipCard newMembershipCard;
 	private Customer newCustomer;
@@ -44,13 +44,6 @@ public class MembershipCardScreen implements FocusListener {
 		this.newMembershipCard = newMembershipCard;
 		setAttributes();
 		setComponents();
-		membershipCardScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
-		validation();
-	}
-	
-	public MembershipCardScreen() {
-		setAttributes();
-		setComponents();
 		validation();
 	}
 
@@ -61,9 +54,10 @@ public class MembershipCardScreen implements FocusListener {
 		membershipCardScreen.setResizable(false);
 		membershipCardScreen.setTitle("Card Issue");
 		membershipCardScreen.setLocationRelativeTo(null);
+		membershipCardScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		
-		membershipCardScreen.addKeyListener(keyListener);
-		membershipCardScreen.addWindowListener(keyListener);
+		membershipCardScreen.addKeyListener(keyAndWindowListener);
+		membershipCardScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {
@@ -199,7 +193,6 @@ public class MembershipCardScreen implements FocusListener {
 
 // ---UPLOAD CUSTOMER TO DB TO GET IT'S ID TO ATTACH TO ACCOUNT & MEMBERSHIP CARD ---
 // newCustomer will be updated with customer_id in return
-				managementSystem = new UltraVisionManagementSystem(0);
 				newCustomer = managementSystem.addNewCustomer(newCustomer);
 			
 // ---UPLOAD CUSTOMER ACCOUNT TO DB---

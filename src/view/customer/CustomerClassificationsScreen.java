@@ -21,13 +21,25 @@ import model.enums.AccessLevel;
 public class CustomerClassificationsScreen {
 
 	private JFrame customerClassifications = new JFrame();
-	private KeyController keyListener = new KeyController(customerClassifications);
+	private KeyController keyAndWindowListener = new KeyController(customerClassifications);
 
 	public CustomerClassificationsScreen() {
 		setAttributes();
 		setComponents();
-		customerClassifications.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
+	}
+
+	public void setAttributes() {
+		customerClassifications.setSize(950, 300);
+		customerClassifications.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		customerClassifications.setVisible(true);
+		customerClassifications.setResizable(false);
+		customerClassifications.setTitle("Subscription Plan");
+		customerClassifications.setLocationRelativeTo(null);
+		customerClassifications.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
+		
+		customerClassifications.addKeyListener(keyAndWindowListener);
+		customerClassifications.addWindowListener(keyAndWindowListener);
 	}
 
 	private void setComponents() {
@@ -62,18 +74,6 @@ public class CustomerClassificationsScreen {
 		backPanel.add(premium);
 
 		buttons(backPanel);
-	}
-
-	public void setAttributes() {
-		customerClassifications.setSize(950, 300);
-		customerClassifications.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		customerClassifications.setVisible(true);
-		customerClassifications.setResizable(false);
-		customerClassifications.setTitle("Subscription Plan");
-		customerClassifications.setLocationRelativeTo(null);
-		
-		customerClassifications.addKeyListener(keyListener);
-		customerClassifications.addWindowListener(keyListener);
 	}
 
 	public void buttons(JPanel backPanel) {

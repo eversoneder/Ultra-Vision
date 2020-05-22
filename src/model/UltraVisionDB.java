@@ -22,13 +22,9 @@ import model.titles.Title;
  */
 public class UltraVisionDB {
 
-	private String dbHost = "jdbc:mysql://apontejaj.com:3306/everson" + "?useSSL=false";
-	private String user = "everson";
-	private String password = "everson";
-	
-//	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb" + "?useSSL=false";
-//	private String user = "root";
-//	private String password = "pass1234!";
+	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb" + "?useSSL=false";
+	private String user = "root";
+	private String password = "pass1234!";
 
 	Connection con = null;
 	Statement st = null;
@@ -55,71 +51,10 @@ public class UltraVisionDB {
 	}
 
 	/**
-	 * closes Statement and Connection
-	 */
-	private void closings() {
-		try {
-			st.close();
-			con.close();
-		} catch (SQLException ex) {
-			Logger.getLogger(UltraVisionDB.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
-
-	/**
-	 * @param query the query to execute (reusable method)
-	 * @return ResultSet of query given
-	 */
-	private ResultSet executeQueryRS(String query) {
-
-		ResultSet rs = null;
-		try {
-			rs = st.executeQuery(query);
-			rs.next();
-		} catch (SQLException sqle) {
-			exceptionMessages(sqle);
-			sqle.printStackTrace();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return rs;
-	}
-
-	/**
-	 * @param query query to execute update
-	 * @return int 1 if succeed, 0 if fail 
-	 */
-	private int executeUpdateRS(String query) {
-
-		int rsi = 0;
-		try {
-			st.executeUpdate(query);
-			rsi = 1;
-		} catch (SQLException sqle) {
-			exceptionMessages(sqle);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return rsi;
-	}
-
-	/**
-	 * @param sqle exception messages to execute if error occurs(breaking down code)
-	 */
-	private void exceptionMessages(SQLException sqle) {
-		while (sqle != null) {
-			System.out.println("State: " + sqle.getSQLState());
-			System.out.println("Message: " + sqle.getMessage());
-			System.out.println("Error: " + sqle.getErrorCode());
-			sqle = sqle.getNextException();
-		}
-	}
-	
-	/**
 	 * @param customerID to query DB
 	 * @return Customer
 	 */
-	public Customer getCustomerInfoByID(int customerID) {
+	public Customer getCustomerInfoByID(int customerID) {//*
 		
 		String getCustInfo = "SELECT * FROM debit_or_credit_account dc " + 
 				"INNER JOIN customer c ON dc.customer_id = c.customer_id " + 
@@ -135,7 +70,7 @@ public class UltraVisionDB {
 	 * @param query to query DB
 	 * @return Customer
 	 */
-	public Customer loadCustomerInfoByID(String query) {
+	public Customer loadCustomerInfoByID(String query) {//*
 		
 		ResultSet rs = executeQueryRS(query);
 		Customer newCustomer = null;
@@ -163,7 +98,7 @@ public class UltraVisionDB {
 		return newCustomer;
 	}
 	
-	public int updateCustomer(Customer customer) {
+	public int updateCustomer(Customer customer) {//*
 		
 		String getCardInfo = "UPDATE customer"
 				+ " SET customer_name = '"+customer.getCustomer_name()+"', "
@@ -176,7 +111,7 @@ public class UltraVisionDB {
 		return a;
 	}
 	
-	public int updateCard(MembershipCard card) {
+	public int updateCard(MembershipCard card) {//*
 		
 		String getCardInfo = "UPDATE membership_card "
 				+ "SET card_password = '"+card.getPassword()+"', "
@@ -196,7 +131,7 @@ public class UltraVisionDB {
 	 * @param cardID to query DB
 	 * @return MembershipCard
 	 */
-	public MembershipCard getCardInfoByID(int cardID) {
+	public MembershipCard getCardInfoByID(int cardID) {//*
 		
 		String getCardInfo = "SELECT * FROM membership_card m " + 
 				"INNER JOIN subscription s ON m.subscription_id = s.subscription_id " + 
@@ -211,7 +146,7 @@ public class UltraVisionDB {
 	 * @param query to query DB
 	 * @return MembershipCard
 	 */
-	public MembershipCard loadCardInfoByID(String query) {
+	public MembershipCard loadCardInfoByID(String query) {//*
 		
 		ResultSet rs = executeQueryRS(query);
 		MembershipCard newCard = null;
@@ -239,7 +174,7 @@ public class UltraVisionDB {
 		return newCard;
 	}
 	
-	public ArrayList<Object> getTitleInfoByID(int titleID){
+	public ArrayList<Object> getTitleInfoByID(int titleID){//*
 		
 		String query = "SELECT * FROM title t "
 				+ "INNER JOIN title_type tt ON t.title_type_id = tt.title_type_id "
@@ -290,7 +225,7 @@ public class UltraVisionDB {
 	 * @param query to query DB
 	 * @return Music or Live
 	 */
-	public MusicOrLive loadMusic(String query) {
+	public MusicOrLive loadMusic(String query) {//*
 		
 		ResultSet rs = executeQueryRS(query);
 		MusicOrLive musicOrLive = null;
@@ -325,7 +260,7 @@ public class UltraVisionDB {
 	 * @param query to query DB
 	 * @return Music or Live
 	 */
-	public MusicOrLive loadLive(String query) {
+	public MusicOrLive loadLive(String query) {//*
 		
 		ResultSet rs = executeQueryRS(query);
 		MusicOrLive musicOrLive = null;
@@ -360,7 +295,7 @@ public class UltraVisionDB {
 	 * @param query to query DB 
 	 * @return Movie
 	 */
-	public Movie loadMovie(String query) {
+	public Movie loadMovie(String query) {//*
 		
 		ResultSet rs = executeQueryRS(query);
 		Movie movie = null;
@@ -390,7 +325,7 @@ public class UltraVisionDB {
 		return movie;
 	}
 	
-	public BoxSet loadBoxSet(String query) {
+	public BoxSet loadBoxSet(String query) {//*
 		
 		ResultSet rs = executeQueryRS(query);
 		BoxSet boxSet = null;
@@ -424,7 +359,7 @@ public class UltraVisionDB {
 	 * @param query to query DB
 	 * @return Title
 	 */
-	public Title loadRawTitle(String query) {
+	public Title loadRawTitle(String query) {//*
 			
 			ResultSet rs = executeQueryRS(query);
 			Title newTitle = new Title(0);
@@ -454,17 +389,17 @@ public class UltraVisionDB {
 	/**
 	 * @param titleID to set available
 	 */
-	public void setTitleAvailableByID(int titleID) {
-		
-		String query = "UPDATE title SET title_available = 1 WHERE title_id = '"+titleID+"';";
-		executeUpdateRS(query);
-	}
+//	public void setTitleAvailableByID(int titleID) {
+//		
+//		String query = "UPDATE title SET title_available = 1 WHERE title_id = '"+titleID+"';";
+//		executeUpdateRS(query);
+//	}
 	
 	/**
 	 * @param search to query DB
 	 * @return ArrayList of Object customer & card
 	 */
-	public ArrayList<Object> setSearchGetCustomerList(String search){
+	public ArrayList<Object> setSearchGetCustomerList(String search){//*
 		
 		String searchCustomer = "SELECT * FROM debit_or_credit_account dc " + 
 				"INNER JOIN customer c ON dc.customer_id = c.customer_id " + 
@@ -488,12 +423,11 @@ public class UltraVisionDB {
 	 * @param query to query DB
 	 * @return ArrayList Object of customers
 	 */
-	private ArrayList<Object> customerInfoLoad(String query) {
+	private ArrayList<Object> customerInfoLoad(String query) {//*
 
 		ResultSet rs = executeQueryRS(query);
 		
 		try {
-			
 			do {
 				if(!rs.wasNull()) {
 					Customer newCustomer = new Customer(
@@ -533,7 +467,7 @@ public class UltraVisionDB {
 	 * @param titleClassification title type to query DB
 	 * @return ArrayList of Object titles
 	 */
-	public ArrayList<Object> setSearchGetTitleList(String search, String titleClassification) {
+	public ArrayList<Object> setSearchGetTitleList(String search, String titleClassification) {//*
 
 		switch (titleClassification) {
 		case "music":
@@ -603,7 +537,7 @@ public class UltraVisionDB {
 	 * @param titleClassification title type to query DB
 	 * @return ArrayList of Object titles
 	 */
-	private ArrayList<Object> titleLoad(String query, String titleClassification) {
+	private ArrayList<Object> titleLoad(String query, String titleClassification) {//*
 
 		ResultSet rs = executeQueryRS(query);
 		
@@ -694,16 +628,13 @@ public class UltraVisionDB {
 	 * @param customer to upload
 	 * @return customer with ID
 	 */
-	public Customer addNewCustomer(Customer customer) {
+	public Customer addNewCustomer(Customer customer) {//*
 
 		String queryInsert = "INSERT INTO customer (customer_name, customer_phone, customer_email) " + "VALUES ('"
 				+ customer.getCustomer_name() + "', " + customer.getCustomer_phone() + ", '" + customer.getEmail()
 				+ "');";
 
-		int i = executeUpdateRS(queryInsert);
-		if (i == 0) {
-			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewCustomer method.");
-		}
+		executeUpdateRS(queryInsert);
 
 		String queryGetCustID = "SELECT * FROM customer WHERE " + "customer_name LIKE '%" + customer.getCustomer_name()
 				+ "%' " + "AND customer_phone LIKE '%" + customer.getCustomer_phone() + "%' "
@@ -725,7 +656,7 @@ public class UltraVisionDB {
 	 * @param customer to update
 	 * @return customer & account with ID
 	 */
-	public Customer updateAccountAndCustomerInfo(Customer customer) {
+	public Customer updateAccountAndCustomerInfo(Customer customer) {//*
 
 		String query = "SELECT * FROM customer c INNER JOIN debit_or_credit_account acc ON c.customer_id = acc.customer_id WHERE "
 				+ "customer_name LIKE '%" + customer.getCustomer_name() + "%' " + "AND customer_phone LIKE '%"
@@ -752,16 +683,13 @@ public class UltraVisionDB {
 	 * @param customer to upload
 	 * @return customer with ID
 	 */
-	public Customer addNewAccount(Customer customer) {
+	public Customer addNewAccount(Customer customer) {//*
 
 		String queryInsertAccount = "INSERT INTO debit_or_credit_account (account_number, account_balance, customer_id) "
 				+ "VALUES ('" + customer.getAccountNumber() + "', " + customer.getAccountBalance() + ", "
 				+ customer.getCustomer_id() + ");";
 
-		int i = executeUpdateRS(queryInsertAccount);
-		if (i == 0) {
-			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewAccount method.");
-		}
+		executeUpdateRS(queryInsertAccount);
 
 		// updates info with auto incremented ID
 		customer = updateAccountAndCustomerInfo(customer);
@@ -774,16 +702,13 @@ public class UltraVisionDB {
 	 * @param card to upload
 	 * @return card with ID
 	 */
-	public MembershipCard addNewMembershipCard(MembershipCard card) {
+	public MembershipCard addNewMembershipCard(MembershipCard card) {//*
 
 		String queryInsertCard = "INSERT INTO membership_card (card_password, card_ongoing_rents, card_free_rents, card_points, account_id, subscription_id) "
 				+ "VALUES (" + card.getPassword() + ", " + card.getOngoingRents() + ", " + card.getFreeRents() + ", "
 				+ card.getPoints() + ", " + card.getAccountID() + ", " + card.getTitleTypeDB() + ");";
 
-		int i = executeUpdateRS(queryInsertCard);
-		if (i == 0) {
-			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewMembershipCard method.");
-		}
+		executeUpdateRS(queryInsertCard);
 
 		// update card with membership_card_id
 		card = updateCardInfoGetID(card);
@@ -795,7 +720,7 @@ public class UltraVisionDB {
 	 * @param card to update with ID
 	 * @return card with ID
 	 */
-	public MembershipCard updateCardInfoGetID(MembershipCard card) {
+	public MembershipCard updateCardInfoGetID(MembershipCard card) {//*
 
 		String queryInsertAccount = "SELECT * FROM membership_card " + "WHERE card_password LIKE '%"
 				+ card.getPassword() + "%' " + "AND card_ongoing_rents LIKE '%" + card.getOngoingRents() + "%' "
@@ -814,27 +739,27 @@ public class UltraVisionDB {
 		return card;
 	}
 	
-	public MembershipCard updateCardInfoReturnTitle(MembershipCard card) {
-
-		String queryInsertAccount = "SELECT * FROM membership_card " + "WHERE card_id = "+card.getCardID()+";";
-
-		ResultSet rs = executeQueryRS(queryInsertAccount);
-
-		try {
-			card.setCardID(rs.getInt("card_id"));
-		} catch (SQLException sqle) {
-			exceptionMessages(sqle);
-		}
-		closings();
-		return card;
-	}
+//	public MembershipCard updateCardInfoReturnTitle(MembershipCard card) {
+//
+//		String queryInsertAccount = "SELECT * FROM membership_card " + "WHERE card_id = "+card.getCardID()+";";
+//
+//		ResultSet rs = executeQueryRS(queryInsertAccount);
+//
+//		try {
+//			card.setCardID(rs.getInt("card_id"));
+//		} catch (SQLException sqle) {
+//			exceptionMessages(sqle);
+//		}
+//		closings();
+//		return card;
+//	}
 
 	/**
 	 * 
 	 * @param title to update with ID
 	 * @return title with ID
 	 */
-	public Title updateTitleInfo(Title title) {
+	public Title updateTitleInfo(Title title) {//*
 
 		String query = "SELECT * FROM title WHERE title_type_id LIKE '%" + title.getTitleTypeDB() + "%' "
 				+ "AND disc_format_id LIKE '%" + title.getDiscFormatDB() + "%' " + "AND title_available LIKE '%"
@@ -862,17 +787,14 @@ public class UltraVisionDB {
 	 * @param newTitle to upload raw Title
 	 * @return title with ID
 	 */
-	public Title addNewTitle(Title newTitle) {
+	public Title addNewTitle(Title newTitle) {//*
 
 		String queryInsertTitle = "INSERT INTO title (title_type_id, disc_format_id, title_available, title_name, title_price, title_genre, title_yor) "
 				+ "VALUES (" + newTitle.getTitleTypeDB() + ", " + newTitle.getDiscFormatDB() + ", "
 				+ newTitle.getAvailable() + ", '" + newTitle.getName() + "', " + newTitle.getPrice() + ", '"
 				+ newTitle.getGenre() + "', " + newTitle.getYearOfRelease() + ");";
 
-		int i = executeUpdateRS(queryInsertTitle);
-		if (i == 0) {
-			System.out.println("Error DB executeUpdate @ UltraVisionDB class, addNewTitle method.");
-		}
+		executeUpdateRS(queryInsertTitle);
 
 		newTitle = updateTitleInfo(newTitle);
 
@@ -883,8 +805,7 @@ public class UltraVisionDB {
 	 * @param newMusicOrLive to upload
 	 * @return 1 if succeeded 0 if failed
 	 */
-	public int addNewTitle(MusicOrLive newMusicOrLive) {// polymorphism of overloading. same signature,
-														// different param
+	public int addNewTitle(MusicOrLive newMusicOrLive) {// polymorphism of overloading. same signature, different param //*
 //---------------------------------RAW TITLE DB UPLOAD-------------------------------------------
 		// add new title and returns with title_id
 		// upload first raw title to DB
@@ -920,8 +841,7 @@ public class UltraVisionDB {
 	 * @param newMovie to upload
 	 * @return 1 if succeeded 0 if failed
 	 */
-	public int addNewTitle(Movie newMovie) {// polymorphism of overloading. same signature,
-											// different param
+	public int addNewTitle(Movie newMovie) {// polymorphism of overloading. same signature, different param //*
 //---------------------------------RAW TITLE DB UPLOAD-------------------------------------------
 		// add new title and returns with title_id
 		// upload first raw title to DB
@@ -943,8 +863,7 @@ public class UltraVisionDB {
 	 * @param newBoxSet to upload
 	 * @return 1 if succeeded 0 if failed
 	 */
-	public int addNewTitle(BoxSet newBoxSet) {// polymorphism of overloading. same signature,
-												// different param
+	public int addNewTitle(BoxSet newBoxSet) {// polymorphism of overloading. same signature, different param //*
 //---------------------------------RAW TITLE DB UPLOAD-------------------------------------------
 		// add new title and returns with title_id
 		// upload first raw title to DB
@@ -962,30 +881,30 @@ public class UltraVisionDB {
 		return boxSetInsert;
 	}
 	
-	public Customer uploadCardRentedTitle(Customer customer) {
-
-		String query = "SELECT * FROM customer c INNER JOIN debit_or_credit_account acc ON c.customer_id = acc.customer_id WHERE "
-				+ "customer_name LIKE '%" + customer.getCustomer_name() + "%' " + "AND customer_phone LIKE '%"
-				+ customer.getCustomer_phone() + "%' " + "AND customer_email LIKE '%" + customer.getEmail() + "%';";
-
-		ResultSet rs = executeQueryRS(query);
-		try {
-			// customer info
-			customer.setCustomer_id(rs.getInt("customer_id"));
-			customer.setCustomer_name(rs.getString("customer_name"));
-			customer.setCustomer_phone(rs.getLong("customer_phone"));
-			customer.setEmail(rs.getString("customer_email"));
-			// account info
-			customer.setAccountID(rs.getInt("account_id"));
-			customer.setAccountNumber(rs.getString("account_number"));
-			customer.setAccountBalance(rs.getInt("account_balance"));
-		} catch (SQLException sqle) {
-			exceptionMessages(sqle);
-		}
-		return customer;
-	}
+//	public Customer uploadCardRentedTitle(Customer customer) {
+//
+//		String query = "SELECT * FROM customer c INNER JOIN debit_or_credit_account acc ON c.customer_id = acc.customer_id WHERE "
+//				+ "customer_name LIKE '%" + customer.getCustomer_name() + "%' " + "AND customer_phone LIKE '%"
+//				+ customer.getCustomer_phone() + "%' " + "AND customer_email LIKE '%" + customer.getEmail() + "%';";
+//
+//		ResultSet rs = executeQueryRS(query);
+//		try {
+//			// customer info
+//			customer.setCustomer_id(rs.getInt("customer_id"));
+//			customer.setCustomer_name(rs.getString("customer_name"));
+//			customer.setCustomer_phone(rs.getLong("customer_phone"));
+//			customer.setEmail(rs.getString("customer_email"));
+//			// account info
+//			customer.setAccountID(rs.getInt("account_id"));
+//			customer.setAccountNumber(rs.getString("account_number"));
+//			customer.setAccountBalance(rs.getInt("account_balance"));
+//		} catch (SQLException sqle) {
+//			exceptionMessages(sqle);
+//		}
+//		return customer;
+//	}
 	
-	public void rentTitleByCash(Rent newRent, Customer customer, MembershipCard card){
+	public void rentTitleByCash(Rent newRent, Customer customer, MembershipCard card){//*
 		
 		String alterTitle = "UPDATE title SET title_available = '0' WHERE title_id = '"+newRent.getTitleID()+"';";
 		executeUpdateRS(alterTitle);
@@ -1011,7 +930,7 @@ public class UltraVisionDB {
 		executeUpdateRS(insertRent);
 	}
 	
-	public void rentTitleByPoints(Rent newRent, Customer customer, MembershipCard card){
+	public void rentTitleByPoints(Rent newRent, Customer customer, MembershipCard card){//*
 		
 		String alterTitle = "UPDATE title SET title_available = '0' WHERE title_id = '"+newRent.getTitleID()+"';";
 		executeUpdateRS(alterTitle);
@@ -1031,7 +950,7 @@ public class UltraVisionDB {
 		executeUpdateRS(insertRent);
 	}
 	
-	public Rent getRentByTitleID(int titleID){
+	public Rent getRentByTitleID(int titleID){//*
 		
 		String queryRent = "SELECT * FROM rent WHERE title_id = "+titleID+";";
 		
@@ -1059,39 +978,37 @@ public class UltraVisionDB {
 		return rent;
 	}
 	
-	public DebitOrCreditAccount getAccountInfoByID(int accountID) {
-		
-		String getAccoundInfo = "";
-		
-		
-		
-		ResultSet rs = executeQueryRS(getAccoundInfo);
-		DebitOrCreditAccount accountRentingTitle = null;
-		try {
-			if(!rs.wasNull()) {
-				accountRentingTitle = new DebitOrCreditAccount(
-						rs.getInt("account_id"), 
-						rs.getString("account_number"), 
-						rs.getDouble("account_balance"),
-						rs.getInt("customer_id")
-						);
-			}
-			closings();
-		} catch (SQLException sqle) {
-			exceptionMessages(sqle);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		return accountRentingTitle;
-	}
+//	public DebitOrCreditAccount getAccountInfoByID(int accountID) {
+//		
+//		String getAccoundInfo = "";
+//		
+//		ResultSet rs = executeQueryRS(getAccoundInfo);
+//		DebitOrCreditAccount accountRentingTitle = null;
+//		try {
+//			if(!rs.wasNull()) {
+//				accountRentingTitle = new DebitOrCreditAccount(
+//						rs.getInt("account_id"), 
+//						rs.getString("account_number"), 
+//						rs.getDouble("account_balance"),
+//						rs.getInt("customer_id")
+//						);
+//			}
+//			closings();
+//		} catch (SQLException sqle) {
+//			exceptionMessages(sqle);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//		
+//		return accountRentingTitle;
+//	}
 	
 	/**
 	 * @param returnRent
 	 * @param card
 	 * @return
 	 */
-	public int returnTitle(Rent returnRent, MembershipCard card){
+	public int returnTitle(Rent returnRent, MembershipCard card){//*
 		int flag = 1;
 		
 		String alterTitle = "UPDATE title SET title_available = '1' WHERE title_id = '"+returnRent.getTitleID()+"';";
@@ -1119,7 +1036,7 @@ public class UltraVisionDB {
 		return flag;
 	}
 	
-	public int deleteCustomer(Customer custToDel) {
+	public int deleteCustomer(Customer custToDel) {//*
 		
 		String getAccountID = "SELECT * FROM debit_or_credit_account dc " + 
 				"INNER JOIN customer c ON dc.customer_id = c.customer_id " + 
@@ -1147,7 +1064,7 @@ public class UltraVisionDB {
 		return flag;
 	}
 
-	public int deleteTitle(Title title) {
+	public int deleteTitle(Title title) {//*
 		
 		String getTitleType = "SELECT * FROM title WHERE title_id = '"+title.getId()+"';";
 		
@@ -1186,47 +1103,91 @@ public class UltraVisionDB {
 		return flag;
 	}
 	
-	public int returnTitle(Movie returningTitle){
-		
-		int flag = 0;
-		
-		
-		
-		
-		return flag;
+	
+//	public Rent loadRentInfo(String query) {
+//		
+//		ResultSet rs = executeQueryRS(query);
+//		Rent rent = new Rent();
+//		
+//		try {
+//			if(!rs.wasNull()) {
+//				rent = new Rent(
+//						rs.getInt("rent_id"), 
+//						rs.getString("rent_start_date"), 
+//						rs.getString("rent_return_date"),
+//						rs.getDouble("rent_total_price"),
+//						rs.getInt("card_id"),
+//						rs.getInt("title_id")
+//						);
+//			}
+//			closings();
+//		} catch (SQLException sqle) {
+//			exceptionMessages(sqle);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//		
+//		return rent;
+//	}
+	
+	/**
+	 * @param query the query to execute (reusable method)
+	 * @return ResultSet of query given
+	 */
+	private ResultSet executeQueryRS(String query) {//*
+
+		ResultSet rs = null;
+		try {
+			rs = st.executeQuery(query);
+			rs.next();
+		} catch (SQLException sqle) {
+			exceptionMessages(sqle);
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return rs;
 	}
 
-	public int returnTitle(BoxSet returningTitle){
-	
-		int flag = 0;
-	
-	
-		return flag;
-	}
-	
-	public Rent loadRentInfo(String query) {
-		
-		ResultSet rs = executeQueryRS(query);
-		Rent rent = new Rent();
-		
+	/**
+	 * @param query query to execute update
+	 * @return int 1 if succeed, 0 if fail 
+	 */
+	private int executeUpdateRS(String query) {//*
+
+		int rsi = 0;
 		try {
-			if(!rs.wasNull()) {
-				rent = new Rent(
-						rs.getInt("rent_id"), 
-						rs.getString("rent_start_date"), 
-						rs.getString("rent_return_date"),
-						rs.getDouble("rent_total_price"),
-						rs.getInt("card_id"),
-						rs.getInt("title_id")
-						);
-			}
-			closings();
+			st.executeUpdate(query);
+			rsi = 1;
 		} catch (SQLException sqle) {
 			exceptionMessages(sqle);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-		return rent;
+		return rsi;
+	}
+
+	/**
+	 * @param sqle exception messages to execute if error occurs(breaking down code)
+	 */
+	private void exceptionMessages(SQLException sqle) {//*
+		while (sqle != null) {
+			System.out.println("State: " + sqle.getSQLState());
+			System.out.println("Message: " + sqle.getMessage());
+			System.out.println("Error: " + sqle.getErrorCode());
+			sqle = sqle.getNextException();
+		}
+	}
+	
+	/**
+	 * closes Statement and Connection
+	 */
+	private void closings() {//*
+		try {
+			st.close();
+			con.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(UltraVisionDB.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 }

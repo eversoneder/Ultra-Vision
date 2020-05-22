@@ -30,37 +30,37 @@ public class UltraVisionManagementSystem {
 //		return db.rentTitle(TitleID, card);
 //	}
 	
-	public void rentTitleByCash(Rent newRent, Customer customer, MembershipCard card) {
+	public void rentTitleByCash(Rent newRent, Customer customer, MembershipCard card) {//*
 		db = new UltraVisionDB();
 		db.rentTitleByCash(newRent, customer, card);
 	}
 	
-	public void rentTitleByPoints(Rent newRent, Customer customer, MembershipCard card) {
+	public void rentTitleByPoints(Rent newRent, Customer customer, MembershipCard card) {//*
 		db = new UltraVisionDB();
 		db.rentTitleByPoints(newRent, customer, card);
 	}
 	
-	public Rent getRentByTitleID(int titleID) {
+	public Rent getRentByTitleID(int titleID) {//*
 		db = new UltraVisionDB();
 		return db.getRentByTitleID(titleID);
 	}
 	
-	public int returnTitle(Rent returningRent, MembershipCard card) {
+	public int returnTitle(Rent returningRent, MembershipCard card) {//*
 		db = new UltraVisionDB();
 		return db.returnTitle(returningRent, card);
 	}
 	
-	public DebitOrCreditAccount getAccountInfoByID(int accountID) {
-		db = new UltraVisionDB();
-		return db.getAccountInfoByID(accountID);
-	}
+//	public DebitOrCreditAccount getAccountInfoByID(int accountID) {
+//		db = new UltraVisionDB();
+//		return db.getAccountInfoByID(accountID);
+//	}
 	
-	public int updateCustomer(Customer customer) {
+	public int updateCustomer(Customer customer) {//*
 		db = new UltraVisionDB();
 		return db.updateCustomer(customer);	
 	}
 	
-	public int updateCard(MembershipCard card) {
+	public int updateCard(MembershipCard card) {//*
 		db = new UltraVisionDB();
 		return db.updateCard(card);	
 	}
@@ -69,17 +69,17 @@ public class UltraVisionManagementSystem {
 	 * @param customerID to query DB
 	 * @return Customer from ID given
 	 */
-	public Customer getCustomerInfoByID(int customerID) {
+	public Customer getCustomerInfoByID(int customerID) {//*
 		db = new UltraVisionDB();
 		return db.getCustomerInfoByID(customerID);
 	}
 	
-	public int deleteCustomer(Customer customer) {
+	public int deleteCustomer(Customer customer) {//*
 		db = new UltraVisionDB();
 		return db.deleteCustomer(customer);
 	}
 	
-	public int deleteTitle(Title title) {
+	public int deleteTitle(Title title) {//*
 		db = new UltraVisionDB();
 		return db.deleteTitle(title);
 	}
@@ -88,12 +88,12 @@ public class UltraVisionManagementSystem {
 	 * @param cardID to query DB
 	 * @return MembershipCard from ID given
 	 */
-	public MembershipCard getCardInfoByID(int cardID) {
+	public MembershipCard getCardInfoByID(int cardID) {//*
 		db = new UltraVisionDB();
 		return db.getCardInfoByID(cardID);
 	}
 	
-	public ArrayList<Object> getTitleInfoByID(int titleID){
+	public ArrayList<Object> getTitleInfoByID(int titleID){//*
 		db = new UltraVisionDB();
 		return db.getTitleInfoByID(titleID);
 	}
@@ -103,7 +103,7 @@ public class UltraVisionManagementSystem {
 	 * @param filter to set (music, live, movie or box set)
 	 * @return ArrayList<Object> of titles
 	 */
-	public ArrayList<Object> setSearchGetTitleList(String search, String filter) {
+	public ArrayList<Object> setSearchGetTitleList(String search, String filter) {//*
 		db = new UltraVisionDB();
 		return db.setSearchGetTitleList(search,filter);
 	}
@@ -112,7 +112,7 @@ public class UltraVisionManagementSystem {
 	 * @param search to query DB
 	 * @return ArrayList<Object> of customers
 	 */
-	public ArrayList<Object> setSearchGetCustomerList(String search){
+	public ArrayList<Object> setSearchGetCustomerList(String search){//*
 		db = new UltraVisionDB();
 		return db.setSearchGetCustomerList(search);
 	}
@@ -121,7 +121,7 @@ public class UltraVisionManagementSystem {
 	 * @param customer to upload DB
 	 * @return customer uploaded with ID
 	 */
-	public Customer addNewCustomer(Customer customer) {
+	public Customer addNewCustomer(Customer customer) {//*
 		db = new UltraVisionDB();
 		return db.addNewCustomer(customer);
 	}
@@ -130,7 +130,7 @@ public class UltraVisionManagementSystem {
 	 * @param customer and account to upload DB
 	 * @return account and customer with ID
 	 */
-	public Customer addNewAccount(Customer customerinfo) {
+	public Customer addNewAccount(Customer customerinfo) {//*
 		db = new UltraVisionDB();
 		return db.addNewAccount(customerinfo);
 	}
@@ -139,24 +139,16 @@ public class UltraVisionManagementSystem {
 	 * @param card to upload DB
 	 * @return card with ID
 	 */
-	public MembershipCard addNewMembershipCard(MembershipCard card) {
+	public MembershipCard addNewMembershipCard(MembershipCard card) {//*
 		db = new UltraVisionDB();
 		return db.addNewMembershipCard(card);
 	}
 	
 	/**
-	 * @param newTitle to upload DB
-	 * @return Title with ID
-	 */
-	public Title addNewTitle(Title newTitle) {// polymorphism of overload
-		return db.addNewTitle(newTitle);
-	}
-
-	/**
 	 * @param newMusicOrLive to upload DB
 	 * @return int 1 if succeeded, 0 if failed
 	 */
-	public int addNewTitle(MusicOrLive newMusicOrLive) {// polymorphism of overload
+	public int addNewTitle(MusicOrLive newMusicOrLive) {// polymorphism of overload //*
 		db = new UltraVisionDB();
 		return db.addNewTitle(newMusicOrLive);
 	}
@@ -165,7 +157,7 @@ public class UltraVisionManagementSystem {
 	 * @param newMovie to upload DB
 	 * @return int 1 if succeeded, 0 if failed
 	 */
-	public int addNewTitle(Movie newMovie) {// polymorphism of overload
+	public int addNewTitle(Movie newMovie) {// polymorphism of overload //*
 		db = new UltraVisionDB();
 		return db.addNewTitle(newMovie);
 	}
@@ -174,7 +166,7 @@ public class UltraVisionManagementSystem {
 	 * @param newBoxSet to upload DB
 	 * @return int 1 if succeeded, 0 if failed
 	 */
-	public int addNewTitle(BoxSet newBoxSet) {// polymorphism of overload
+	public int addNewTitle(BoxSet newBoxSet) {// polymorphism of overload //*
 		db = new UltraVisionDB();
 		return db.addNewTitle(newBoxSet);
 	}

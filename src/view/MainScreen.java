@@ -29,17 +29,11 @@ public class MainScreen {
 	private JButton rentBtn;
 	private JFrame MainScreen = new JFrame();
 
-	// if you activate line 40 and 58, when you run the program and you press 'q'
-	// the screen closes, but if you run, click a button, back, try to press 'q'
-	// to close the program, it won't work. I'd like a feedback on that, no clue why
-	// it's not working. I was going to do this for all screens for faster UX
 	private KeyController keyListener = new KeyController(MainScreen);
-
 
 	public MainScreen() {
 		setAttributes();
 		setComponents();
-		MainScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 	
@@ -51,9 +45,8 @@ public class MainScreen {
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
-		// The problem is that the Key listener only works when the window is on focus
-		// if another window pops up, the focus is lost and has to be regained.
-		// So I added a window listener -Just integrated into the same keylistener class
+		MainScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
+		
 		MainScreen.addKeyListener(keyListener);
 		MainScreen.addWindowListener(keyListener);
 	}
@@ -67,13 +60,13 @@ public class MainScreen {
 		
 		JLabel logoIconInJLabel = new JLabel();
 		logoIconInJLabel.setIcon(new ImageIcon("img\\icons\\logo.png"));
-		logoIconInJLabel.setBounds(MainScreen.getWidth() / 2 - 250, 20, 500, 375);
+		logoIconInJLabel.setBounds(400, 20, 500, 375);
 		backPanel.add(logoIconInJLabel);
 
 		JPanel whiteStrip1 = new JPanel();
 		whiteStrip1.setLayout(null);
 		whiteStrip1.setBackground(new Color(0, 80, 110));
-		whiteStrip1.setBounds(0, 375 + 20, MainScreen.getWidth(), 150);
+		whiteStrip1.setBounds(0, 395, 1300, 150);
 		backPanel.add(whiteStrip1);
 
 		objsWithinStrip1(whiteStrip1);
@@ -81,17 +74,16 @@ public class MainScreen {
 		JPanel whiteStrip2 = new JPanel();
 		whiteStrip2.setLayout(null);
 		whiteStrip2.setBackground(new Color(0, 80, 110));
-		whiteStrip2.setBounds(0, 375 + 200, MainScreen.getWidth(), 150);
+		whiteStrip2.setBounds(0, whiteStrip1.getY() + 180, 1300, 150);
 		backPanel.add(whiteStrip2);
 
 		objsWithinStrip2(whiteStrip2);
 
 		rentBtn(backPanel);
 		closeBtn(backPanel);
-		//sometimes the close Btn and the background \/ doesn't show up, i don't know why
-		JLabel background = new JLabel();
-		background.setIcon(new ImageIcon("img\\background.jpg"));
-		background.setBounds(0, 0, backPanel.getWidth(), backPanel.getHeight());
+		
+		JLabel background = new JLabel(new ImageIcon("img\\background.jpg"));
+		background.setBounds(-8, -20, 1300, 800);
 		backPanel.add(background);
 	}
 	
@@ -357,7 +349,7 @@ public class MainScreen {
 
 		closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtn.png"));
-		closeBtn.setBounds(backPanel.getWidth() - 100, 22, 71, 71);
+		closeBtn.setBounds(MainScreen.getWidth() - 100, 22, 71, 71);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setFocusPainted(false);
@@ -371,12 +363,12 @@ public class MainScreen {
 			public void mouseEntered(MouseEvent evt) {
 				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnhover.png"));
-				closeBtn.setBounds(backPanel.getWidth() - 104, 17, 80, 80);
+				closeBtn.setBounds(MainScreen.getWidth() - 104, 17, 80, 80);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtn.png"));
-				closeBtn.setBounds(backPanel.getWidth() - 100, 22, 71, 71);
+				closeBtn.setBounds(MainScreen.getWidth() - 100, 22, 71, 71);
 			}
 		});
 	}

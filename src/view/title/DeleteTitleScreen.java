@@ -26,7 +26,7 @@ import model.titles.Title;
 public class DeleteTitleScreen implements FocusListener {
 
 	private JFrame deleteTitleScreen = new JFrame();
-	private KeyController keyListener = new KeyController(deleteTitleScreen);
+	private KeyController keyAndWindowListener = new KeyController(deleteTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -37,7 +37,6 @@ public class DeleteTitleScreen implements FocusListener {
 	public DeleteTitleScreen() {
 		setAttributes();
 		setComponents();
-		deleteTitleScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		validation();
 	}
 
@@ -48,9 +47,10 @@ public class DeleteTitleScreen implements FocusListener {
 		deleteTitleScreen.setResizable(false);
 		deleteTitleScreen.setTitle("Ultra-Vision | Title Removal");
 		deleteTitleScreen.setLocationRelativeTo(null);
-
-		deleteTitleScreen.addKeyListener(keyListener);
-		deleteTitleScreen.addWindowListener(keyListener);
+		deleteTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
+		
+		deleteTitleScreen.addKeyListener(keyAndWindowListener);
+		deleteTitleScreen.addWindowListener(keyAndWindowListener);
 	}
 
 	public void setComponents() {

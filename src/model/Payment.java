@@ -77,7 +77,6 @@ public class Payment {
 			try {
 				newRent = new Rent(card.getCardID(), title.getId());
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			managementSystem.rentTitleByPoints(newRent, customer, card);
