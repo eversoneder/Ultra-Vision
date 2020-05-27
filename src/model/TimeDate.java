@@ -67,11 +67,19 @@ public class TimeDate {
 	public void setReturnDateString(String returnDate) {
 		this.returnDateString = returnDate;
 	}
+	
+	public String getStartDateString() {
+		return startDateString;
+	}
 
 	/**
 	 * @return return date String
 	 */
 	public String getReturnDate() {
 		return returnDate.toString();
+	}
+	
+	public String getReturnDateString() {
+		return returnDateString;
 	}
 }

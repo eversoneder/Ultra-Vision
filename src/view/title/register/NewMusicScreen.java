@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.enums.Media;
 import model.titles.MusicOrLive;
@@ -49,7 +49,7 @@ public class NewMusicScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		newMusicScreen.setSize(1000, 650);
+		newMusicScreen.setSize(960, 550);
 		newMusicScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		newMusicScreen.setUndecorated(true);
 		newMusicScreen.setVisible(true);
@@ -68,13 +68,13 @@ public class NewMusicScreen implements FocusListener {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		newMusicScreen.add(backPanel);
 
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, newMusicScreen.getWidth(), newMusicScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, newMusicScreen.getWidth(), newMusicScreen.getHeight() - 140);
 		backPanel.add(backRectangle);
 
 		JLabel newCustomerLabel = new JLabel("New Music");
@@ -166,8 +166,8 @@ public class NewMusicScreen implements FocusListener {
 
 // ---------------------------PRESS CLOSE BUTTON-------------------------------
 		JButton closeBtn = new JButton();
-		closeBtn.setIcon(new ImageIcon("img\\btn\\goback.png"));
-		closeBtn.setBounds(backRectangle.getWidth() - 220, 20, 222, 65);
+		closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
+		closeBtn.setBounds(backRectangle.getWidth() - 210, 20, 222, 65);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setFocusPainted(false);
@@ -180,13 +180,13 @@ public class NewMusicScreen implements FocusListener {
 		closeBtn.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\gobackhover.png"));
-				closeBtn.setBounds(backRectangle.getWidth() - 224, 14, 230, 75);
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closepagebtnhover.png"));
+				closeBtn.setBounds(backRectangle.getWidth() - 214, 14, 230, 75);
 			}
 
 			public void mouseExited(MouseEvent evt) {
-				closeBtn.setIcon(new ImageIcon("img\\btn\\goback.png"));
-				closeBtn.setBounds(backRectangle.getWidth() - 220, 20, 222, 65);
+				closeBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
+				closeBtn.setBounds(backRectangle.getWidth() - 210, 20, 222, 65);
 			}
 		});
 // ---------------------------CANCEL BUTTON-------------------------------

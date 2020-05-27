@@ -20,7 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 
@@ -48,7 +48,7 @@ public class MembershipCardScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		membershipCardScreen.setSize(700, 435);
+		membershipCardScreen.setSize(690, 415);
 		membershipCardScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		membershipCardScreen.setUndecorated(true);
 		membershipCardScreen.setVisible(true);
@@ -67,8 +67,10 @@ public class MembershipCardScreen implements FocusListener {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		membershipCardScreen.add(backPanel);
+		
+		closeBtn(backPanel);
 
 		JLabel customerScreen = new JLabel("Customer Screen");
 		customerScreen.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -115,12 +117,44 @@ public class MembershipCardScreen implements FocusListener {
 		backPanel.add(bigCustomerIcon);
 
 		buttons(backPanel);
+		
+		JLabel cardBackRect = new JLabel();//card background
+		cardBackRect.setIcon(new ImageIcon("img\\cardbackrect.png"));
+		cardBackRect.setBounds(0, 0, 690, 415);
+		backPanel.add(cardBackRect);
+		
+		JLabel backgroundStrip = new JLabel();
+		backgroundStrip.setIcon(new ImageIcon("img\\backgroundstrip.png"));
+		backgroundStrip.setBounds(0, 0, 690, 415);
+		backPanel.add(backgroundStrip);
+	}
+	
+	public void closeBtn(JPanel backPanel) {
 
-		JLabel background = new JLabel();
-		background.setIcon(new ImageIcon("img\\customerscreenbackground.jpg"));
-		background.setBounds(0, 0, 700, 435);
-		backPanel.add(background);
+		JButton closeBtn = new JButton();
+		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+		closeBtn.setBounds(645, 10, 30, 30);
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setFocusPainted(false);
+		backPanel.add(closeBtn);
+		closeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				membershipCardScreen.dispose();
+			}
+		});
+		closeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnsmallhover.png"));
+				closeBtn.setBounds(642, 6, 36, 36);
+			}
 
+			public void mouseExited(MouseEvent evt) {
+				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+				closeBtn.setBounds(645, 10, 30, 30);
+			}
+		});
 	}
 
 	public void buttons(JPanel backPanel) {

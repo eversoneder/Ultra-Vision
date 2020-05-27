@@ -1,6 +1,6 @@
 package model.customer;
 
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.interfaces.TitleType;
 

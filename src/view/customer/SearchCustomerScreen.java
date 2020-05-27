@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 
@@ -52,7 +52,7 @@ public class SearchCustomerScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		searchCustomerScreen.setSize(980, 600);
+		searchCustomerScreen.setSize(980, 590);
 		searchCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		searchCustomerScreen.setUndecorated(true);
 		searchCustomerScreen.setVisible(true);
@@ -86,7 +86,7 @@ public class SearchCustomerScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, searchCustomerScreen.getWidth(), searchCustomerScreen.getHeight() - 150);
+		backRectangle.setBounds(0, 110, searchCustomerScreen.getWidth(), searchCustomerScreen.getHeight() - 135);
 		backPanel.add(backRectangle);
 
 		searchCustomertf = new JTextField();
@@ -172,7 +172,7 @@ public class SearchCustomerScreen implements FocusListener {
 				if (searchCustomertf.getText().equals("search customer")) {
 					Object[] btns = { "Ok" };
 					JOptionPane.showOptionDialog(null,
-							"Write something to search. \nTip: if you want to see all customers let the \nsearch be \" \" (space).",
+							"Write something to search. \nTip: if you want to see all customers let the \nsearch be \"\" (blank without space).",
 							"No search given.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;
@@ -227,7 +227,7 @@ public class SearchCustomerScreen implements FocusListener {
 
 		Object[] tablePopulation = new Object[ColumnNames.length];
 		for (int i = 0; i < customerList.size(); i++) {
-			tablePopulation[0] = customerList.get(i).getCustomer_id();
+			tablePopulation[0] = customerList.get(i).getCustomerID();
 			tablePopulation[1] = customerList.get(i).getCustomer_name();
 			tablePopulation[2] = customerList.get(i).getCustomer_phone();
 			tablePopulation[3] = customerList.get(i).getEmail();
@@ -330,7 +330,6 @@ public class SearchCustomerScreen implements FocusListener {
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 }

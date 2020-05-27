@@ -20,7 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 
@@ -51,7 +51,7 @@ public class UpdateCustomerScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		updateCustomerScreen.setSize(800, 550);
+		updateCustomerScreen.setSize(780, 510);
 		updateCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		updateCustomerScreen.setUndecorated(true);
 		updateCustomerScreen.setVisible(true);
@@ -70,7 +70,7 @@ public class UpdateCustomerScreen implements FocusListener {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		updateCustomerScreen.add(backPanel);
 
 		closeBtn(backPanel);
@@ -90,7 +90,7 @@ public class UpdateCustomerScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, updateCustomerScreen.getWidth(), updateCustomerScreen.getHeight() - 180);
+		backRectangle.setBounds(0, 110, updateCustomerScreen.getWidth(), updateCustomerScreen.getHeight() - 135);
 		backPanel.add(backRectangle);
 
 		JLabel logoIcon = new JLabel();

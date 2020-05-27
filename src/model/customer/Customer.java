@@ -2,7 +2,6 @@ package model.customer;
 
 public class Customer extends DebitOrCreditAccount {
 
-	private int id;
 	private String name;
 	private long phone;
 	private String email;
@@ -11,7 +10,7 @@ public class Customer extends DebitOrCreditAccount {
 	/**
 	 * load customer from database
 	 * 
-	 * @param id      to load
+	 * @param customer_id      to load
 	 * @param name    to load
 	 * @param phone   to load
 	 * @param address to load
@@ -20,7 +19,7 @@ public class Customer extends DebitOrCreditAccount {
 		super.setAccountID(accID);
 		super.setAccountNumber(accNum);
 		super.setAccountBalance(accBalance);
-		this.id = custID;
+		super.setCustomerID(custID);
 		this.name = name;
 		this.phone = phone;
 		this.email = email;
@@ -41,24 +40,10 @@ public class Customer extends DebitOrCreditAccount {
 	}
 	
 	public Customer() {
-		this.id = 0;
+		super.setCustomerID(0);
 		
 	}
 	
-	/**
-	 * @return the customer_id
-	 */
-	public int getCustomer_id() {
-		return id;
-	}
-
-	/**
-	 * @param customer_id the customer_id to set
-	 */
-	public void setCustomer_id(int customer_id) {
-		this.id = customer_id;
-	}
-
 	/**
 	 * @return the name
 	 */

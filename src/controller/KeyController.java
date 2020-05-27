@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -115,8 +116,7 @@ public class KeyController implements KeyListener, WindowListener, MouseListener
 //-----------------------------MOUSE LISTENER EVENTS-----------------------------
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	private int xPressed, yPressed;

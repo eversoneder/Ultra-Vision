@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.titles.Title;
 
 public class DeleteTitleScreen implements FocusListener {
@@ -49,7 +49,7 @@ public class DeleteTitleScreen implements FocusListener {
 		deleteTitleScreen.setTitle("Ultra-Vision | Title Removal");
 		deleteTitleScreen.setLocationRelativeTo(null);
 		deleteTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
-		
+
 		deleteTitleScreen.addKeyListener(listenerController);
 		deleteTitleScreen.addWindowListener(listenerController);
 		deleteTitleScreen.addMouseListener(listenerController);
@@ -176,13 +176,11 @@ public class DeleteTitleScreen implements FocusListener {
 
 				if (!titleIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
-							"Title ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
-							btns[0]);
+					JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.", "Title ID Error.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
-				
-				
+
 				// -----------GET TITLE INFO TO DO VALIDATIONS----------
 				ArrayList<Object> UnknownTitleType;
 				try {
@@ -198,29 +196,40 @@ public class DeleteTitleScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null,
-							"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
-							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					JOptionPane.showOptionDialog(null, "There's no Title ID " + titleIDtf.getText() + " in the System.",
+							"Non-Existent ID.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+							btns[0]);
 					return;
 				}
-				unwrapTitle(UnknownTitleType);
+//				unwrapTitle(UnknownTitleType);
+				title = (Title) UnknownTitleType.get(0);
+				Object[] btn = { "Cancel", "Delete" };
+				int i = JOptionPane.showOptionDialog(null,
+						"Are you sure to delete \nTitle ID: " + title.getId() + "\nTitle Name:" + title.getName()
+								+ "?\n There's no Undo.",
+						"Confirmation.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn,
+						btn[0]);
 				
-				int a = managementSystem.deleteTitle(title);
+				if (i == 1) {
 
-				switch (a) {
-				case 0:
-					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null, "Title of ID " + title.getId() + " doesn't exist.",
-							"Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-					return;
-				case 1:
-					Object[] btnss = { "Ok" };
-					JOptionPane.showOptionDialog(null,
-							"Title: " + title.getName() + ", ID: " + title.getId()
-									+ " was successfully deleted from the system.",
-							"Title Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
-							btnss, btnss[0]);
-					break;
+					int a = managementSystem.deleteTitle(title);
+
+					switch (a) {
+					case 0:
+						Object[] btns = { "Ok" };
+						JOptionPane.showOptionDialog(null, "Title of ID " + title.getId() + " doesn't exist.", "Error.",
+								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+						return;
+					case 1:
+						Object[] btnss = { "Ok" };
+						JOptionPane.showOptionDialog(null,
+								"Title: " + title.getName() + ", ID: " + title.getId()
+										+ " was successfully deleted from the system.",
+								"Title Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+								btnss, btnss[0]);
+						break;
+					}
+				} else {
 				}
 			}
 		});
@@ -238,26 +247,26 @@ public class DeleteTitleScreen implements FocusListener {
 		});
 
 	}
-	
-	/**
-	 * @param unknowntitletype the ArrayList of object title types
-	 */
-	public void unwrapTitle(ArrayList<Object> unknowntitletype) {
 
-		for (Object obj : unknowntitletype) {
-			switch (obj.getClass().getName()) {// or filter.getName()
-			case "model.titles.MusicOrLive":
-				title = (Title) obj;
-				break;
-			case "model.titles.Movie":
-				title = (Title) obj;
-				break;
-			case "model.titles.BoxSet":
-				title = (Title) obj;
-				break;
-			}
-		}
-	}
+//	/**
+//	 * @param unknowntitletype the ArrayList of object title types
+//	 */
+//	public void unwrapTitle(ArrayList<Object> unknowntitletype) {
+//
+//		for (Object obj : unknowntitletype) {
+//			switch (obj.getClass().getName()) {// or filter.getName()
+//			case "model.titles.MusicOrLive":
+//				title = (Title) obj;
+//				break;
+//			case "model.titles.Movie":
+//				title = (Title) obj;
+//				break;
+//			case "model.titles.BoxSet":
+//				title = (Title) obj;
+//				break;
+//			}
+//		}
+//	}
 
 	public void validation() {
 		deleteTitleScreen.repaint();

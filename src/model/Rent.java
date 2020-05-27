@@ -24,7 +24,7 @@ public final class Rent extends TimeDate{
 	 * @param titleID to set
 	 * @throws ParseException 
 	 */
-	public Rent (int rentID, String startDate, String returnDate, double rentPrice, int cardID, int titleID) throws ParseException {
+	public Rent (int rentID, String startDate, String returnDate, double rentPrice, int cardID, int titleID) {
 		this.rentID = rentID;
 		super.setStartDateString(startDate);
 		super.setReturnDateString(returnDate);

@@ -38,7 +38,7 @@ public class MainScreen {
 	
 	public void setAttributes() {
 //		this.setExtendedState(JFrame.MAXIMIZED_BOTH);//was trying to do full screen
-		MainScreen.setSize(1300, 800);
+		MainScreen.setSize(1300, 770);
 		MainScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		MainScreen.setUndecorated(true);
 		MainScreen.setVisible(true);
@@ -64,6 +64,8 @@ public class MainScreen {
 		logoIconInJLabel.setIcon(new ImageIcon("img\\icons\\logo.png"));
 		logoIconInJLabel.setBounds(400, 20, 500, 375);
 		backPanel.add(logoIconInJLabel);
+		
+		rentBtns(backPanel);
 
 		JPanel whiteStrip1 = new JPanel();
 		whiteStrip1.setLayout(null);
@@ -80,8 +82,7 @@ public class MainScreen {
 		backPanel.add(whiteStrip2);
 
 		objsWithinStrip2(whiteStrip2);
-
-		rentBtns(backPanel);
+		
 		closeBtn(backPanel);
 		
 		JLabel background = new JLabel(new ImageIcon("img\\background.jpg"));

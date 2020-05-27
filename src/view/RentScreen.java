@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 import model.titles.Title;
@@ -69,7 +69,7 @@ public class RentScreen implements FocusListener {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		rentScreen.add(backPanel);
 		
 		closeBtn(backPanel);

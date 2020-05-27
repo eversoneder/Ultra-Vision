@@ -6,7 +6,6 @@ import java.text.ParseException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import controller.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 import model.titles.Title;

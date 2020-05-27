@@ -33,7 +33,7 @@ public class NewCustomerScreen implements FocusListener {
 
 	private Customer newCustomer;
 	private MembershipCard newMembershipCard;
-
+	
 	public NewCustomerScreen(MembershipCard newMembershipCard) {
 		this.newMembershipCard = newMembershipCard;
 		setAttributes();
@@ -42,7 +42,7 @@ public class NewCustomerScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		newCustomerScreen.setSize(1000, 650);
+		newCustomerScreen.setSize(1000, 600);
 		newCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		newCustomerScreen.setUndecorated(true);
 		newCustomerScreen.setVisible(true);
@@ -61,7 +61,7 @@ public class NewCustomerScreen implements FocusListener {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		newCustomerScreen.add(backPanel);
 
 		JLabel logo = new JLabel();
@@ -72,7 +72,7 @@ public class NewCustomerScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, newCustomerScreen.getWidth(), newCustomerScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, newCustomerScreen.getWidth(), newCustomerScreen.getHeight() - 150);
 		backPanel.add(backRectangle);
 
 		JLabel subscriptionLabel = new JLabel();
@@ -89,12 +89,6 @@ public class NewCustomerScreen implements FocusListener {
 		backPanel.add(newCustomerLabel);
 
 		buttons(backRectangle, backPanel);
-
-		JLabel pressQ = new JLabel();
-//		pressQ.setIcon(new ImageIcon("img\\icons\\goback.png"));
-		pressQ.setIcon(new ImageIcon("img\\icons\\press.png"));
-		pressQ.setBounds(backRectangle.getWidth() - 210, 20, 195, 65);
-		backPanel.add(pressQ);
 
 		textFields(backRectangle);
 
@@ -140,9 +134,9 @@ public class NewCustomerScreen implements FocusListener {
 
 // ---------------------------PRESS CLOSE BUTTON-------------------------------
 		JButton goBackBtn = new JButton();
-		goBackBtn.setIcon(new ImageIcon("img\\btn\\goback.png"));
+		goBackBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
 //				pressClose.setIcon(new ImageIcon("img\\btn\\goback.png"));
-		goBackBtn.setBounds(780, 20, 222, 65);
+		goBackBtn.setBounds(790, 20, 222, 65);
 		goBackBtn.setBorderPainted(false);
 		goBackBtn.setContentAreaFilled(false);
 		goBackBtn.setFocusPainted(false);
@@ -155,13 +149,13 @@ public class NewCustomerScreen implements FocusListener {
 		goBackBtn.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				goBackBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				goBackBtn.setIcon(new ImageIcon("img\\btn\\hover\\gobackhover.png"));
-				goBackBtn.setBounds(778, 14, 230, 75);
+				goBackBtn.setIcon(new ImageIcon("img\\btn\\hover\\closepagebtnhover.png"));
+				goBackBtn.setBounds(788, 14, 230, 75);
 			}
 
 			public void mouseExited(MouseEvent evt) {
-				goBackBtn.setIcon(new ImageIcon("img\\btn\\goback.png"));
-				goBackBtn.setBounds(780, 20, 222, 65);
+				goBackBtn.setIcon(new ImageIcon("img\\btn\\closepagebtn.png"));
+				goBackBtn.setBounds(790, 20, 222, 65);
 			}
 		});
 

@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 
 public class DeleteCustomerScreen implements FocusListener {
@@ -172,9 +172,8 @@ public class DeleteCustomerScreen implements FocusListener {
 
 				if (!customerIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.",
-							"Title ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
-							btns[0]);
+					JOptionPane.showOptionDialog(null, "Enter an existing Customer ID please.", "Title ID Error.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
 				try {
@@ -182,35 +181,44 @@ public class DeleteCustomerScreen implements FocusListener {
 				} catch (Exception exc) {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null,
-							"There's no customer of ID " + customerIDtf.getText() + ".", "Non-Existent Customer.",
-							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					JOptionPane.showOptionDialog(null, "There's no customer of ID " + customerIDtf.getText() + ".",
+							"Non-Existent Customer.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+							btns, btns[0]);
 					return;
 				}
 				if (customer == null) {
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null,
-							"Customer of ID " + customerIDtf.getText() + " doesn't exist.", "Error.",
-							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-					return;
-				}
-
-				int a = managementSystem.deleteCustomer(customer);
-
-				switch (a) {
-				case 0:
-					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null, "Customer of ID " + customerIDtf + " doesn't exist.",
+					JOptionPane.showOptionDialog(null, "Customer of ID " + customerIDtf.getText() + " doesn't exist.",
 							"Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
-				case 1:
-					Object[] btnss = { "Ok" };
-					JOptionPane.showOptionDialog(null,
-							"Customer: " + customer.getCustomer_name() + ", ID: " + customer.getCustomer_id()
-									+ " was successfully deleted from the system.",
-							"Customer Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
-							btnss, btnss[0]);
-					break;
+				}
+				Object[] btn = { "Cancel", "Delete" };
+				int i = JOptionPane.showOptionDialog(null,
+						"Are you sure to delete \nCustomer ID: " + customer.getCustomerID() + "\nCustomer Name:"
+								+ customer.getCustomer_name() + "?\n There's no Undo.",
+						"Confirmation.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn, btn[0]);
+
+				if (i == 1) {
+
+					int a = managementSystem.deleteCustomer(customer);
+
+					switch (a) {
+					case 0:
+						Object[] btns = { "Ok" };
+						JOptionPane.showOptionDialog(null, "Customer of ID " + customerIDtf + " doesn't exist.",
+								"Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+								btns[0]);
+						return;
+					case 1:
+						Object[] btnss = { "Ok" };
+						JOptionPane.showOptionDialog(null,
+								"Customer: " + customer.getCustomer_name() + ", ID: " + customer.getCustomerID()
+										+ " was successfully deleted from the system.",
+								"Customer Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+								logoIcon, btnss, btnss[0]);
+						break;
+					}
+				} else {
 				}
 			}
 		});

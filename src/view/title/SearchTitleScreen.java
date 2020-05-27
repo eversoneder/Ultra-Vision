@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.enums.Media;
 import model.titles.BoxSet;
 import model.titles.Movie;
@@ -59,7 +59,7 @@ public class SearchTitleScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		searchTitleScreen.setSize(980, 600);
+		searchTitleScreen.setSize(980, 590);
 		searchTitleScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		searchTitleScreen.setUndecorated(true);
 		searchTitleScreen.setVisible(true);
@@ -93,7 +93,7 @@ public class SearchTitleScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, searchTitleScreen.getWidth(), searchTitleScreen.getHeight() - 150);
+		backRectangle.setBounds(0, 110, searchTitleScreen.getWidth(), searchTitleScreen.getHeight() - 135);
 		backPanel.add(backRectangle);
 
 		searchTitletf = new JTextField();
@@ -195,7 +195,7 @@ public class SearchTitleScreen implements FocusListener {
 				if (searchTitletf.getText().equals("search title")) {
 					Object[] btns = { "Ok" };
 					JOptionPane.showOptionDialog(null,
-							"Write something to search. \nTip: if you want to see all let the \nsearch be \" \" (space).",
+							"Write something to search. \nTip: if you want to see all let the \nsearch be \"\" (blank without space).",
 							"No search given.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 							btns[0]);
 					return;

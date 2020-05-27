@@ -20,8 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
 import model.Rent;
+import model.UltraVisionManagementSystem;
 import model.customer.MembershipCard;
 import model.titles.Title;
 
@@ -46,7 +46,7 @@ public class ReturnTitleScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		returnTitleScreen.setSize(640, 330);
+		returnTitleScreen.setSize(640, 300);
 		returnTitleScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		returnTitleScreen.setUndecorated(true);
 		returnTitleScreen.setVisible(true);
@@ -65,7 +65,7 @@ public class ReturnTitleScreen implements FocusListener {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		returnTitleScreen.add(backPanel);
 
 		JLabel logobluecircle = new JLabel();
@@ -84,7 +84,7 @@ public class ReturnTitleScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 60, returnTitleScreen.getWidth(), returnTitleScreen.getHeight() - 115);
+		backRectangle.setBounds(0, 60, returnTitleScreen.getWidth(), returnTitleScreen.getHeight() - 80);
 		backPanel.add(backRectangle);
 
 		JLabel titleIcon = new JLabel();
@@ -101,7 +101,7 @@ public class ReturnTitleScreen implements FocusListener {
 
 		JButton closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
-		closeBtn.setBounds(580, 14, 30, 30);
+		closeBtn.setBounds(590, 14, 30, 30);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setFocusPainted(false);
@@ -115,12 +115,12 @@ public class ReturnTitleScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnsmallhover.png"));
-				closeBtn.setBounds(577, 10, 36, 36);
+				closeBtn.setBounds(587, 10, 36, 36);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
-				closeBtn.setBounds(580, 14, 30, 30);
+				closeBtn.setBounds(590, 14, 30, 30);
 			}
 		});
 	}

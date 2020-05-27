@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.KeyController;
-import controller.UltraVisionManagementSystem;
+import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 import model.titles.Title;
@@ -138,7 +138,7 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 
 		JButton closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
-		closeBtn.setBounds(680, 14, 30, 30);
+		closeBtn.setBounds(690, 14, 30, 30);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setFocusPainted(false);
@@ -152,12 +152,12 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnsmallhover.png"));
-				closeBtn.setBounds(677, 10, 36, 36);
+				closeBtn.setBounds(687, 10, 36, 36);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
-				closeBtn.setBounds(680, 14, 30, 30);
+				closeBtn.setBounds(690, 14, 30, 30);
 			}
 		});
 	}
