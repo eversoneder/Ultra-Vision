@@ -29,7 +29,7 @@ import model.titles.Title;
 public class NewBoxSetScreen implements FocusListener {
 
 	private JFrame newBoxSetScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(newBoxSetScreen);
+	private KeyController listenerController = new KeyController(newBoxSetScreen);
 
 	private BoxSet newBoxSet;
 
@@ -51,14 +51,17 @@ public class NewBoxSetScreen implements FocusListener {
 	public void setAttributes() {
 		newBoxSetScreen.setSize(1000, 650);
 		newBoxSetScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		newBoxSetScreen.setUndecorated(true);
 		newBoxSetScreen.setVisible(true);
 		newBoxSetScreen.setResizable(false);
 		newBoxSetScreen.setTitle("Title Registration");
 		newBoxSetScreen.setLocationRelativeTo(null);
 		newBoxSetScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		newBoxSetScreen.addKeyListener(keyAndWindowListener);
-		newBoxSetScreen.addWindowListener(keyAndWindowListener);
+		newBoxSetScreen.addKeyListener(listenerController);
+		newBoxSetScreen.addWindowListener(listenerController);
+		newBoxSetScreen.addMouseListener(listenerController);
+		newBoxSetScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {

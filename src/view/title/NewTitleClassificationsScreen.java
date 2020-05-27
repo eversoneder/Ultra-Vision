@@ -20,36 +20,41 @@ import view.title.register.NewMovieScreen;
 import view.title.register.NewBoxSetScreen;
 import view.title.register.NewMusicScreen;
 
-public class TitleClassificationsScreen {
+public class NewTitleClassificationsScreen {
 
 	private JFrame titleClassifications = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(titleClassifications);
+	private KeyController listenerController = new KeyController(titleClassifications);
 
-	public TitleClassificationsScreen() {
+	public NewTitleClassificationsScreen() {
 		setAttributes();
 		setComponents();
 		validation();
 	}
 
 	public void setAttributes() {
-		titleClassifications.setSize(950, 300);
+		titleClassifications.setSize(950, 280);
 		titleClassifications.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		titleClassifications.setUndecorated(true);
 		titleClassifications.setVisible(true);
 		titleClassifications.setResizable(false);
 		titleClassifications.setTitle("Choose Title Classification");
 		titleClassifications.setLocationRelativeTo(null);
 		titleClassifications.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		
-		titleClassifications.addKeyListener(keyAndWindowListener);
-		titleClassifications.addWindowListener(keyAndWindowListener);
+		titleClassifications.addKeyListener(listenerController);
+		titleClassifications.addWindowListener(listenerController);
+		titleClassifications.addMouseListener(listenerController);
+		titleClassifications.addMouseMotionListener(listenerController);
 	}
 
 	private void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		titleClassifications.add(backPanel);
+		
+		closeBtn(backPanel);
 		
 		JLabel musicLabel = new JLabel("New Music");
 		musicLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -189,6 +194,33 @@ public class TitleClassificationsScreen {
 		});
 	}
 
+	public void closeBtn(JPanel backPanel) {
+
+		JButton closeBtn = new JButton();
+		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+		closeBtn.setBounds(900, 14, 30, 30);
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setFocusPainted(false);
+		backPanel.add(closeBtn);
+		closeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				titleClassifications.dispose();
+			}
+		});
+		closeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnsmallhover.png"));
+				closeBtn.setBounds(897, 10, 36, 36);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+				closeBtn.setBounds(900, 14, 30, 30);
+			}
+		});
+	}
 	
 	public void validation() {
 		titleClassifications.repaint();

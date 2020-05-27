@@ -34,7 +34,7 @@ import model.titles.MusicOrLive;
 public class SearchTitleScreen implements FocusListener {
 
 	private JFrame searchTitleScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(searchTitleScreen);
+	private KeyController listenerController = new KeyController(searchTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -59,23 +59,26 @@ public class SearchTitleScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		searchTitleScreen.setSize(1000, 650);
+		searchTitleScreen.setSize(980, 600);
 		searchTitleScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		searchTitleScreen.setUndecorated(true);
 		searchTitleScreen.setVisible(true);
 		searchTitleScreen.setResizable(false);
 		searchTitleScreen.setTitle("Ultra-Vision | Title Search");
 		searchTitleScreen.setLocationRelativeTo(null);
 		searchTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		searchTitleScreen.addKeyListener(keyAndWindowListener);
-		searchTitleScreen.addWindowListener(keyAndWindowListener);
+		searchTitleScreen.addKeyListener(listenerController);
+		searchTitleScreen.addWindowListener(listenerController);
+		searchTitleScreen.addMouseListener(listenerController);
+		searchTitleScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		searchTitleScreen.add(backPanel);
 
 		closeBtn(backPanel);
@@ -90,7 +93,7 @@ public class SearchTitleScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, searchTitleScreen.getWidth(), searchTitleScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, searchTitleScreen.getWidth(), searchTitleScreen.getHeight() - 150);
 		backPanel.add(backRectangle);
 
 		searchTitletf = new JTextField();

@@ -387,15 +387,6 @@ public class UltraVisionDB {
 	}
 	
 	/**
-	 * @param titleID to set available
-	 */
-//	public void setTitleAvailableByID(int titleID) {
-//		
-//		String query = "UPDATE title SET title_available = 1 WHERE title_id = '"+titleID+"';";
-//		executeUpdateRS(query);
-//	}
-	
-	/**
 	 * @param search to query DB
 	 * @return ArrayList of Object customer & card
 	 */

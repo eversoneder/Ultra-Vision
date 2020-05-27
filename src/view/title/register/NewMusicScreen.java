@@ -28,7 +28,7 @@ import model.titles.MusicOrLive;
 public class NewMusicScreen implements FocusListener {
 
 	private JFrame newMusicScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(newMusicScreen);
+	private KeyController listenerController = new KeyController(newMusicScreen);
 
 	private MusicOrLive newMusic;
 
@@ -51,14 +51,17 @@ public class NewMusicScreen implements FocusListener {
 	public void setAttributes() {
 		newMusicScreen.setSize(1000, 650);
 		newMusicScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		newMusicScreen.setUndecorated(true);
 		newMusicScreen.setVisible(true);
 		newMusicScreen.setResizable(false);
 		newMusicScreen.setTitle("Title Registration");
 		newMusicScreen.setLocationRelativeTo(null);
 		newMusicScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		newMusicScreen.addKeyListener(keyAndWindowListener);
-		newMusicScreen.addWindowListener(keyAndWindowListener);
+		newMusicScreen.addKeyListener(listenerController);
+		newMusicScreen.addWindowListener(listenerController);
+		newMusicScreen.addMouseListener(listenerController);
+		newMusicScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {

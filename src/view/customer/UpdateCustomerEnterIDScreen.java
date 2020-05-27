@@ -29,7 +29,7 @@ import view.customer.SearchCustomerScreen;
 public class UpdateCustomerEnterIDScreen implements FocusListener {
 
 	private JFrame returnTitleScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(returnTitleScreen);
+	private KeyController listenerController = new KeyController(returnTitleScreen);
 	
 	private Customer customer = new Customer();
 	private MembershipCard card = new MembershipCard();
@@ -45,23 +45,26 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		returnTitleScreen.setSize(740, 330);
+		returnTitleScreen.setSize(740, 300);
 		returnTitleScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		returnTitleScreen.setUndecorated(true);
 		returnTitleScreen.setVisible(true);
 		returnTitleScreen.setResizable(false);
 		returnTitleScreen.setTitle("Ultra-Vision | Update Customer");
 		returnTitleScreen.setLocationRelativeTo(null);
 		returnTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 
-		returnTitleScreen.addKeyListener(keyAndWindowListener);
-		returnTitleScreen.addWindowListener(keyAndWindowListener);
+		returnTitleScreen.addKeyListener(listenerController);
+		returnTitleScreen.addWindowListener(listenerController);
+		returnTitleScreen.addMouseListener(listenerController);
+		returnTitleScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		returnTitleScreen.add(backPanel);
 
 		JLabel logobluecircle = new JLabel();
@@ -80,7 +83,7 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 60, returnTitleScreen.getWidth(), returnTitleScreen.getHeight() - 115);
+		backRectangle.setBounds(0, 60, returnTitleScreen.getWidth(), returnTitleScreen.getHeight() - 80);
 		backPanel.add(backRectangle);
 
 		JLabel searchLabel = new JLabel("Update Customer");

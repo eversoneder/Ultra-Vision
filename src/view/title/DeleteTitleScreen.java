@@ -26,7 +26,7 @@ import model.titles.Title;
 public class DeleteTitleScreen implements FocusListener {
 
 	private JFrame deleteTitleScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(deleteTitleScreen);
+	private KeyController listenerController = new KeyController(deleteTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -41,23 +41,26 @@ public class DeleteTitleScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		deleteTitleScreen.setSize(900, 300);
+		deleteTitleScreen.setSize(880, 260);
 		deleteTitleScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		deleteTitleScreen.setUndecorated(true);
 		deleteTitleScreen.setVisible(true);
 		deleteTitleScreen.setResizable(false);
 		deleteTitleScreen.setTitle("Ultra-Vision | Title Removal");
 		deleteTitleScreen.setLocationRelativeTo(null);
 		deleteTitleScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		deleteTitleScreen.addKeyListener(keyAndWindowListener);
-		deleteTitleScreen.addWindowListener(keyAndWindowListener);
+		deleteTitleScreen.addKeyListener(listenerController);
+		deleteTitleScreen.addWindowListener(listenerController);
+		deleteTitleScreen.addMouseListener(listenerController);
+		deleteTitleScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		deleteTitleScreen.add(backPanel);
 
 		closeBtn(backPanel);
@@ -78,7 +81,7 @@ public class DeleteTitleScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 50, deleteTitleScreen.getWidth(), deleteTitleScreen.getHeight() - 110);
+		backRectangle.setBounds(0, 50, deleteTitleScreen.getWidth(), deleteTitleScreen.getHeight() - 70);
 		backPanel.add(backRectangle);
 
 		JLabel searchIDLabel = new JLabel("Search to get ID");

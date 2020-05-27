@@ -30,7 +30,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 	
 	private JFrame authenticationScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(authenticationScreen);
+	private KeyController listenerController = new KeyController(authenticationScreen);
 	
 	private MembershipCard card;
 	private Customer customer;
@@ -54,14 +54,17 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	public void setAttributes() {
 		authenticationScreen.setSize(730, 330);
 		authenticationScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		authenticationScreen.setUndecorated(true);
 		authenticationScreen.setVisible(true);
 		authenticationScreen.setResizable(false);
 		authenticationScreen.setTitle("Customer Authentication");
 		authenticationScreen.setLocationRelativeTo(null);
 		authenticationScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		authenticationScreen.addKeyListener(keyAndWindowListener);
-		authenticationScreen.addWindowListener(keyAndWindowListener);
+		authenticationScreen.addKeyListener(listenerController);
+		authenticationScreen.addWindowListener(listenerController);
+		authenticationScreen.addMouseListener(listenerController);
+		authenticationScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {

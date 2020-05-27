@@ -25,7 +25,7 @@ import model.customer.Customer;
 public class DeleteCustomerScreen implements FocusListener {
 
 	private JFrame deleteCustomerScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(deleteCustomerScreen);
+	private KeyController listenerController = new KeyController(deleteCustomerScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -40,23 +40,26 @@ public class DeleteCustomerScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		deleteCustomerScreen.setSize(900, 300);
+		deleteCustomerScreen.setSize(880, 260);
 		deleteCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		deleteCustomerScreen.setUndecorated(true);
 		deleteCustomerScreen.setVisible(true);
 		deleteCustomerScreen.setResizable(false);
 		deleteCustomerScreen.setTitle("Ultra-Vision | Cancel Customer Subscription");
 		deleteCustomerScreen.setLocationRelativeTo(null);
 		deleteCustomerScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 
-		deleteCustomerScreen.addKeyListener(keyAndWindowListener);
-		deleteCustomerScreen.addWindowListener(keyAndWindowListener);
+		deleteCustomerScreen.addKeyListener(listenerController);
+		deleteCustomerScreen.addWindowListener(listenerController);
+		deleteCustomerScreen.addMouseListener(listenerController);
+		deleteCustomerScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		deleteCustomerScreen.add(backPanel);
 
 		closeBtn(backPanel);
@@ -77,7 +80,7 @@ public class DeleteCustomerScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 50, deleteCustomerScreen.getWidth(), deleteCustomerScreen.getHeight() - 110);
+		backRectangle.setBounds(0, 50, deleteCustomerScreen.getWidth(), deleteCustomerScreen.getHeight() - 70);
 		backPanel.add(backRectangle);
 
 		JLabel searchIDLabel = new JLabel("Search to get ID");

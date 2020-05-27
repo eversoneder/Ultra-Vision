@@ -25,7 +25,7 @@ import model.customer.MembershipCard;
 public class NewCustomerScreen implements FocusListener {
 
 	private JFrame newCustomerScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(newCustomerScreen);
+	private KeyController listenerController = new KeyController(newCustomerScreen);
 	
 	private JTextField nametf;
 	private JTextField emailtf;
@@ -44,14 +44,17 @@ public class NewCustomerScreen implements FocusListener {
 	public void setAttributes() {
 		newCustomerScreen.setSize(1000, 650);
 		newCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		newCustomerScreen.setUndecorated(true);
 		newCustomerScreen.setVisible(true);
 		newCustomerScreen.setResizable(false);
 		newCustomerScreen.setTitle("Customer Registration");
 		newCustomerScreen.setLocationRelativeTo(null);
 		newCustomerScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		newCustomerScreen.addKeyListener(keyAndWindowListener);
-		newCustomerScreen.addWindowListener(keyAndWindowListener);
+		newCustomerScreen.addKeyListener(listenerController);
+		newCustomerScreen.addWindowListener(listenerController);
+		newCustomerScreen.addMouseListener(listenerController);
+		newCustomerScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {

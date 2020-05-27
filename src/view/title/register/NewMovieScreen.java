@@ -28,8 +28,8 @@ import model.titles.Title;
 
 public class NewMovieScreen implements FocusListener {
 
-	private JFrame newLiveConcertScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(newLiveConcertScreen);
+	private JFrame newMovieScreen = new JFrame();
+	private KeyController listenerController = new KeyController(newMovieScreen);
 
 	private Movie newMovie;
 
@@ -49,16 +49,19 @@ public class NewMovieScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		newLiveConcertScreen.setSize(1000, 650);
-		newLiveConcertScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		newLiveConcertScreen.setVisible(true);
-		newLiveConcertScreen.setResizable(false);
-		newLiveConcertScreen.setTitle("Title Registration");
-		newLiveConcertScreen.setLocationRelativeTo(null);
-		newLiveConcertScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
+		newMovieScreen.setSize(1000, 650);
+		newMovieScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		newMovieScreen.setUndecorated(true);
+		newMovieScreen.setVisible(true);
+		newMovieScreen.setResizable(false);
+		newMovieScreen.setTitle("Title Registration");
+		newMovieScreen.setLocationRelativeTo(null);
+		newMovieScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		newLiveConcertScreen.addKeyListener(keyAndWindowListener);
-		newLiveConcertScreen.addWindowListener(keyAndWindowListener);
+		newMovieScreen.addKeyListener(listenerController);
+		newMovieScreen.addWindowListener(listenerController);
+		newMovieScreen.addMouseListener(listenerController);
+		newMovieScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {
@@ -66,12 +69,12 @@ public class NewMovieScreen implements FocusListener {
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 120, 170));
-		newLiveConcertScreen.add(backPanel);
+		newMovieScreen.add(backPanel);
 
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, newLiveConcertScreen.getWidth(), newLiveConcertScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, newMovieScreen.getWidth(), newMovieScreen.getHeight() - 200);
 		backPanel.add(backRectangle);
 
 		JLabel newCustomerLabel = new JLabel("New Movie");
@@ -163,7 +166,7 @@ public class NewMovieScreen implements FocusListener {
 		backPanel.add(closeBtn);
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newLiveConcertScreen.dispose();
+				newMovieScreen.dispose();
 			}
 		});
 		closeBtn.addMouseListener(new MouseAdapter() {
@@ -189,7 +192,7 @@ public class NewMovieScreen implements FocusListener {
 		backRectangle.add(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newLiveConcertScreen.dispose();
+				newMovieScreen.dispose();
 			}
 		});
 		cancelBtn.addMouseListener(new MouseAdapter() {
@@ -285,7 +288,7 @@ public class NewMovieScreen implements FocusListener {
 								"Registered Title", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
 					}
-					newLiveConcertScreen.dispose();
+					newMovieScreen.dispose();
 					new NewMovieScreen();
 				}
 			}
@@ -305,8 +308,8 @@ public class NewMovieScreen implements FocusListener {
 	}
 
 	public void validation() {
-		newLiveConcertScreen.repaint();
-		newLiveConcertScreen.validate();
+		newMovieScreen.repaint();
+		newMovieScreen.validate();
 	}
 
 	@Override

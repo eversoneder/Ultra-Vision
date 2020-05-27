@@ -28,7 +28,7 @@ public class MembershipCardScreen implements FocusListener {
 
 	private JButton cancelBtn;
 	private JFrame membershipCardScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(membershipCardScreen);
+	private KeyController listenerController = new KeyController(membershipCardScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -50,14 +50,17 @@ public class MembershipCardScreen implements FocusListener {
 	public void setAttributes() {
 		membershipCardScreen.setSize(700, 435);
 		membershipCardScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		membershipCardScreen.setUndecorated(true);
 		membershipCardScreen.setVisible(true);
 		membershipCardScreen.setResizable(false);
 		membershipCardScreen.setTitle("Card Issue");
 		membershipCardScreen.setLocationRelativeTo(null);
 		membershipCardScreen.setIconImage(new ImageIcon("img\\icons\\logo.png").getImage());
 		
-		membershipCardScreen.addKeyListener(keyAndWindowListener);
-		membershipCardScreen.addWindowListener(keyAndWindowListener);
+		membershipCardScreen.addKeyListener(listenerController);
+		membershipCardScreen.addWindowListener(listenerController);
+		membershipCardScreen.addMouseListener(listenerController);
+		membershipCardScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {

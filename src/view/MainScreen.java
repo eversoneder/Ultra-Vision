@@ -14,22 +14,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controller.KeyController;
-import view.customer.CustomerClassificationsScreen;
+import view.customer.NewCustomerClassificationsScreen;
 import view.customer.DeleteCustomerScreen;
 import view.customer.SearchCustomerScreen;
 import view.customer.UpdateCustomerEnterIDScreen;
 import view.title.DeleteTitleScreen;
 import view.title.ReturnTitleScreen;
 import view.title.SearchTitleScreen;
-import view.title.TitleClassificationsScreen;
+import view.title.NewTitleClassificationsScreen;
 
 public class MainScreen {
 
 	private JButton closeBtn;
-	private JButton rentBtn;
 	private JFrame MainScreen = new JFrame();
 
-	private KeyController keyListener = new KeyController(MainScreen);
+	private KeyController listenerController = new KeyController(MainScreen);
 
 	public MainScreen() {
 		setAttributes();
@@ -41,14 +40,17 @@ public class MainScreen {
 //		this.setExtendedState(JFrame.MAXIMIZED_BOTH);//was trying to do full screen
 		MainScreen.setSize(1300, 800);
 		MainScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		MainScreen.setUndecorated(true);
 		MainScreen.setVisible(true);
 		MainScreen.setResizable(false);
 		MainScreen.setTitle("Ultra-Vision Management System");
 		MainScreen.setLocationRelativeTo(null);
 		MainScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		MainScreen.addKeyListener(keyListener);
-		MainScreen.addWindowListener(keyListener);
+		MainScreen.addKeyListener(listenerController);
+		MainScreen.addWindowListener(listenerController);
+		MainScreen.addMouseListener(listenerController);
+		MainScreen.addMouseMotionListener(listenerController);
 	}
 	
 	public void setComponents() {
@@ -79,17 +81,17 @@ public class MainScreen {
 
 		objsWithinStrip2(whiteStrip2);
 
-		rentBtn(backPanel);
+		rentBtns(backPanel);
 		closeBtn(backPanel);
 		
 		JLabel background = new JLabel(new ImageIcon("img\\background.jpg"));
-		background.setBounds(-8, -20, 1300, 800);
+		background.setBounds(0, 0, 1300, 800);
 		backPanel.add(background);
 	}
 	
-	public void rentBtn(JPanel backPanel) {
+	public void rentBtns(JPanel backPanel) {
 		
-		rentBtn = new JButton();
+		JButton rentBtn = new JButton();
 		rentBtn.setIcon(new ImageIcon("img\\btn\\newrentbtn.png"));
 		rentBtn.setBounds(15, 15, 230, 230);
 		rentBtn.setBorderPainted(false);
@@ -113,6 +115,31 @@ public class MainScreen {
 				rentBtn.setBounds(15, 15, 230, 230);
 			}
 		});
+		
+		JButton viewRentsBtn = new JButton();
+		viewRentsBtn.setIcon(new ImageIcon("img\\btn\\viewrentsbtn.png"));
+		viewRentsBtn.setBounds(0, 225, 160, 170);
+		viewRentsBtn.setBorderPainted(false);
+		viewRentsBtn.setContentAreaFilled(false);
+		viewRentsBtn.setFocusPainted(false);
+		viewRentsBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ViewRents();
+			}
+		});
+		backPanel.add(viewRentsBtn);
+		viewRentsBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				viewRentsBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				viewRentsBtn.setIcon(new ImageIcon("img\\btn\\hover\\viewrentsbtnhover.png"));
+				viewRentsBtn.setBounds(-4, 221, 170, 180);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				viewRentsBtn.setIcon(new ImageIcon("img\\btn\\viewrentsbtn.png"));
+				viewRentsBtn.setBounds(0, 225, 160, 170);
+			}
+		});
 	}
 
 	public void objsWithinStrip1(JPanel whiteStrip1) {
@@ -134,7 +161,7 @@ public class MainScreen {
 		whiteStrip1.add(newCustomerBtn);
 		newCustomerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CustomerClassificationsScreen();
+				new NewCustomerClassificationsScreen();
 			}
 		});
 		newCustomerBtn.addMouseListener(new MouseAdapter() {
@@ -248,7 +275,7 @@ public class MainScreen {
 		newTitleBtn.setActionCommand("newTitleBtn");
 		newTitleBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new TitleClassificationsScreen();
+				new NewTitleClassificationsScreen();
 			}
 		});
 

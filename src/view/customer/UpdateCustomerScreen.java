@@ -27,7 +27,7 @@ import model.customer.MembershipCard;
 public class UpdateCustomerScreen implements FocusListener {
 
 	private JFrame updateCustomerScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(updateCustomerScreen);
+	private KeyController listenerController = new KeyController(updateCustomerScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -53,14 +53,17 @@ public class UpdateCustomerScreen implements FocusListener {
 	public void setAttributes() {
 		updateCustomerScreen.setSize(800, 550);
 		updateCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		updateCustomerScreen.setUndecorated(true);
 		updateCustomerScreen.setVisible(true);
 		updateCustomerScreen.setResizable(false);
 		updateCustomerScreen.setTitle("Ultra-Vision | Customer Information Update");
 		updateCustomerScreen.setLocationRelativeTo(null);
 		updateCustomerScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 
-		updateCustomerScreen.addKeyListener(keyAndWindowListener);
-		updateCustomerScreen.addWindowListener(keyAndWindowListener);
+		updateCustomerScreen.addKeyListener(listenerController);
+		updateCustomerScreen.addWindowListener(listenerController);
+		updateCustomerScreen.addMouseListener(listenerController);
+		updateCustomerScreen.addMouseMotionListener(listenerController);
 	}
 
 	private void setComponents() {
@@ -228,7 +231,7 @@ public class UpdateCustomerScreen implements FocusListener {
 				String phone = customerPhonetf.getText().trim();
 				String email = customerEmailtf.getText().trim();
 				String password = String.valueOf(customerPasswordtf.getPassword()).trim();
-				
+
 //----------------------VALIDATE NAME---------------------
 				if (!name.matches("[a-zA-Z]+")) {
 					Object[] btns = { "Ok" };
@@ -257,9 +260,8 @@ public class UpdateCustomerScreen implements FocusListener {
 				if (!password.equals("set new password")) {
 					if (!password.matches("[0-9]{8}")) {
 						Object[] btns = { "Ok" };
-						JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.",
-								"Password Field Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
-								btns, btns[0]);
+						JOptionPane.showOptionDialog(null, "Password must be 8 digit numbers.", "Password Field Error",
+								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;
 					}
 				}
@@ -273,7 +275,7 @@ public class UpdateCustomerScreen implements FocusListener {
 					customer.setCustomer_phone(phonelong);
 					customer.setEmail(email);
 
-					int custUpdate = managementSystem.updateCustomer(customer);//register DB
+					int custUpdate = managementSystem.updateCustomer(customer);// register DB
 
 					switch (custUpdate) {
 					case 0:// fail case name, phone, address
@@ -284,58 +286,48 @@ public class UpdateCustomerScreen implements FocusListener {
 						return;
 
 					case 1:// succeeded update all info
-						//check if changed pass as well
-						if (Integer.parseInt(password) != oldPass) {
+							// check if changed pass as well
+						if (!password.equals("set new password")) {
 
-							card.setPassword(Integer.parseInt(password));
-							int passUpdate = managementSystem.updateCard(card);
+							if (Integer.parseInt(password) != oldPass) {
 
-							switch (passUpdate) {
-							case 0:
-								Object[] btn = { "Ok" };
-								JOptionPane.showOptionDialog(null, "Name, Phone & Email updated but password couldn't be modified.",
-										"Changes", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn,
-										btn[0]);
-								return;
-							case 1:// 1 message for customer info updated AND pass updated
+								card.setPassword(Integer.parseInt(password));
+								int passUpdate = managementSystem.updateCard(card);
+
+								switch (passUpdate) {
+								case 0:
+									Object[] btn = { "Ok" };
+									JOptionPane.showOptionDialog(null,
+											"Name, Phone & Email updated but password couldn't be modified.", "Changes",
+											JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn,
+											btn[0]);
+									return;
+								case 1:// 1 message for customer info updated AND pass updated
+									Object[] btnss = { "Ok" };
+									JOptionPane.showOptionDialog(null,
+											"Customer Info and Password changed successfully.",
+											"Customer Info Changed.", JOptionPane.YES_NO_OPTION,
+											JOptionPane.PLAIN_MESSAGE, logoIcon, btnss, btnss[0]);
+									updateCustomerScreen.dispose();
+								}
+							} else {// if password is same
 								Object[] btnss = { "Ok" };
 								JOptionPane.showOptionDialog(null,
-										"Customer Info and Password changed successfully.", "Customer Info Changed.",
+										"This password is in use, to update set a new password.", "Password Matching.",
 										JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btnss,
 										btnss[0]);
-								break;
+								return;
 							}
-						} else {// if password wasn't modified just prompt the customer info updated
-							Object[] btnss = { "Ok" };
-							JOptionPane.showOptionDialog(null, "Customer Information changed successfully.",
-									"Customer Info Changed.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-									logoIcon, btnss, btnss[0]);
-							break;
+
+						} else {// if pass haven't been touched
+							Object[] btn = { "Ok" };
+							JOptionPane.showOptionDialog(null, "Name, Phone & Email updated.", "Changes Made",
+									JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn, btn[0]);
+							updateCustomerScreen.dispose();
 						}
 					}
 
-				} else if (Integer.parseInt(password) != oldPass) {//if only pass was modified
-
-					card.setPassword(Integer.parseInt(password));
-					int passUpdate = managementSystem.updateCard(card);
-
-					switch (passUpdate) {
-					case 0:
-						Object[] btns = { "Ok" };
-						JOptionPane.showOptionDialog(null, "Couldn't update password", "Password Field Error",
-								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-						return;
-					case 1:
-						Object[] btnss = { "Ok" };
-						JOptionPane.showOptionDialog(null, "Password changed successfully.",
-								"Password Changed.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
-								btnss, btnss[0]);
-
-						break;
-					}
 				}
-
-				updateCustomerScreen.dispose();
 
 			}
 

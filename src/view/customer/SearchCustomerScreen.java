@@ -31,7 +31,7 @@ import model.customer.MembershipCard;
 public class SearchCustomerScreen implements FocusListener {
 
 	private JFrame searchCustomerScreen = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(searchCustomerScreen);
+	private KeyController listenerController = new KeyController(searchCustomerScreen);
 
 	private ArrayList<Customer> customerList = new ArrayList<>();
 	private ArrayList<MembershipCard> membershipCardList = new ArrayList<>();
@@ -52,23 +52,26 @@ public class SearchCustomerScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		searchCustomerScreen.setSize(1000, 650);
+		searchCustomerScreen.setSize(980, 600);
 		searchCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		searchCustomerScreen.setUndecorated(true);
 		searchCustomerScreen.setVisible(true);
 		searchCustomerScreen.setResizable(false);
 		searchCustomerScreen.setTitle("Ultra-Vision | Customer Search");
 		searchCustomerScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		searchCustomerScreen.setLocationRelativeTo(null);
 
-		searchCustomerScreen.addKeyListener(keyAndWindowListener);
-		searchCustomerScreen.addWindowListener(keyAndWindowListener);
+		searchCustomerScreen.addKeyListener(listenerController);
+		searchCustomerScreen.addWindowListener(listenerController);
+		searchCustomerScreen.addMouseListener(listenerController);
+		searchCustomerScreen.addMouseMotionListener(listenerController);
 	}
 
 	public void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		searchCustomerScreen.add(backPanel);
 
 		closeBtn(backPanel);
@@ -83,7 +86,7 @@ public class SearchCustomerScreen implements FocusListener {
 		JPanel backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 110, searchCustomerScreen.getWidth(), searchCustomerScreen.getHeight() - 200);
+		backRectangle.setBounds(0, 110, searchCustomerScreen.getWidth(), searchCustomerScreen.getHeight() - 150);
 		backPanel.add(backRectangle);
 
 		searchCustomertf = new JTextField();

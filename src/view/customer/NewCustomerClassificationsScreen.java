@@ -18,37 +18,42 @@ import controller.KeyController;
 import model.customer.MembershipCard;
 import model.enums.AccessLevel;
 
-public class CustomerClassificationsScreen {
+public class NewCustomerClassificationsScreen {
 
 	private JFrame customerClassifications = new JFrame();
-	private KeyController keyAndWindowListener = new KeyController(customerClassifications);
+	private KeyController listenerController = new KeyController(customerClassifications);
 
-	public CustomerClassificationsScreen() {
+	public NewCustomerClassificationsScreen() {
 		setAttributes();
 		setComponents();
 		validation();
 	}
 
 	public void setAttributes() {
-		customerClassifications.setSize(950, 300);
+		customerClassifications.setSize(950, 280);
 		customerClassifications.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		customerClassifications.setUndecorated(true);
 		customerClassifications.setVisible(true);
 		customerClassifications.setResizable(false);
 		customerClassifications.setTitle("Subscription Plan");
 		customerClassifications.setLocationRelativeTo(null);
 		customerClassifications.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
 		
-		customerClassifications.addKeyListener(keyAndWindowListener);
-		customerClassifications.addWindowListener(keyAndWindowListener);
+		customerClassifications.addKeyListener(listenerController);
+		customerClassifications.addWindowListener(listenerController);
+		customerClassifications.addMouseListener(listenerController);
+		customerClassifications.addMouseMotionListener(listenerController);
 	}
 
 	private void setComponents() {
 
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(null);
-		backPanel.setBackground(new Color(0, 120, 170));
+		backPanel.setBackground(new Color(0, 140, 190));
 		customerClassifications.add(backPanel);
 
+		closeBtn(backPanel);
+		
 		JLabel musicLover = new JLabel("Music Lover");
 		musicLover.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		musicLover.setBounds(87, 15, 200, 30);
@@ -73,6 +78,7 @@ public class CustomerClassificationsScreen {
 		premium.setForeground(Color.WHITE);
 		backPanel.add(premium);
 
+		
 		buttons(backPanel);
 	}
 
@@ -184,6 +190,34 @@ public class CustomerClassificationsScreen {
 		});
 	}
 
+	public void closeBtn(JPanel backPanel) {
+
+		JButton closeBtn = new JButton();
+		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+		closeBtn.setBounds(900, 14, 30, 30);
+		closeBtn.setBorderPainted(false);
+		closeBtn.setContentAreaFilled(false);
+		closeBtn.setFocusPainted(false);
+		backPanel.add(closeBtn);
+		closeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				customerClassifications.dispose();
+			}
+		});
+		closeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnsmallhover.png"));
+				closeBtn.setBounds(897, 10, 36, 36);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
+				closeBtn.setBounds(900, 14, 30, 30);
+			}
+		});
+	}
+	
 	public void validation() {
 		customerClassifications.repaint();
 		customerClassifications.validate();
