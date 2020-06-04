@@ -36,7 +36,6 @@ final class UltraVisionDB {
 	private ArrayList<Object> titleList = new ArrayList<>();
 	private ArrayList<Object> customerInfo = new ArrayList<>();
 	
-	private Customer customer = new Customer();
 	private MembershipCard membershipCard = new MembershipCard();
 	
 	/**
@@ -150,10 +149,10 @@ final class UltraVisionDB {
 				+ "INNER JOIN title_type tt ON t.title_type_id = tt.title_type_id "
 				+ "WHERE t.title_id = '"+titleID+"';";
 		
-		Title title;
-		title = loadRawTitle(query);
+		titleList = loadRawTitle(query);
+		Title t = (Title) titleList.get(0);
 		
-		switch(title.getTitleTypeDB()) {
+		switch(t.getTitleTypeDB()) {
 		case 1://ML(Music)
 			String queryMusic = "SELECT * FROM title t "
 					+ "INNER JOIN music m ON t.title_id = m.title_id "
@@ -325,31 +324,34 @@ final class UltraVisionDB {
 	 * @param query to query DB
 	 * @return Title
 	 */
-	private Title loadRawTitle(String query) {
+	private ArrayList<Object> loadRawTitle(String query) {
 			
 			ResultSet rs = executeQueryRS(query);
 			Title newTitle = new Title(0);
 			
 			try {
-				if(!rs.wasNull()) {
-					newTitle = new Title(
-							rs.getInt("title_id"), 
-							rs.getInt("title_type_id"), 
-							rs.getInt("disc_format_id"),
-							rs.getInt("title_available"),
-							rs.getString("title_name"),
-							rs.getDouble("title_price"),
-							rs.getString("title_genre"),
-							rs.getInt("title_yor")
-							);
-				}
+				do {
+					if(!rs.wasNull()) {
+						newTitle = new Title(
+								rs.getInt("title_id"),
+								rs.getInt("title_type_id"),
+								rs.getInt("disc_format_id"),
+								rs.getInt("title_available"),
+								rs.getString("title_name"),
+								rs.getDouble("title_price"),
+								rs.getString("title_genre"),
+								rs.getInt("title_yor")
+								);
+						titleList.add(newTitle);
+					}
+				}while (rs.next());
 			} catch (SQLException sqle) {
 				exceptionMessages(sqle);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 			
-			return newTitle;
+			return titleList;
 	}
 	
 	/**
@@ -400,13 +402,17 @@ final class UltraVisionDB {
 		customerInfo = loadCustomerInfoGetList(searchRent);
 		customerInfo = cardInfoLoad(searchRent);
 		
-		Title title = loadRawTitle(searchRent);
-		titleList = getTitleInfoByID(title.getId());
+		ArrayList<Object> temp = loadRawTitle(searchRent);
+		for(Object i : temp) {
+			customerInfo.add(i);
+		}
 		
-		customerInfo.add(titleList.get(0));
-		
-		Rent rent = getRentByTitleID(title.getId());
-		customerInfo.add(rent);
+		for(Object i : temp) {
+			Title t = new Title(0);
+			t = (Title) i;
+			Rent rent = getRentByTitleID(t.getId());
+			customerInfo.add(rent);
+		}
 		
 		return customerInfo;
 	}
@@ -793,7 +799,7 @@ final class UltraVisionDB {
 
 		return newTitle;
 	}
-
+//addNewTitle(ArrayList<? extends Title> title) passing a obj subclass of title
 	/**
 	 * @param newMusicOrLive to upload
 	 * @return 1 if succeeded 0 if failed

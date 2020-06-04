@@ -34,23 +34,29 @@ public class RentScreen implements FocusListener {
 	private KeyController listenerController = new KeyController(rentScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
-	
-	private JTextField customerIDtf;
-	private JTextField titleIDtf;
+
+	private int tfCount;
+	private JTextField customerIDtf, titleIDtf1, titleIDtf2, titleIDtf3, titleIDtf4;
 
 	private MembershipCard card = new MembershipCard();
 	private Customer customer = new Customer();
 
 	private Title title;
-	
+	private JPanel backPanel, backRectangle;
+
+	private JButton plusBtn, removeBtn2, removeBtn3, removeBtn4, closeBtn, searchCustomerBtn, searchTitleBtn, cancelBtn,
+			confirmBtn;
+
+	private JLabel titleIcon2, titleIcon3, titleIcon4;
+
 	public RentScreen() {
-		setAttributes();
+		setFrameAttributes();
 		setComponents();
 		validation();
 	}
 
-	public void setAttributes() {
-		rentScreen.setSize(800, 330);
+	public void setFrameAttributes() {
+		rentScreen.setSize(800, 460);
 		rentScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		rentScreen.setUndecorated(true);
 		rentScreen.setVisible(true);
@@ -58,7 +64,7 @@ public class RentScreen implements FocusListener {
 		rentScreen.setTitle("Rental Issue");
 		rentScreen.setLocationRelativeTo(null);
 		rentScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
-		
+
 		rentScreen.addKeyListener(listenerController);
 		rentScreen.addWindowListener(listenerController);
 		rentScreen.addMouseListener(listenerController);
@@ -67,12 +73,17 @@ public class RentScreen implements FocusListener {
 
 	private void setComponents() {
 
-		JPanel backPanel = new JPanel();
+		backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 140, 190));
 		rentScreen.add(backPanel);
-		
-		closeBtn(backPanel);
+
+		JLabel logobluecircle = new JLabel();
+		logobluecircle.setIcon(new ImageIcon("img\\icons\\logobluecircle.png"));
+		logobluecircle.setBounds(320, 5, 150, 110);
+		backPanel.add(logobluecircle);
+
+		closeBtn();
 
 		JLabel issueRentalLabel = new JLabel("Issue Title Rental");
 		issueRentalLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -80,31 +91,211 @@ public class RentScreen implements FocusListener {
 		issueRentalLabel.setForeground(Color.WHITE);
 		backPanel.add(issueRentalLabel);
 
-		JPanel backRectangle = new JPanel();
+		backRectangle = new JPanel();
 		backRectangle.setLayout(null);
 		backRectangle.setBackground(new Color(0, 80, 110));
-		backRectangle.setBounds(0, 60, rentScreen.getWidth(), rentScreen.getHeight() - 115);
+		backRectangle.setBounds(0, 90, rentScreen.getWidth(), rentScreen.getHeight() - 120);
 		backPanel.add(backRectangle);
+
+		plusBtn(590, 120);
 
 		JLabel customerIcon = new JLabel();
 		customerIcon.setIcon(new ImageIcon("img\\icons\\custiconbluesmall.png"));
-		customerIcon.setBounds(25, 5, 100, 100);
+		customerIcon.setBounds(25, 20, 100, 100);
 		backRectangle.add(customerIcon);
 
-		JLabel titleIcon = new JLabel();
-		titleIcon.setIcon(new ImageIcon("img\\icons\\titleiconbluesmall.png"));
-		titleIcon.setBounds(25, 105, 100, 100);
-		backRectangle.add(titleIcon);
+		JLabel titleIcon1 = setTitleIcon(405, 20);
 
-		textFields(backRectangle);
-		buttons(backRectangle);
+		tfCount = 1;
+		customerIDtf = tfInstantiation(140, 45, "enter customer id");
+		titleIDtf1 = tfInstantiation(520, 45, "enter title id");
+
+		buttons();
 	}
-	
-	public void closeBtn(JPanel backPanel) {
 
-		JButton closeBtn = new JButton();
+	public void plusBtn(int x, int y) {
+
+		plusBtn = new JButton();
+		plusBtn.setIcon(new ImageIcon("img\\btn\\plusbtn.png"));
+		plusBtn.setBounds(x, y, 80, 80);
+		plusBtn.setBorderPainted(false);
+		plusBtn.setContentAreaFilled(false);
+		plusBtn.setFocusPainted(false);
+		backRectangle.add(plusBtn);
+		plusBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (tfCount < 4) {
+
+					rentScreen.setSize(800, rentScreen.getHeight() + 100);
+					rentScreen.setLocationRelativeTo(null);
+					backRectangle.setBounds(0, 90, rentScreen.getWidth(), rentScreen.getHeight() - 120);
+
+					int oldPlusY = plusBtn.getY();
+					backRectangle.remove(plusBtn);
+					plusBtn(590, oldPlusY + 103);
+
+					int oldscBtnY = searchCustomerBtn.getY();
+					backRectangle.remove(searchCustomerBtn);
+					setSearchCustomerBtn(35, oldscBtnY + 100);
+
+					int oldstBtnY = searchTitleBtn.getY();
+					backRectangle.remove(searchTitleBtn);
+					setSearchTitleBtn(225, oldstBtnY + 100);
+
+					int oldcancelBtnY = cancelBtn.getY();
+					backRectangle.remove(cancelBtn);
+					setCancelBtn(410, oldcancelBtnY + 100);
+
+					int oldconfirmBtnY = confirmBtn.getY();
+					backRectangle.remove(confirmBtn);
+					setConfirmBtn(595, oldconfirmBtnY + 100);
+
+					tfCount++;
+					addTitleField();
+					
+					if(tfCount == 4) {
+						backRectangle.remove(plusBtn);
+					}
+
+				} else {
+					backRectangle.remove(plusBtn);
+				}
+			}
+		});
+		plusBtn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				plusBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				plusBtn.setIcon(new ImageIcon("img\\btn\\hover\\plusbtnhover.png"));
+				plusBtn.setBounds(x - 3, y - 3, 86, 86);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				plusBtn.setIcon(new ImageIcon("img\\btn\\plusbtn.png"));
+				plusBtn.setBounds(x, y, 80, 80);
+			}
+		});
+	}
+
+	public void addTitleField() {
+
+		switch (tfCount) {
+		case 2:
+			titleIcon2 = setTitleIcon(405, 120);
+			titleIDtf2 = tfInstantiation(520, 145, "enter title id");
+			removeBtn2 = setRemoveBtn(740, 115);
+
+			removeBtn2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {// remove title field
+					
+					switch(tfCount) {
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					}
+					
+					backRectangle.remove(titleIcon2);
+					backRectangle.remove(titleIDtf2);
+					backRectangle.remove(removeBtn2);
+					tfCount--;
+
+					btnsMinus100();
+
+					rentScreen.setSize(800, rentScreen.getHeight() - 100);
+					rentScreen.setLocationRelativeTo(null);
+					backRectangle.setBounds(0, 90, rentScreen.getWidth(), rentScreen.getHeight() - 120);
+				}
+			});
+			break;
+		case 3:
+			titleIcon3 = setTitleIcon(405, 220);
+			titleIDtf3 = tfInstantiation(520, 245, "enter title id");
+			removeBtn3 = setRemoveBtn(740, 215);
+
+			removeBtn3.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {// remove title field
+					backRectangle.remove(titleIcon3);
+					backRectangle.remove(titleIDtf3);
+					backRectangle.remove(removeBtn3);
+					tfCount--;
+
+					btnsMinus100();
+
+					rentScreen.setSize(800, rentScreen.getHeight() - 100);
+					rentScreen.setLocationRelativeTo(null);
+					backRectangle.setBounds(0, 90, rentScreen.getWidth(), rentScreen.getHeight() - 120);
+				}
+			});
+			break;
+		case 4:
+			titleIcon4 = setTitleIcon(405, 320);
+			titleIDtf4 = tfInstantiation(520, 345, "enter title id");
+			removeBtn4 = setRemoveBtn(740, 315);
+
+			removeBtn4.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {// remove title field
+					backRectangle.remove(titleIcon4);
+					backRectangle.remove(titleIDtf4);
+					backRectangle.remove(removeBtn4);
+					tfCount--;
+
+					btnsMinus100();
+
+					rentScreen.setSize(800, rentScreen.getHeight() - 100);
+					rentScreen.setLocationRelativeTo(null);
+					backRectangle.setBounds(0, 90, rentScreen.getWidth(), rentScreen.getHeight() - 120);
+				}
+			});
+			break;
+		}
+	}
+
+	public void btnsMinus100() {
+
+		int oldPlusY = plusBtn.getY();
+		backRectangle.remove(plusBtn);
+		plusBtn(590, oldPlusY - 100);
+
+		int oldscBtnY = searchCustomerBtn.getY();
+		backRectangle.remove(searchCustomerBtn);
+		setSearchCustomerBtn(35, oldscBtnY - 100);
+
+		int oldstBtnY = searchTitleBtn.getY();
+		backRectangle.remove(searchTitleBtn);
+		setSearchTitleBtn(225, oldstBtnY - 100);
+
+		int oldcancelBtnY = cancelBtn.getY();
+		backRectangle.remove(cancelBtn);
+		setCancelBtn(410, oldcancelBtnY - 100);
+
+		int oldconfirmBtnY = confirmBtn.getY();
+		backRectangle.remove(confirmBtn);
+		setConfirmBtn(595, oldconfirmBtnY - 100);
+	}
+
+	public JTextField tfInstantiation(int w, int h, String text) {
+
+		JTextField tf = new JTextField();
+		tf.setText(text);
+		tf.setForeground(new Color(180, 180, 180));
+		tf.addFocusListener(this);
+		tf.setBounds(w, h, 250, 45);
+		tf.setBorder(null);
+		tf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		backRectangle.add(tf);
+		return tf;
+	}
+
+	public void closeBtn() {
+
+		closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
-		closeBtn.setBounds(740, 14, 30, 30);
+		closeBtn.setBounds(750, 14, 30, 30);
 		closeBtn.setBorderPainted(false);
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setFocusPainted(false);
@@ -118,44 +309,24 @@ public class RentScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				closeBtn.setIcon(new ImageIcon("img\\btn\\hover\\closebtnsmallhover.png"));
-				closeBtn.setBounds(737, 10, 36, 36);
+				closeBtn.setBounds(747, 10, 36, 36);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
-				closeBtn.setBounds(740, 14, 30, 30);
+				closeBtn.setBounds(750, 14, 30, 30);
 			}
 		});
 	}
 
-	public void textFields(JPanel backRectangle) {
+	public void setSearchCustomerBtn(int x, int y) {
 
-		customerIDtf = new JTextField();
-		customerIDtf.setText("enter customer id");
-		customerIDtf.setForeground(new Color(180, 180, 180));
-		customerIDtf.addFocusListener(this);
-		customerIDtf.setBounds(140, 30, 250, 45);
-		customerIDtf.setBorder(null);
-		customerIDtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(customerIDtf);
+// ----------------Search Customer Button----------------------------------------------
 
-		titleIDtf = new JTextField();
-		titleIDtf.setText("enter title id");
-		titleIDtf.setForeground(new Color(180, 180, 180));
-		titleIDtf.addFocusListener(this);
-		titleIDtf.setBounds(140, 130, 250, 45);
-		titleIDtf.setBorder(null);
-		titleIDtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		backRectangle.add(titleIDtf);
-	}
-
-	public void buttons(JPanel backRectangle) {
-
-//----------------Search Customer Button----------------------------------------------
-		JButton searchCustomerBtn = new JButton();
+		searchCustomerBtn = new JButton();
 		searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\searchcustomerbtnsmall.png"));
 		searchCustomerBtn.setBackground(backRectangle.getBackground());
-		searchCustomerBtn.setBounds(405, 13, 170, 80);
+		searchCustomerBtn.setBounds(x, y, 170, 80);
 		searchCustomerBtn.setBorderPainted(false);
 		searchCustomerBtn.setContentAreaFilled(false);
 		searchCustomerBtn.setFocusPainted(false);
@@ -169,19 +340,24 @@ public class RentScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				searchCustomerBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\hover\\searchcustomerbtnsmallhover.png"));
-				searchCustomerBtn.setBounds(402, 11, 179, 84);
+				searchCustomerBtn.setBounds(x - 3, y - 2, 179, 84);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\searchcustomerbtnsmall.png"));
-				searchCustomerBtn.setBounds(405, 13, 170, 80);
+				searchCustomerBtn.setBounds(x, y, 170, 80);
 			}
 		});
+	}
+
+	public void setSearchTitleBtn(int x, int y) {
+
 // ----------------Search Title Button----------------------------------------------
-		JButton searchTitleBtn = new JButton();
+
+		searchTitleBtn = new JButton();
 		searchTitleBtn.setIcon(new ImageIcon("img\\btn\\searchtitlebtnsmall.png"));
 		searchTitleBtn.setBackground(backRectangle.getBackground());
-		searchTitleBtn.setBounds(405, 114, 170, 80);
+		searchTitleBtn.setBounds(x, y, 170, 80);
 		searchTitleBtn.setBorderPainted(false);
 		searchTitleBtn.setContentAreaFilled(false);
 		searchTitleBtn.setFocusPainted(false);
@@ -195,19 +371,24 @@ public class RentScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				searchTitleBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				searchTitleBtn.setIcon(new ImageIcon("img\\btn\\hover\\searchtitlebtnsmallhover.png"));
-				searchTitleBtn.setBounds(401, 112, 179, 84);
+				searchTitleBtn.setBounds(x - 4, y - 2, 179, 84);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				searchTitleBtn.setIcon(new ImageIcon("img\\btn\\searchtitlebtnsmall.png"));
-				searchTitleBtn.setBounds(405, 114, 170, 80);
+				searchTitleBtn.setBounds(x, y, 170, 80);
 			}
 		});
-// ---------------------------CANCEL BUTTON-------------------------------
-		JButton cancelBtn = new JButton();
+	}
+
+	public void setCancelBtn(int x, int y) {
+
+		// ---------------------------CANCEL BUTTON-------------------------------
+
+		cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtnsmall.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
-		cancelBtn.setBounds(595, 13, 170, 80);
+		cancelBtn.setBounds(x, y, 170, 80);
 		cancelBtn.setBorderPainted(false);
 		cancelBtn.setContentAreaFilled(false);
 		cancelBtn.setFocusPainted(false);
@@ -221,19 +402,24 @@ public class RentScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				cancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				cancelBtn.setIcon(new ImageIcon("img\\btn\\hover\\cancelbtnsmallhover.png"));
-				cancelBtn.setBounds(591, 11, 179, 84);
+				cancelBtn.setBounds(x - 4, y - 2, 179, 84);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtnsmall.png"));
-				cancelBtn.setBounds(595, 13, 170, 80);
+				cancelBtn.setBounds(x, y, 170, 80);
 			}
 		});
-// ---------------------------CONFIRM BUTTON-------------------------------
-		JButton confirmBtn = new JButton();
+	}
+
+	public void setConfirmBtn(int x, int y) {
+
+		// ---------------------------CONFIRM BUTTON-------------------------------
+
+		confirmBtn = new JButton();
 		confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
 		confirmBtn.setBackground(backRectangle.getBackground());
-		confirmBtn.setBounds(595, 113, 170, 80);
+		confirmBtn.setBounds(x, y, 170, 80);
 		confirmBtn.setBorderPainted(false);
 		confirmBtn.setContentAreaFilled(false);
 		confirmBtn.setFocusPainted(false);
@@ -245,13 +431,12 @@ public class RentScreen implements FocusListener {
 
 				if (!customerIDtf.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
-					JOptionPane.showOptionDialog(null, "Enter an existing customer ID please.",
-							"Customer ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
-							btns[0]);
+					JOptionPane.showOptionDialog(null, "Enter an existing customer ID please.", "Customer ID Error.",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
 
-				if (!titleIDtf.getText().matches("[0-9]{1,3}")) {
+				if (!titleIDtf1.getText().matches("[0-9]{1,3}")) {
 					Object[] btns = { "Ok" };
 					JOptionPane.showOptionDialog(null, "Enter an existing Title ID please.", "Title ID Error.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
@@ -270,8 +455,6 @@ public class RentScreen implements FocusListener {
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
-				
-				
 
 				// -----------GET CARD INFO TO DO VALIDATIONS----------
 				card = new MembershipCard();
@@ -289,12 +472,12 @@ public class RentScreen implements FocusListener {
 				// -----------GET TITLE INFO TO DO VALIDATIONS----------
 				ArrayList<Object> UnknownTitleType;
 				try {
-					UnknownTitleType = managementSystem.getTitleInfoByID(Integer.parseInt(titleIDtf.getText()));
+					UnknownTitleType = managementSystem.getTitleInfoByID(Integer.parseInt(titleIDtf1.getText()));
 
 					if (UnknownTitleType.isEmpty()) {
 						Object[] btns = { "Ok" };
 						JOptionPane.showOptionDialog(null,
-								"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
+								"There's no Title ID " + titleIDtf1.getText() + " in the System.", "Non-Existent ID.",
 								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 						return;
 					}
@@ -302,35 +485,37 @@ public class RentScreen implements FocusListener {
 					exc.getMessage();
 					Object[] btns = { "Ok" };
 					JOptionPane.showOptionDialog(null,
-							"There's no Title ID " + titleIDtf.getText() + " in the System.", "Non-Existent ID.",
+							"There's no Title ID " + titleIDtf1.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 					return;
 				}
 
 				unwrapTitle(UnknownTitleType);
 
-				if(title.getAvailable() == 0) {
+				if (title.getAvailable() == 0) {
 					Object[] btns = { "Ok" };
 					JOptionPane.showOptionDialog(null,
-							"The Title of ID number "+title.getId()+" is already being rented.", "Can't Rent A Rented Title.",
-							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+							"The Title of ID number " + title.getId() + " is already being rented.",
+							"Can't Rent A Rented Title.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+							logoIcon, btns, btns[0]);
 					return;
 				}
-				
+
 				if (card.getTitleTypeDB() == title.getSubscriptionID() || card.getTitleTypeDB() == 4) {
 
 					// -------CHECK RENT LIMIT---------
 					int canRentMore = card.checkRentingLimit();
 
 					switch (canRentMore) {
-					
+
 					case 0:// has 4 ongoing rents
 						Object[] ongoing = { "Ok" };
-						JOptionPane.showOptionDialog(null, "Can't proceed, customer has 4 ongoing rents \nregistered in the Membership Card.",
+						JOptionPane.showOptionDialog(null,
+								"Can't proceed, customer has 4 ongoing rents \nregistered in the Membership Card.",
 								"Maximum ongoing rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 								logoIcon, ongoing, ongoing[0]);
 						return;
-						
+
 					case 1:// can rent more titles
 						new CustomerAuthenticationScreen(customer, card, UnknownTitleType);
 						break;
@@ -351,14 +536,21 @@ public class RentScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				confirmBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				confirmBtn.setIcon(new ImageIcon("img\\btn\\hover\\confirmbtnhover.png"));
-				confirmBtn.setBounds(591, 115, 179, 84);
+				confirmBtn.setBounds(x - 4, y - 2, 179, 84);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
-				confirmBtn.setBounds(595, 113, 170, 80);
+				confirmBtn.setBounds(x, y, 170, 80);
 			}
 		});
+	}
+
+	public void buttons() {
+		setSearchCustomerBtn(35, 253);
+		setSearchTitleBtn(225, 253);
+		setCancelBtn(410, 253);
+		setConfirmBtn(595, 253);
 	}
 
 	/**
@@ -400,17 +592,51 @@ public class RentScreen implements FocusListener {
 			}
 		}
 		// ------------------movie genre TextField-------------------------
-		if (titleIDtf.getText().matches("enter title id")) {
-			titleIDtf.setText("");
-			titleIDtf.setForeground(new Color(0, 80, 110));
+		if (titleIDtf1.getText().matches("enter title id")) {
+			titleIDtf1.setText("");
+			titleIDtf1.setForeground(new Color(0, 80, 110));
 		}
-		if (!titleIDtf.hasFocus()) {
-			if (titleIDtf.getText().matches("")) {
-				titleIDtf.setText("enter title id");
-				titleIDtf.setForeground(new Color(180, 180, 180));
+		if (!titleIDtf1.hasFocus()) {
+			if (titleIDtf1.getText().matches("")) {
+				titleIDtf1.setText("enter title id");
+				titleIDtf1.setForeground(new Color(180, 180, 180));
 			}
 		}
 
+	}
+
+	public JLabel setTitleIcon(int w, int h) {
+		JLabel titleIcon = new JLabel();
+		titleIcon.setIcon(new ImageIcon("img\\icons\\titleiconbluesmall.png"));
+		titleIcon.setBounds(w, h, 100, 100);
+		backRectangle.add(titleIcon);
+
+		return titleIcon;
+	}
+
+	public JButton setRemoveBtn(int w, int h) {
+		JButton btn = new JButton();
+		btn.setIcon(new ImageIcon("img\\btn\\removebtnsmall.png"));
+		btn.setBounds(w, h, 30, 30);
+		btn.setBorderPainted(false);
+		btn.setContentAreaFilled(false);
+		btn.setFocusPainted(false);
+		backRectangle.add(btn);
+
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				btn.setIcon(new ImageIcon("img\\btn\\hover\\removebtnsmallhover.png"));
+				btn.setBounds(w - 3, h - 3, 36, 36);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				btn.setIcon(new ImageIcon("img\\btn\\removebtnsmall.png"));
+				btn.setBounds(w, h, 30, 30);
+			}
+		});
+
+		return btn;
 	}
 
 	@Override

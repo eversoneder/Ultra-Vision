@@ -194,8 +194,8 @@ public class DeleteCustomerScreen implements FocusListener {
 				}
 				Object[] btn = { "Cancel", "Delete" };
 				int i = JOptionPane.showOptionDialog(null,
-						"Are you sure to delete \nCustomer ID: " + customer.getCustomerID() + "\nCustomer Name:"
-								+ customer.getCustomer_name() + "?\n There's no Undo.",
+						"Are you sure to delete \nCustomer ID: " + customer.getCustomerID() + "\nCustomer Name: "
+								+ customer.getCustomer_name() + "?\nThere's no Undo.",
 						"Confirmation.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn, btn[0]);
 
 				if (i == 1) {
@@ -212,7 +212,7 @@ public class DeleteCustomerScreen implements FocusListener {
 					case 1:
 						Object[] btnss = { "Ok" };
 						JOptionPane.showOptionDialog(null,
-								"Customer: " + customer.getCustomer_name() + ", ID: " + customer.getCustomerID()
+								"Customer: " + customer.getCustomer_name() + " ID: " + customer.getCustomerID()
 										+ " was successfully deleted from the system.",
 								"Customer Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 								logoIcon, btnss, btnss[0]);

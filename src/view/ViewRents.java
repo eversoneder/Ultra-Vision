@@ -52,8 +52,6 @@ public class ViewRents implements FocusListener {
 	public ViewRents() {
 		setAttributes();
 		setComponents();
-//		searchRentstf.setText("");
-//		searchBtn.doClick();
 		validation();
 	}
 
@@ -283,20 +281,11 @@ public class ViewRents implements FocusListener {
 			case "model.customer.Customer":
 				customerList.add((Customer) obj);
 				break;
-			case "model.customer.Title":
+			case "model.titles.Title":
 				titleList.add((Title) obj);
 				break;
 			case "model.customer.MembershipCard":
 				cardList.add((MembershipCard) obj);
-				break;
-			case "model.titles.MusicOrLive":
-				titleList.add((Title) obj);
-				break;
-			case "model.titles.Movie":
-				titleList.add((Title) obj);
-				break;
-			case "model.titles.BoxSet":
-				titleList.add((Title) obj);
 				break;
 			}
 		}

@@ -205,8 +205,8 @@ public class DeleteTitleScreen implements FocusListener {
 				title = (Title) UnknownTitleType.get(0);
 				Object[] btn = { "Cancel", "Delete" };
 				int i = JOptionPane.showOptionDialog(null,
-						"Are you sure to delete \nTitle ID: " + title.getId() + "\nTitle Name:" + title.getName()
-								+ "?\n There's no Undo.",
+						"Are you sure to delete \nTitle ID: " + title.getId() + "\nTitle Name: " + title.getName()
+								+ "?\nThere's no Undo.",
 						"Confirmation.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn,
 						btn[0]);
 				
@@ -223,7 +223,7 @@ public class DeleteTitleScreen implements FocusListener {
 					case 1:
 						Object[] btnss = { "Ok" };
 						JOptionPane.showOptionDialog(null,
-								"Title: " + title.getName() + ", ID: " + title.getId()
+								"Title: " + title.getName() + " ID: " + title.getId()
 										+ " was successfully deleted from the system.",
 								"Title Removal Done.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btnss, btnss[0]);
