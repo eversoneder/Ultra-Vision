@@ -159,6 +159,7 @@ final class UltraVisionDB {
 					+ "WHERE t.title_id = '"+titleID+"';";
 			MusicOrLive music;
 			music = loadMusic(queryMusic);
+			titleList.remove(0);
 			titleList.add(music);
 			break;
 		case 2://ML(Live Concert)
@@ -167,6 +168,7 @@ final class UltraVisionDB {
 					+ "WHERE t.title_id = '"+titleID+"';";
 			MusicOrLive live;
 			live = loadLive(queryLive);
+			titleList.remove(0);
 			titleList.add(live);
 			break;
 		case 3://VL(Movie)
@@ -175,6 +177,7 @@ final class UltraVisionDB {
 					+ "WHERE t.title_id = '"+titleID+"';";
 			Movie movie;
 			movie = loadMovie(queryMovie);
+			titleList.remove(0);
 			titleList.add(movie);
 			break;
 		case 4://TV(Box Set)
@@ -183,6 +186,7 @@ final class UltraVisionDB {
 					+ "WHERE t.title_id = '"+titleID+"';";
 			BoxSet boxSet;
 			boxSet = loadBoxSet(queryBoxSet);
+			titleList.remove(0);
 			titleList.add(boxSet);
 			break;
 		}
@@ -202,8 +206,8 @@ final class UltraVisionDB {
 		try {
 			if(!rs.wasNull()) {
 				musicOrLive = new MusicOrLive(
-						rs.getInt("title_id"), 
-						rs.getInt("music_id"), 
+						rs.getInt("title_id"),
+						rs.getInt("music_id"),
 						rs.getInt("title_type_id"),
 						rs.getInt("disc_format_id"),
 						rs.getInt("title_available"),
@@ -211,7 +215,7 @@ final class UltraVisionDB {
 						rs.getDouble("title_price"),
 						rs.getString("title_genre"),
 						rs.getInt("title_yor"),
-						rs.getString("music_singer"), 
+						rs.getString("music_singer"),
 						rs.getString("music_band"),
 						rs.getInt("subscription_id")
 						);
@@ -327,7 +331,7 @@ final class UltraVisionDB {
 	private ArrayList<Object> loadRawTitle(String query) {
 			
 			ResultSet rs = executeQueryRS(query);
-			Title newTitle = new Title(0);
+			Title newTitle = null;
 			
 			try {
 				do {

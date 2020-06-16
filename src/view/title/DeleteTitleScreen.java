@@ -248,26 +248,6 @@ public class DeleteTitleScreen implements FocusListener {
 
 	}
 
-//	/**
-//	 * @param unknowntitletype the ArrayList of object title types
-//	 */
-//	public void unwrapTitle(ArrayList<Object> unknowntitletype) {
-//
-//		for (Object obj : unknowntitletype) {
-//			switch (obj.getClass().getName()) {// or filter.getName()
-//			case "model.titles.MusicOrLive":
-//				title = (Title) obj;
-//				break;
-//			case "model.titles.Movie":
-//				title = (Title) obj;
-//				break;
-//			case "model.titles.BoxSet":
-//				title = (Title) obj;
-//				break;
-//			}
-//		}
-//	}
-
 	public void validation() {
 		deleteTitleScreen.repaint();
 		deleteTitleScreen.validate();

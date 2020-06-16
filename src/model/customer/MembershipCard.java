@@ -75,10 +75,9 @@ public class MembershipCard implements TitleType {
 	/**
 	 * @return true if renting less than 4
 	 */
-	public int checkRentingLimit() {
+	public boolean hasLessThan4OngoingRents() {
 
-		int canRentMore;
-		canRentMore = onGoingRents < 4 ? 1 : 0;
+		boolean canRentMore = onGoingRents < 4 ? true : false;
 
 		return canRentMore;
 	}

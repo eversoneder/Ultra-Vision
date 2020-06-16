@@ -28,24 +28,23 @@ import model.titles.Title;
 public class CustomerAuthenticationScreen implements FocusListener {
 
 	ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
-	
+
 	private JFrame authenticationScreen = new JFrame();
 	private KeyController listenerController = new KeyController(authenticationScreen);
-	
+
 	private MembershipCard card;
 	private Customer customer;
 
-	private ArrayList<Object> UnknownTitleType;
-	private Title title = new Title();
+	private ArrayList<Title> titleList;
 
 	private JPasswordField passwordtf;
 
-	public CustomerAuthenticationScreen(Customer customer, MembershipCard card, ArrayList<Object> UnknownTitleType) {
+	public CustomerAuthenticationScreen(Customer customer, MembershipCard card, ArrayList<Title> titleList) {
 		this.customer = customer;
 		this.card = card;
-		this.UnknownTitleType = UnknownTitleType;
+		this.titleList = titleList;
 
-		unwrapTitle();
+//		unwrapTitle();
 		setAttributes();
 		setComponents();
 		validation();
@@ -60,7 +59,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		authenticationScreen.setTitle("Customer Authentication");
 		authenticationScreen.setLocationRelativeTo(null);
 		authenticationScreen.setIconImage(new ImageIcon("img\\icons\\ultravisionicon.png").getImage());
-		
+
 		authenticationScreen.addKeyListener(listenerController);
 		authenticationScreen.addWindowListener(listenerController);
 		authenticationScreen.addMouseListener(listenerController);
@@ -113,66 +112,50 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		authenticationScreen.validate();
 	}
 
-	/**
-	 * @param unknowntitletype ArrayList of titles to unwrap
-	 */
-	public void unwrapTitle() {
-
-		for (Object obj : UnknownTitleType) {
-			switch (obj.getClass().getName()) {// or filter.getName()
-			case "model.titles.MusicOrLive":
-				title = (Title) obj;
-				break;
-			case "model.titles.Movie":
-				title = (Title) obj;
-				break;
-			case "model.titles.BoxSet":
-				title = (Title) obj;
-				break;
-			}
-		}
-	}
-
 	public void promptPayment() {
+
+		double totalPrice = 0;
+
+		for (Title t : titleList) {
+			totalPrice += t.getPrice();
+		}
 
 		Object[] payment = { "Pay by Points", "Cancel Transaction", "Pay by Cash" };
 		int i = JOptionPane.showOptionDialog(null,
-				"Choose payment form for \n" + title.getName() + ". Price: " + title.getPrice() + " €.",
+				"Choose payment form for \n" + titleList.get(0).getName() + " and other " + (titleList.size() - 1)
+						+ " title(s). \nTotal Price: " + totalPrice + " €.",
 				"Payment Form.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, payment, payment[2]);
 
 		if (i == 2) {// pay by cash
 			// final check up & finally payment
-			checkBalanceAndPay();
+			checkBalanceAndPay(totalPrice);
 		}
 		if (i == 0) {// pay by points
 
-			Payment newPayment = new Payment(customer, card, title);
+			Payment newPayment = new Payment(customer, card, titleList);
 			newPayment.payByPoints();
-
 		}
 
 		if (i == 1 || i == -1) {// cancel or closed
 			authenticationScreen.dispose();
 		}
-
 	}
 
-	public void checkBalanceAndPay() {
+	public void checkBalanceAndPay(double totalPrice) {
 
 		// -------CHECK IF HAS MONEY---------
-		if (!customer.checkFunds(title.getPrice())) {
+		if (!customer.hasMoney(totalPrice)) {
 			Object[] noMoneyBtn = { "Ok" };
 			JOptionPane.showOptionDialog(null,
-					"Customer has no enough funds to rent: \n" + title.getName() + ". Price: " + title.getPrice()
-							+ " €.",
+					"Customer has no enough funds to rent: \n" + titleList.get(0).getName() + " and other "
+							+ (titleList.size() - 1) + " title(s). \nTotal Price: " + totalPrice + " €.",
 					"Insuficient Funds.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, noMoneyBtn,
 					noMoneyBtn[0]);
 			return;
+			
 		} else {
-
-			Payment newPayment = new Payment(customer, card, title);
+			Payment newPayment = new Payment(customer, card, titleList);
 			newPayment.payByCash();
-
 		}
 
 	}
@@ -219,7 +202,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 
 				String cardPass = Integer.toString(card.getPassword());
 				String enteredPass = String.valueOf(passwordtf.getPassword());
-				
+
 				if (cardPass.equals(enteredPass)) {// validate card pass
 
 					promptPayment();

@@ -106,7 +106,7 @@ public class DebitOrCreditAccount {
 	 * @param titlePrice price to check in balance
 	 * @return true if balance contains title price money
 	 */
-	public boolean checkFunds(double titlePrice) {
+	public boolean hasMoney(double titlePrice) {
 		return AccountBalance >= titlePrice ? true : false;
 	}
 }
