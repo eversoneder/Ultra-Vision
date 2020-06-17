@@ -252,6 +252,12 @@ public class NewLiveConcertScreen implements FocusListener {
 							logoIcon, btns, btns[0]);
 					return;
 				}
+				if(singer.equals("music singer") || singer.equals("")) {
+					singer = "N/A";
+				}
+				if(band.equals("music band") || band.equals("")) {
+					band = "N/A";
+				}
 				
 				if (!yor.matches("(18|19|20)[0-9]{2}")) {
 					Object[] btns = { "Ok" };

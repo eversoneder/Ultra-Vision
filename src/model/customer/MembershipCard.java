@@ -35,7 +35,7 @@ public class MembershipCard implements TitleType {
 		this.freeRents = freeRents;
 		this.points = points;
 		this.accountID = accountID;
-		this.subscriptionID = subscriptionID;
+		this.setSubsID(subscriptionID);
 
 	}
 
@@ -50,6 +50,28 @@ public class MembershipCard implements TitleType {
 		this.cardID = 0;
 	}
 
+	public void setSubsID(int subsID) {
+		
+		switch(subsID) {
+		case 1:
+			this.subscriptionID = subsID;
+			this.subscriptionEnum = AccessLevel.ML;
+			break;
+		case 2:
+			this.subscriptionID = subsID;
+			this.subscriptionEnum = AccessLevel.VL;
+			break;
+		case 3:
+			this.subscriptionID = subsID;
+			this.subscriptionEnum = AccessLevel.TV;
+			break;
+		case 4:
+			this.subscriptionID = subsID;
+			this.subscriptionEnum = AccessLevel.PR;
+			 break;
+		}
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -203,13 +225,6 @@ public class MembershipCard implements TitleType {
 	 */
 	public void setSubscriptionPlan(String subscriptionPlan) {
 		SubscriptionPlan = subscriptionPlan;
-	}
-
-	/**
-	 * @return the subscriptionID
-	 */
-	public int getSubscriptionID() {
-		return subscriptionID;
 	}
 
 	/**

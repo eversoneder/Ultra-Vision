@@ -235,7 +235,7 @@ public class NewMusicScreen implements FocusListener {
 				String genre = musicgenretf.getText();
 				String yor = yearofreleasetf.getText();
 				String price = pricetf.getText();
-
+				
 				if (name.equals("music name") || genre.equals("music genre") || yor.equals("year of release") || price.equals("price")) {
 
 					Object[] btns = { "Ok" };
@@ -250,6 +250,12 @@ public class NewMusicScreen implements FocusListener {
 							"Error, missing information.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 							logoIcon, btns, btns[0]);
 					return;
+				}
+				if(singer.equals("music singer") || singer.equals("")) {
+					singer = "N/A";
+				}
+				if(band.equals("music band") || band.equals("")) {
+					band = "N/A";
 				}
 				
 				if (!yor.matches("(18|19|20)[0-9]{2}")) {

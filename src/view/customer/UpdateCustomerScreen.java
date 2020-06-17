@@ -9,9 +9,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +25,7 @@ import controller.KeyController;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
+import model.enums.AccessLevel;
 
 public class UpdateCustomerScreen implements FocusListener {
 
@@ -35,6 +38,7 @@ public class UpdateCustomerScreen implements FocusListener {
 	private JTextField customerPhonetf;
 	private JTextField customerEmailtf;
 	private JPasswordField customerPasswordtf;
+	private JComboBox<AccessLevel> subscription;
 
 	private int oldPass;
 
@@ -51,7 +55,7 @@ public class UpdateCustomerScreen implements FocusListener {
 	}
 
 	public void setAttributes() {
-		updateCustomerScreen.setSize(780, 510);
+		updateCustomerScreen.setSize(780, 530);
 		updateCustomerScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		updateCustomerScreen.setUndecorated(true);
 		updateCustomerScreen.setVisible(true);
@@ -111,6 +115,7 @@ public class UpdateCustomerScreen implements FocusListener {
 
 		textFields(backRectangle);
 		buttons(backRectangle);
+		setComboBox(backRectangle);
 	}
 
 	public void textFields(JPanel backRectangle) {
@@ -191,7 +196,7 @@ public class UpdateCustomerScreen implements FocusListener {
 		JButton cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtnsmall.png"));
 		cancelBtn.setBackground(backRectangle.getBackground());
-		cancelBtn.setBounds(375, 278, 170, 80);
+		cancelBtn.setBounds(375, 308, 170, 80);
 		cancelBtn.setBorderPainted(false);
 		cancelBtn.setContentAreaFilled(false);
 		cancelBtn.setFocusPainted(false);
@@ -205,19 +210,19 @@ public class UpdateCustomerScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				cancelBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				cancelBtn.setIcon(new ImageIcon("img\\btn\\hover\\cancelbtnsmallhover.png"));
-				cancelBtn.setBounds(371, 276, 179, 84);
+				cancelBtn.setBounds(371, 306, 179, 84);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtnsmall.png"));
-				cancelBtn.setBounds(375, 278, 170, 80);
+				cancelBtn.setBounds(375, 308, 170, 80);
 			}
 		});
 		// ---------------------------CONFIRM BUTTON-------------------------------
 		JButton confirmBtn = new JButton();
 		confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
 		confirmBtn.setBackground(backRectangle.getBackground());
-		confirmBtn.setBounds(550, 278, 170, 80);
+		confirmBtn.setBounds(550, 308, 170, 80);
 		confirmBtn.setBorderPainted(false);
 		confirmBtn.setContentAreaFilled(false);
 		confirmBtn.setFocusPainted(false);
@@ -255,7 +260,6 @@ public class UpdateCustomerScreen implements FocusListener {
 							btns, btns[0]);
 					return;
 				}
-
 //----------------------VALIDATE PASSWORD---------------------
 				if (!password.equals("set new password")) {
 					if (!password.matches("[0-9]{8}")) {
@@ -265,16 +269,68 @@ public class UpdateCustomerScreen implements FocusListener {
 						return;
 					}
 				}
-
 				Long phonelong = Long.parseLong(customerPhonetf.getText());
-//------------------IF ONLY CUSTOMER INFO CHANGED only name, email & phone (pass is card info)
-				if ((!customer.getCustomer_name().matches(name)) || (customer.getCustomer_phone() != phonelong)
-						|| (!customer.getEmail().matches(email))) {
-					// set new customer info to execute update
-					customer.setCustomer_name(name);
-					customer.setCustomer_phone(phonelong);
-					customer.setEmail(email);
 
+				ArrayList<String> changedFieldsList = new ArrayList<>();
+
+				boolean cardFlag = false;
+
+				if (!password.equals("set new password")) {
+
+					if (Integer.parseInt(password) != oldPass) {
+						card.setPassword(Integer.parseInt(password));
+						changedFieldsList.add("password");
+						cardFlag = true;
+
+					} else {// SAME PASSWORD
+						Object[] btnss = { "Ok" };
+						JOptionPane.showOptionDialog(null, "This password is in use, to update set a new password.",
+								"Password Matching.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+								btnss, btnss[0]);
+						return;
+					}
+				}
+
+				boolean custFlag = false;
+
+				if (!customer.getCustomer_name().matches(name)) {
+					customer.setCustomer_name(name);
+					changedFieldsList.add("name");
+					custFlag = true;
+				}
+				if (customer.getCustomer_phone() != phonelong) {
+					customer.setCustomer_phone(phonelong);
+					changedFieldsList.add("phone");
+					custFlag = true;
+				}
+				if (!customer.getEmail().matches(email)) {
+					customer.setEmail(email);
+					changedFieldsList.add("email");
+					custFlag = true;
+				}
+
+				if (!subscription.getSelectedItem().toString().equals(card.getTitleTypeGUI())) {
+
+					switch (subscription.getSelectedItem().toString()) {
+					case "ML":
+						card.setTitleTypeGUI(AccessLevel.ML);
+						break;
+					case "VL":
+						card.setTitleTypeGUI(AccessLevel.VL);
+						break;
+					case "TV":
+						card.setTitleTypeGUI(AccessLevel.TV);
+						break;
+					case "PR":
+						card.setTitleTypeGUI(AccessLevel.PR);
+						break;
+					}
+					changedFieldsList.add("subscription");
+					cardFlag = true;
+				}
+
+				// UPDATE CUSTOMER DB
+				if (custFlag) {
 					int custUpdate = managementSystem.updateCustomer(customer);// register DB
 
 					switch (custUpdate) {
@@ -284,51 +340,49 @@ public class UpdateCustomerScreen implements FocusListener {
 								"Customer Info Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
 								btns, btns[0]);
 						return;
-
-					case 1:// succeeded update all info
-							// check if changed pass as well
-						if (!password.equals("set new password")) {
-
-							if (Integer.parseInt(password) != oldPass) {
-
-								card.setPassword(Integer.parseInt(password));
-								int passUpdate = managementSystem.updateCard(card);
-
-								switch (passUpdate) {
-								case 0:
-									Object[] btn = { "Ok" };
-									JOptionPane.showOptionDialog(null,
-											"Name, Phone & Email updated but password couldn't be modified.", "Changes",
-											JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn,
-											btn[0]);
-									return;
-								case 1:// 1 message for customer info updated AND pass updated
-									Object[] btnss = { "Ok" };
-									JOptionPane.showOptionDialog(null,
-											"Customer Info and Password changed successfully.",
-											"Customer Info Changed.", JOptionPane.YES_NO_OPTION,
-											JOptionPane.PLAIN_MESSAGE, logoIcon, btnss, btnss[0]);
-									updateCustomerScreen.dispose();
-								}
-							} else {// if password is same
-								Object[] btnss = { "Ok" };
-								JOptionPane.showOptionDialog(null,
-										"This password is in use, to update set a new password.", "Password Matching.",
-										JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btnss,
-										btnss[0]);
-								return;
-							}
-
-						} else {// if pass haven't been touched
-							Object[] btn = { "Ok" };
-							JOptionPane.showOptionDialog(null, "Name, Phone & Email updated.", "Changes Made",
-									JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn, btn[0]);
-							updateCustomerScreen.dispose();
-						}
 					}
-
 				}
 
+				if (cardFlag) {
+					int cardUpdate = managementSystem.updateCard(card);
+
+					switch (cardUpdate) {
+					case 0:
+						Object[] btnz = { "Ok" };
+						JOptionPane.showOptionDialog(null, "Card information couldn't be changed.",
+								"Card Update Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon,
+								btnz, btnz[0]);
+						return;
+					}
+				}
+
+				String allChangedFields = "";
+				for (int i = 0; i < changedFieldsList.size(); i++) {
+
+					if (i == 0) {
+						String firstWordWithFirstCharUpper = changedFieldsList.get(0).substring(0, 1).toUpperCase();
+						String restOfWord = changedFieldsList.get(0).substring(1, changedFieldsList.get(0).length());
+
+						firstWordWithFirstCharUpper += restOfWord;
+						changedFieldsList.remove(0);
+						changedFieldsList.add(0, firstWordWithFirstCharUpper);
+
+						allChangedFields = changedFieldsList.get(0);
+					} else {
+
+						if (i == changedFieldsList.size() - 1) {
+							allChangedFields += " & " + changedFieldsList.get(i);
+
+						} else {
+							allChangedFields += ", " + changedFieldsList.get(i);
+						}
+					}
+				}
+
+				Object[] btn = { "Ok" };
+				JOptionPane.showOptionDialog(null, allChangedFields + " has been changed.", "Changes Made",
+						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btn, btn[0]);
+				updateCustomerScreen.dispose();
 			}
 
 		});
@@ -336,12 +390,12 @@ public class UpdateCustomerScreen implements FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				confirmBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				confirmBtn.setIcon(new ImageIcon("img\\btn\\hover\\confirmbtnhover.png"));
-				confirmBtn.setBounds(546, 276, 179, 84);
+				confirmBtn.setBounds(546, 306, 179, 84);
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
-				confirmBtn.setBounds(550, 278, 170, 80);
+				confirmBtn.setBounds(550, 308, 170, 80);
 			}
 		});
 	}
@@ -349,6 +403,23 @@ public class UpdateCustomerScreen implements FocusListener {
 	public void validation() {
 		updateCustomerScreen.repaint();
 		updateCustomerScreen.validate();
+	}
+
+	public void setComboBox(JPanel backRectangle) {
+
+		JLabel planLabel = new JLabel("Subscription Plan:");
+		planLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		planLabel.setBounds(350, 272, 200, 30);
+		planLabel.setForeground(Color.WHITE);
+		backRectangle.add(planLabel);
+
+		AccessLevel[] subsPlans = AccessLevel.values();
+
+		subscription = new JComboBox<AccessLevel>(subsPlans);
+		subscription.setSelectedIndex(card.getTitleTypeDB() - 1);
+		subscription.setBounds(520, 274, 65, 25);
+		subscription.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		backRectangle.add(subscription);
 	}
 
 	@Override

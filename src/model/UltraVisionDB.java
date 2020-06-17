@@ -89,7 +89,7 @@ final class UltraVisionDB {
 				+ "card_free_rents = '"+card.getFreeRents()+"', "
 				+ "card_points = '"+card.getPoints()+"', "
 				+ "account_id = '"+card.getAccountID()+"', "
-				+ "subscription_id = '"+card.getSubscriptionID()+"' "
+				+ "subscription_id = '"+card.getTitleTypeDB()+"' "
 				+ "WHERE card_id = '"+card.getCardID()+"';";
 		
 		int a = executeUpdateRS(getCardInfo);
