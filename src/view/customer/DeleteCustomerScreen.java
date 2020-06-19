@@ -18,24 +18,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 
 public class DeleteCustomerScreen implements FocusListener {
 
 	private JFrame deleteCustomerScreen = new JFrame();
-	private KeyController listenerController = new KeyController(deleteCustomerScreen);
+	private ListenerController listenerController = new ListenerController(deleteCustomerScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField customerIDtf;
+	private JButton deleteBtn;
 
 	private Customer customer = new Customer();
 
 	public DeleteCustomerScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(deleteBtn);
 		validation();
 	}
 
@@ -97,6 +99,7 @@ public class DeleteCustomerScreen implements FocusListener {
 		customerIDtf.setBounds(570, 40, 250, 45);
 		customerIDtf.setBorder(null);
 		customerIDtf.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		customerIDtf.addKeyListener(listenerController);
 		backRectangle.add(customerIDtf);
 	}
 
@@ -157,7 +160,7 @@ public class DeleteCustomerScreen implements FocusListener {
 			}
 		});
 // ---------------------------DELETE BUTTON-------------------------------
-		JButton deleteBtn = new JButton();
+		deleteBtn = new JButton();
 		deleteBtn.setIcon(new ImageIcon("img\\btn\\deletebtn.png"));
 		deleteBtn.setBackground(backRectangle.getBackground());
 		deleteBtn.setBounds(580, 120, 230, 106);

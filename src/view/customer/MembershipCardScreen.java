@@ -19,16 +19,16 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 
 public class MembershipCardScreen implements FocusListener {
 
-	private JButton cancelBtn;
+	
 	private JFrame membershipCardScreen = new JFrame();
-	private KeyController listenerController = new KeyController(membershipCardScreen);
+	private ListenerController listenerController = new ListenerController(membershipCardScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -37,6 +37,8 @@ public class MembershipCardScreen implements FocusListener {
 	
 	private JTextField accounttf;
 	private JPasswordField memberCardPasstf;
+	private JButton createBtn;
+	
 	private int[] accAndCardPass;
 
 	public MembershipCardScreen(Customer newCustomer, MembershipCard newMembershipCard) {
@@ -44,6 +46,7 @@ public class MembershipCardScreen implements FocusListener {
 		this.newMembershipCard = newMembershipCard;
 		setAttributes();
 		setComponents();
+		listenerController.getButton(createBtn);
 		validation();
 	}
 
@@ -91,6 +94,7 @@ public class MembershipCardScreen implements FocusListener {
 		accounttf.setBounds(260, 180, 390, 45);
 		accounttf.setBorder(null);
 		accounttf.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		accounttf.addKeyListener(listenerController);
 		backPanel.add(accounttf);
 
 		memberCardPasstf = new JPasswordField();
@@ -100,6 +104,7 @@ public class MembershipCardScreen implements FocusListener {
 		memberCardPasstf.setBounds(260, 235, 390, 45);
 		memberCardPasstf.setBorder(null);
 		memberCardPasstf.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		memberCardPasstf.addKeyListener(listenerController);
 		backPanel.add(memberCardPasstf);
 
 		if (!memberCardPasstf.hasFocus()) {
@@ -160,7 +165,7 @@ public class MembershipCardScreen implements FocusListener {
 	public void buttons(JPanel backPanel) {
 
 //---------------------------CANCEL BUTTON-------------------------------
-		cancelBtn = new JButton();
+		JButton cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtnsmall.png"));
 		cancelBtn.setBackground(backPanel.getBackground());
 		cancelBtn.setBounds(250, 275, 230, 106);
@@ -186,7 +191,7 @@ public class MembershipCardScreen implements FocusListener {
 			}
 		});
 //---------------------------CREATE BUTTON-------------------------------
-		JButton createBtn = new JButton();
+		createBtn = new JButton();
 		createBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
 		createBtn.setBackground(backPanel.getBackground());
 		createBtn.setBounds(422, 275, 230, 106);

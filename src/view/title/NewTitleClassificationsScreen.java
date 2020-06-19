@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.KeyController;
+import controller.ListenerController;
 import view.title.register.NewLiveConcertScreen;
 import view.title.register.NewMovieScreen;
 import view.title.register.NewBoxSetScreen;
@@ -23,7 +23,7 @@ import view.title.register.NewMusicScreen;
 public class NewTitleClassificationsScreen {
 
 	private JFrame titleClassifications = new JFrame();
-	private KeyController listenerController = new KeyController(titleClassifications);
+	private ListenerController listenerController = new ListenerController(titleClassifications);
 
 	public NewTitleClassificationsScreen() {
 		setAttributes();

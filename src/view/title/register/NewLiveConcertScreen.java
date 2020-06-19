@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.enums.Media;
@@ -28,7 +28,7 @@ import model.titles.MusicOrLive;
 public class NewLiveConcertScreen implements FocusListener {
 
 	private JFrame newLiveConcertScreen = new JFrame();
-	private KeyController listenerController = new KeyController(newLiveConcertScreen);
+	private ListenerController listenerController = new ListenerController(newLiveConcertScreen);
 
 	private MusicOrLive newLiveConcert;
 
@@ -42,9 +42,12 @@ public class NewLiveConcertScreen implements FocusListener {
 	private JTextField pricetf;
 	private JComboBox<Media> mediaComboBox;
 
+	private JButton createBtn;
+	
 	public NewLiveConcertScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(createBtn);
 		validation();
 	}
 
@@ -108,6 +111,7 @@ public class NewLiveConcertScreen implements FocusListener {
 		liveconcertnametf.setBounds(400, 65, 225, 45);
 		liveconcertnametf.setBorder(null);
 		liveconcertnametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		liveconcertnametf.addKeyListener(listenerController);
 		backRectangle.add(liveconcertnametf);
 
 		liveconcertsingertf = new JTextField();
@@ -117,6 +121,7 @@ public class NewLiveConcertScreen implements FocusListener {
 		liveconcertsingertf.setBounds(400, 120, 225, 45);
 		liveconcertsingertf.setBorder(null);
 		liveconcertsingertf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		liveconcertsingertf.addKeyListener(listenerController);
 		backRectangle.add(liveconcertsingertf);
 
 		liveconcertbandtf = new JTextField();
@@ -126,6 +131,7 @@ public class NewLiveConcertScreen implements FocusListener {
 		liveconcertbandtf.setBounds(400, 175, 225, 45);
 		liveconcertbandtf.setBorder(null);
 		liveconcertbandtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		liveconcertbandtf.addKeyListener(listenerController);
 		backRectangle.add(liveconcertbandtf);
 
 		liveconcertgenretf = new JTextField();
@@ -135,6 +141,7 @@ public class NewLiveConcertScreen implements FocusListener {
 		liveconcertgenretf.setBounds(400, 230, 225, 45);
 		liveconcertgenretf.setBorder(null);
 		liveconcertgenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		liveconcertgenretf.addKeyListener(listenerController);
 		backRectangle.add(liveconcertgenretf);
 
 		yearofreleasetf = new JTextField();
@@ -144,6 +151,7 @@ public class NewLiveConcertScreen implements FocusListener {
 		yearofreleasetf.setBounds(655, 65, 225, 45);
 		yearofreleasetf.setBorder(null);
 		yearofreleasetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		yearofreleasetf.addKeyListener(listenerController);
 		backRectangle.add(yearofreleasetf);
 
 		pricetf = new JTextField();
@@ -153,12 +161,14 @@ public class NewLiveConcertScreen implements FocusListener {
 		pricetf.setBounds(655, 120, 225, 45);
 		pricetf.setBorder(null);
 		pricetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		pricetf.addKeyListener(listenerController);
 		backRectangle.add(pricetf);
 
 		Media[] mediaformats = Media.values();
 
 		mediaComboBox = new JComboBox<>(mediaformats);
 		mediaComboBox.setBounds(655, 175, 225, 45);
+		mediaComboBox.addKeyListener(listenerController);
 		backRectangle.add(mediaComboBox);
 
 	}
@@ -217,7 +227,7 @@ public class NewLiveConcertScreen implements FocusListener {
 			}
 		});
 // ---------------------------CREATE BUTTON-------------------------------
-		JButton createBtn = new JButton();
+		createBtn = new JButton();
 		createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
 		createBtn.setBackground(backRectangle.getBackground());
 		createBtn.setBounds(632, 295, 230, 106);

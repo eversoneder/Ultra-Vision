@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.Rent;
 import model.UltraVisionManagementSystem;
 import model.customer.MembershipCard;
@@ -28,11 +28,12 @@ import model.titles.Title;
 public class ReturnTitleScreen implements FocusListener {
 
 	private JFrame returnTitleScreen = new JFrame();
-	private KeyController listenerController = new KeyController(returnTitleScreen);
+	private ListenerController listenerController = new ListenerController(returnTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField titleIDtf;
+	private JButton confirmBtn;
 
 	private MembershipCard card = new MembershipCard();
 
@@ -42,6 +43,7 @@ public class ReturnTitleScreen implements FocusListener {
 	public ReturnTitleScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(confirmBtn);
 		validation();
 	}
 
@@ -134,6 +136,7 @@ public class ReturnTitleScreen implements FocusListener {
 		titleIDtf.setBounds(280, 65, 250, 45);
 		titleIDtf.setBorder(null);
 		titleIDtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		titleIDtf.addKeyListener(listenerController);
 		backRectangle.add(titleIDtf);
 	}
 
@@ -166,7 +169,7 @@ public class ReturnTitleScreen implements FocusListener {
 			}
 		});
 		// ---------------------------CONFIRM BUTTON-------------------------------
-		JButton confirmBtn = new JButton();
+		confirmBtn = new JButton();
 		confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
 		confirmBtn.setBackground(backRectangle.getBackground());
 		confirmBtn.setBounds(415, 123, 170, 80);

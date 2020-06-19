@@ -24,7 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.enums.Media;
 import model.titles.BoxSet;
@@ -34,7 +34,8 @@ import model.titles.MusicOrLive;
 public class SearchTitleScreen implements FocusListener {
 
 	private JFrame searchTitleScreen = new JFrame();
-	private KeyController listenerController = new KeyController(searchTitleScreen);
+	
+	private ListenerController listenerController = new ListenerController(searchTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -43,7 +44,6 @@ public class SearchTitleScreen implements FocusListener {
 	private ArrayList<BoxSet> boxSetList = new ArrayList<>();
 
 	private JTextField searchTitletf;
-	private JButton searchBtn;
 
 	private JComboBox<String> filter;
 
@@ -51,10 +51,12 @@ public class SearchTitleScreen implements FocusListener {
 	private JPanel panelToLayTable;
 
 	private JScrollPane scrollpane;
-
+	private JButton searchBtn;
+	
 	public SearchTitleScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(searchBtn);
 		validation();
 	}
 
@@ -104,6 +106,7 @@ public class SearchTitleScreen implements FocusListener {
 		searchTitletf.setBounds(205, 15, 400, 45);
 		searchTitletf.setBorder(null);
 		searchTitletf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		searchTitletf.addKeyListener(listenerController);
 		backRectangle.add(searchTitletf);
 
 		JPanel searchbarPanel = new JPanel();

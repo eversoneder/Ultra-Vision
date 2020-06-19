@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -13,17 +12,21 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 // HERE I ADDED THE WINDOW LISTENER
-public class KeyController implements KeyListener, WindowListener, MouseListener, MouseMotionListener {
+public class ListenerController implements KeyListener, WindowListener, MouseListener, MouseMotionListener {
 
 	private JButton btn;
 	private JFrame currentScreen;
 
-	public KeyController(JFrame frame) {
+	public ListenerController(JFrame frame) {
 		this.currentScreen = frame;
 	}
 
-	public KeyController(JFrame frame, JButton btn) {
+	public ListenerController(JFrame frame, JButton btn) {
 		this.currentScreen = frame;
+		this.btn = btn;
+	}
+	
+	public void getButton(JButton btn) {
 		this.btn = btn;
 	}
 
@@ -34,16 +37,18 @@ public class KeyController implements KeyListener, WindowListener, MouseListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
-//		System.out.println("q");
-
+		//10 or 13 is enter key
 		if (e.getKeyCode() == 10 || e.getKeyCode() == 13) {
 			btn.doClick();
 		}
-		// 81 is letter q
-		if (e.getKeyCode() == 81) {
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Q) {
 			currentScreen.dispose();
 		}
+		
+		// 81 is letter q
+//		if (e.getKeyCode() == 81) {
+//			currentScreen.dispose();
+//		}
 	}
 
 	@Override

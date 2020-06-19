@@ -23,7 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -31,7 +31,7 @@ import model.customer.MembershipCard;
 public class SearchCustomerScreen implements FocusListener {
 
 	private JFrame searchCustomerScreen = new JFrame();
-	private KeyController listenerController = new KeyController(searchCustomerScreen);
+	private ListenerController listenerController = new ListenerController(searchCustomerScreen);
 
 	private ArrayList<Customer> customerList = new ArrayList<>();
 	private ArrayList<MembershipCard> membershipCardList = new ArrayList<>();
@@ -48,6 +48,7 @@ public class SearchCustomerScreen implements FocusListener {
 	public SearchCustomerScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(searchBtn);
 		validation();
 	}
 
@@ -97,6 +98,7 @@ public class SearchCustomerScreen implements FocusListener {
 		searchCustomertf.setBounds(205, 15, 495, 45);
 		searchCustomertf.setBorder(null);
 		searchCustomertf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		searchCustomertf.addKeyListener(listenerController);
 		backRectangle.add(searchCustomertf);
 
 		JPanel searchbarPanel = new JPanel();

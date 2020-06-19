@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -35,7 +35,7 @@ public class RentScreen implements FocusListener {
 	private ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 
 	private JFrame rentScreen = new JFrame();
-	private KeyController listenerController = new KeyController(rentScreen);
+	private ListenerController listenerController = new ListenerController(rentScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -57,10 +57,11 @@ public class RentScreen implements FocusListener {
 	public RentScreen() {
 		setFrameAttributes();
 		setComponents();
+		listenerController.getButton(confirmBtn);
 		validation();
 	}
 
-	public void setFrameAttributes() {
+	private void setFrameAttributes() {
 		rentScreen.setSize(800, 460);
 		rentScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		rentScreen.setUndecorated(true);
@@ -77,7 +78,6 @@ public class RentScreen implements FocusListener {
 	}
 
 	private void setComponents() {
-
 		backPanel = new JPanel();
 		backPanel.setLayout(null);
 		backPanel.setBackground(new Color(0, 140, 190));
@@ -118,7 +118,12 @@ public class RentScreen implements FocusListener {
 		buttons();
 	}
 
-	public void plusBtn(int y) {
+	/**
+	 * plusBtn instantiation
+	 * 
+	 * @param y axis to set plusBtn
+	 */
+	private void plusBtn(int y) {
 
 		plusBtn = new JButton();
 		plusBtn.setIcon(new ImageIcon("img\\btn\\plusbtn.png"));
@@ -161,7 +166,10 @@ public class RentScreen implements FocusListener {
 		});
 	}
 
-	public void addTitleField() {
+	/**
+	 * Add title field according to tfCount
+	 */
+	private void addTitleField() {
 
 		switch (tfCount) {
 		case 2:
@@ -182,7 +190,9 @@ public class RentScreen implements FocusListener {
 						break;
 					case 3:
 						if (!titleIDtf3.getText().matches("enter title id")) {
-							titleIDtf2.setText(titleIDtf3.getText());
+							setTfTextColorAndText(titleIDtf2, new Color(0, 80, 110), titleIDtf3.getText());
+						} else {
+							setTfTextColorAndText(titleIDtf2, new Color(180, 180, 180), "enter title id");
 						}
 						removeTitleField(titleIcon3, titleIDtf3, removeBtn3);
 						btnsMinus100();
@@ -192,10 +202,14 @@ public class RentScreen implements FocusListener {
 						break;
 					case 4:
 						if (!titleIDtf3.getText().matches("enter title id")) {
-							titleIDtf2.setText(titleIDtf3.getText());
+							setTfTextColorAndText(titleIDtf2, new Color(0, 80, 110), titleIDtf3.getText());
+						} else {
+							setTfTextColorAndText(titleIDtf2, new Color(180, 180, 180), "enter title id");
 						}
 						if (!titleIDtf4.getText().matches("enter title id")) {
-							titleIDtf3.setText(titleIDtf4.getText());
+							setTfTextColorAndText(titleIDtf3, new Color(0, 80, 110), titleIDtf4.getText());
+						} else {
+							setTfTextColorAndText(titleIDtf3, new Color(180, 180, 180), "enter title id");
 						}
 						removeTitleField(titleIcon4, titleIDtf4, removeBtn4);
 						plusBtn(320);
@@ -223,7 +237,10 @@ public class RentScreen implements FocusListener {
 						break;
 					case 4:
 						if (!titleIDtf4.getText().matches("enter title id")) {
-							titleIDtf3.setText(titleIDtf4.getText());
+							setTfTextColorAndText(titleIDtf3, new Color(0, 80, 110), titleIDtf4.getText());
+
+						} else {
+							setTfTextColorAndText(titleIDtf3, new Color(180, 180, 180), "enter title id");
 						}
 						removeTitleField(titleIcon4, titleIDtf4, removeBtn4);
 						plusBtn(320);
@@ -249,33 +266,61 @@ public class RentScreen implements FocusListener {
 		}
 	}
 
-	public void btnsPlus100() {
+	/**
+	 * Reusable method to modify the Text Field text and foreground color
+	 * 
+	 * @param textfield to take changes
+	 * @param color     to set text field foreground
+	 * @param text      to set to the text field
+	 */
+	private void setTfTextColorAndText(JTextField textfield, Color color, String text) {
+		textfield.setText(text);
+		textfield.setForeground(color);
+	}
+
+	/**
+	 * Relocate plus, searchCustomer, searchTitle, cancel & confirm buttons y +100
+	 */
+	private void btnsPlus100() {
 
 		int oldPlusY = plusBtn.getY();
 		backRectangle.remove(plusBtn);
 		plusBtn(oldPlusY + 103);
-//		plusBtn.setLocation(new Point(plusBtn.getX(), plusBtn.getY()+103));//?
 
-		int oldscBtnY = searchCustomerBtn.getY();
-		backRectangle.remove(searchCustomerBtn);
-		setSearchCustomerBtn(35, oldscBtnY + 100);
-
-		int oldstBtnY = searchTitleBtn.getY();
-		backRectangle.remove(searchTitleBtn);
-		setSearchTitleBtn(225, oldstBtnY + 100);
-
-		int oldcancelBtnY = cancelBtn.getY();
-		backRectangle.remove(cancelBtn);
-		setCancelBtn(410, oldcancelBtnY + 100);
-
-		int oldconfirmBtnY = confirmBtn.getY();
-		backRectangle.remove(confirmBtn);
-		setConfirmBtn(595, oldconfirmBtnY + 100);
+		add100YtoBtn(searchCustomerBtn);
+		add100YtoBtn(searchTitleBtn);
+		add100YtoBtn(cancelBtn);
+		add100YtoBtn(confirmBtn);
 
 		tfCount++;
 	}
 
-	public void removeTitleField(JLabel icon, JTextField tf, JButton btn) {
+	/**
+	 * Reusable method for buttons that need Y + 100
+	 * 
+	 * @param btn to add 100 to Y axis
+	 */
+	private void add100YtoBtn(JButton btn) {
+		btn.setLocation(btn.getX(), btn.getY() + 100);
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btn.setBounds(btn.getX(), btn.getY() + 100, 179, 84);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				btn.setBounds(btn.getX(), btn.getY() + 100, 170, 80);
+			}
+		});
+	}
+
+	/**
+	 * Usable method to delete title field from backRecktangle
+	 * 
+	 * @param icon to delete
+	 * @param tf   to delete
+	 * @param btn  to delete
+	 */
+	private void removeTitleField(JLabel icon, JTextField tf, JButton btn) {
 
 		backRectangle.remove(icon);
 		backRectangle.remove(tf);
@@ -283,7 +328,11 @@ public class RentScreen implements FocusListener {
 		tfCount--;
 	}
 
-	public void btnsMinus100() {
+	/**
+	 * relocate plusBtn, searchCustomerBtn, searchTitleBtn, cancelBtn & confirmBtn y
+	 * -100
+	 */
+	private void btnsMinus100() {
 
 		int oldPlusY = plusBtn.getY();
 		backRectangle.remove(plusBtn);
@@ -306,7 +355,15 @@ public class RentScreen implements FocusListener {
 		setConfirmBtn(595, oldconfirmBtnY - 100);
 	}
 
-	public JTextField setTextField(int x, int y, String text) {
+	/**
+	 * adds new Text Field to backRectangle at given x,y and sets the given text
+	 * 
+	 * @param x    to set to text field
+	 * @param y    to set to text field
+	 * @param text to set to text field
+	 * @return new text field preset with given info
+	 */
+	private JTextField setTextField(int x, int y, String text) {
 
 		JTextField tf = new JTextField();
 		tf.setText(text);
@@ -315,11 +372,15 @@ public class RentScreen implements FocusListener {
 		tf.setBounds(x, y, 250, 45);
 		tf.setBorder(null);
 		tf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		tf.addKeyListener(listenerController);
 		backRectangle.add(tf);
 		return tf;
 	}
 
-	public void closeBtn() {
+	/**
+	 * Close Button instantiation
+	 */
+	private void closeBtn() {
 
 		closeBtn = new JButton();
 		closeBtn.setIcon(new ImageIcon("img\\btn\\closebtnsmall.png"));
@@ -347,9 +408,13 @@ public class RentScreen implements FocusListener {
 		});
 	}
 
-	public void setSearchCustomerBtn(int x, int y) {
-
-// ----------------Search Customer Button----------------------------------------------
+	/**
+	 * searchCustomerBtn instantiation
+	 * 
+	 * @param x axis to set
+	 * @param y axis to set
+	 */
+	private void setSearchCustomerBtn(int x, int y) {
 
 		searchCustomerBtn = new JButton();
 		searchCustomerBtn.setIcon(new ImageIcon("img\\btn\\searchcustomerbtnsmall.png"));
@@ -378,9 +443,14 @@ public class RentScreen implements FocusListener {
 		});
 	}
 
-	public void setSearchTitleBtn(int x, int y) {
+	/**
+	 * searchTitleBtn instantiation
+	 * 
+	 * @param x axis to set
+	 * @param y axis to set
+	 */
 
-// ----------------Search Title Button----------------------------------------------
+	private void setSearchTitleBtn(int x, int y) {
 
 		searchTitleBtn = new JButton();
 		searchTitleBtn.setIcon(new ImageIcon("img\\btn\\searchtitlebtnsmall.png"));
@@ -409,9 +479,13 @@ public class RentScreen implements FocusListener {
 		});
 	}
 
-	public void setCancelBtn(int x, int y) {
-
-		// ---------------------------CANCEL BUTTON-------------------------------
+	/**
+	 * cancelBtn instantiation
+	 * 
+	 * @param x to set
+	 * @param y to set
+	 */
+	private void setCancelBtn(int x, int y) {
 
 		cancelBtn = new JButton();
 		cancelBtn.setIcon(new ImageIcon("img\\btn\\cancelbtnsmall.png"));
@@ -440,9 +514,12 @@ public class RentScreen implements FocusListener {
 		});
 	}
 
-	public void setConfirmBtn(int x, int y) {
-
-		// ---------------------------CONFIRM BUTTON-------------------------------
+	/**
+	 * confirmBtn Instantiation
+	 * @param x axis to set
+	 * @param y axis to set
+	 */
+	private void setConfirmBtn(int x, int y) {
 
 		confirmBtn = new JButton();
 		confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
@@ -455,29 +532,91 @@ public class RentScreen implements FocusListener {
 		confirmBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				boolean flag = false;
+
 				// validate 3 digit integer number (customer id field)
-				checkNumberField(customerIDtf);
+				flag = checkNumberField(customerIDtf);
+				if (!flag) {
+					return;
+				}
 
 				// validate 3 digit integer number (title id field)
+				ArrayList<Boolean> flags = new ArrayList<>();
 				switch (tfCount) {
 				case 1:
-					checkNumberField(titleIDtf1);
+					flags.add(checkNumberField(titleIDtf1));
 					break;
 				case 2:
-					checkNumberField(titleIDtf1);
-					checkNumberField(titleIDtf2);
+					flags.add(checkNumberField(titleIDtf1));
+					flags.add(checkNumberField(titleIDtf2));
 					break;
 				case 3:
-					checkNumberField(titleIDtf1);
-					checkNumberField(titleIDtf2);
-					checkNumberField(titleIDtf3);
+					flags.add(checkNumberField(titleIDtf1));
+					flags.add(checkNumberField(titleIDtf2));
+					flags.add(checkNumberField(titleIDtf3));
 					break;
 				case 4:
-					checkNumberField(titleIDtf1);
-					checkNumberField(titleIDtf2);
-					checkNumberField(titleIDtf3);
-					checkNumberField(titleIDtf4);
+					flags.add(checkNumberField(titleIDtf1));
+					flags.add(checkNumberField(titleIDtf2));
+					flags.add(checkNumberField(titleIDtf3));
+					flags.add(checkNumberField(titleIDtf4));
 					break;
+				}
+
+				// checks if any field with error
+				for (Boolean i : flags) {
+					if (!i) {
+						flags.clear();
+						return;
+					}
+				}
+
+				ArrayList<String> tfIDlist = new ArrayList<>();
+
+				switch (tfCount) {
+				case 1:
+					tfIDlist.add(titleIDtf1.getText());
+					break;
+				case 2:
+					tfIDlist.add(titleIDtf1.getText());
+					tfIDlist.add(titleIDtf2.getText());
+					break;
+				case 3:
+					tfIDlist.add(titleIDtf1.getText());
+					tfIDlist.add(titleIDtf2.getText());
+					tfIDlist.add(titleIDtf3.getText());
+					break;
+				case 4:
+					tfIDlist.add(titleIDtf1.getText());
+					tfIDlist.add(titleIDtf2.getText());
+					tfIDlist.add(titleIDtf3.getText());
+					tfIDlist.add(titleIDtf4.getText());
+					break;
+				}
+
+				// equal title id input into fields handling
+				for (int i = 0; i < tfIDlist.size(); i++) {
+
+					String ifield = getOrdinalSuffix(i + 1);
+					if (i != (tfIDlist.size() - 1)) {// if i is not last (also only happens if i > 1)
+
+						for (int j = i + 1; j < tfIDlist.size(); j++) {
+
+							String jfield = getOrdinalSuffix(j + 1);
+
+							if (tfIDlist.get(i).equals(tfIDlist.get(j))) {
+								Object[] btns = { "Ok" };
+								JOptionPane.showOptionDialog(null,
+										"The Title ID on the " + ifield + "field matches the " + jfield
+												+ "field.\nCannot rent the same Title more than once.",
+										"Title ID Error", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+										logoIcon, btns, btns[0]);
+								tfIDlist.clear();
+								return;
+							}
+						}
+
+					}
 				}
 
 				// -----------GET CUSTOMER INFO TO DO VALIDATIONS----------
@@ -490,6 +629,7 @@ public class RentScreen implements FocusListener {
 					JOptionPane.showOptionDialog(null,
 							"There's no customer ID " + customerIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					tfIDlist.clear();
 					return;
 				}
 
@@ -503,28 +643,39 @@ public class RentScreen implements FocusListener {
 					JOptionPane.showOptionDialog(null,
 							"There's no customer ID " + customerIDtf.getText() + " in the System.", "Non-Existent ID.",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
+					tfIDlist.clear();
 					return;
 				}
 
 				switch (tfCount) {
 				case 1:// GET TITLE 1 INFO TO DO VALIDATIONS
-					validateTitle(titleIDtf1);
+					flags.add(validateTitle(titleIDtf1));
 					break;
 				case 2:// GET TITLE 1&2 INFO TO DO VALIDATIONS
-					validateTitle(titleIDtf1);
-					validateTitle(titleIDtf2);
+					flags.add(validateTitle(titleIDtf1));
+					flags.add(validateTitle(titleIDtf2));
 					break;
 				case 3:// GET TITLE 1,2&3 INFO TO DO VALIDATIONS
-					validateTitle(titleIDtf1);
-					validateTitle(titleIDtf2);
-					validateTitle(titleIDtf3);
+					flags.add(validateTitle(titleIDtf1));
+					flags.add(validateTitle(titleIDtf2));
+					flags.add(validateTitle(titleIDtf3));
 					break;
 				case 4:// GET TITLE 1,2,3&4 INFO TO DO VALIDATIONS
-					validateTitle(titleIDtf1);
-					validateTitle(titleIDtf2);
-					validateTitle(titleIDtf3);
-					validateTitle(titleIDtf4);
+					flags.add(validateTitle(titleIDtf1));
+					flags.add(validateTitle(titleIDtf2));
+					flags.add(validateTitle(titleIDtf3));
+					flags.add(validateTitle(titleIDtf4));
 					break;
+				}
+
+				// checks if any field with error
+				for (Boolean i : flags) {
+					if (!i) {
+						flags.clear();
+						tfIDlist.clear();
+						titleList.clear();
+						return;
+					}
 				}
 
 				// for loop validations: availability, subscription match & card rent limit
@@ -536,6 +687,8 @@ public class RentScreen implements FocusListener {
 								"The Title of ID number " + t.getId() + " is already being rented.",
 								"Can't Rent A Rented Title.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 								logoIcon, btns, btns[0]);
+						tfIDlist.clear();
+						titleList.clear();
 						return;
 
 					} else {// title is available
@@ -549,11 +702,12 @@ public class RentScreen implements FocusListener {
 										"Can't proceed, customer has 4 ongoing rents \nregistered in the Membership Card.",
 										"Maximum ongoing rents.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 										logoIcon, ongoing, ongoing[0]);
+								tfIDlist.clear();
+								titleList.clear();
 								return;
 
 							} else {// can rent the title
 
-								int a = card.getOngoingRents() + tfCount;
 								if (card.getOngoingRents() + tfCount <= 4) {
 
 									// if title validation reaches here, this title is all good to be rented
@@ -562,10 +716,12 @@ public class RentScreen implements FocusListener {
 									Object[] ongoing = { "Ok" };
 									JOptionPane.showOptionDialog(null,
 											"Customer has " + card.getOngoingRents()
-													+ " ongoing rents \nand can't rent " + tfCount
+													+ " ongoing rents and can't \nrent " + tfCount
 													+ " more as the maximum rents allowed is 4 titles.",
 											"Maximum ongoing rents will be exceeded.", JOptionPane.YES_NO_OPTION,
 											JOptionPane.PLAIN_MESSAGE, logoIcon, ongoing, ongoing[0]);
+									tfIDlist.clear();
+									titleList.clear();
 									return;
 								}
 							}
@@ -578,6 +734,8 @@ public class RentScreen implements FocusListener {
 											+ ".",
 									"Title Access Level Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
 									logoIcon, btns, btns[0]);
+							tfIDlist.clear();
+							titleList.clear();
 							return;
 						}
 					}
@@ -599,30 +757,87 @@ public class RentScreen implements FocusListener {
 		});
 	}
 
-	public int getFieldNumber(JTextField tf) {
+	/**
+	 * Reusable method to get ordinal suffix according to given num from 1 to 4
+	 * 
+	 * @param num to set
+	 * @return the parameter with suffix eg. "1st "
+	 */
+	public String getOrdinalSuffix(int num) {
 
-		int fieldNumber = 0;
-		switch (tf.getY()) {
-		case 45:
-			fieldNumber = 1;
+		String fieldI = "";
+		switch (num) {
+		case 1:
+			fieldI = "1st ";
 			break;
-		case 145:
-			fieldNumber = 2;
+		case 2:
+			fieldI = "2nd ";
 			break;
-		case 245:
-			fieldNumber = 3;
+		case 3:
+			fieldI = "3rd ";
 			break;
-		case 345:
-			fieldNumber = 4;
+		case 4:
+			fieldI = "4th ";
 			break;
 		}
+		return fieldI;
+	}
 
+	/**
+	 * Get field ordinal suffix
+	 * 
+	 * @param tf to get ordinal suffix based on y axis
+	 * @return ordinal suffix as String
+	 */
+	private String getFieldNumber(JTextField tf) {
+
+		String fieldNumber = "";
+		switch (tf.getY()) {
+		case 45:
+			fieldNumber = getOrdinalSuffix(1);
+			break;
+		case 145:
+			fieldNumber = getOrdinalSuffix(2);
+			break;
+		case 245:
+			fieldNumber = getOrdinalSuffix(3);
+			break;
+		case 345:
+			fieldNumber = getOrdinalSuffix(4);
+			break;
+		}
 		return fieldNumber;
 	}
 
-	public void checkNumberField(JTextField tf) {
+	/**
+	 * 3 digit integer validation
+	 * 
+	 * @param tf to validate
+	 * @return true if valid or false if invalid
+	 */
+	private boolean checkNumberField(JTextField tf) {
+		String fieldNumber = getFieldNumber(tf);
+		String custOrTitle = custOrTitle(tf);
 
-		int fieldNumber = getFieldNumber(tf);
+		if (!tf.getText().matches("[0-9]{1,3}")) {
+			Object[] btns = { "Ok" };
+			JOptionPane.showOptionDialog(null,
+					fieldNumber + custOrTitle + " Field Error.\nEnter an existing " + custOrTitle + " ID please.",
+					custOrTitle + " ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+					btns[0]);
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Get if given tf is customer or title
+	 * 
+	 * @param tf to check if is customer or title field
+	 * @return String cust/title of given tf
+	 */
+	private String custOrTitle(JTextField tf) {
 
 		String custOrTitle = "";
 		switch (tf.getX()) {
@@ -633,41 +848,53 @@ public class RentScreen implements FocusListener {
 			custOrTitle = "Title";
 			break;
 		}
+		return custOrTitle;
+	}
 
-		if (!tf.getText().matches("[0-9]{1,3}")) {
+	/**
+	 * Validate if Title exist and add to titleList
+	 * 
+	 * @param textField to check in DB
+	 * @return true if exists, false if doesn't exist
+	 */
+	private boolean validateTitle(JTextField textField) {
+
+		String fieldNumber = getFieldNumber(textField);
+		String custOrTitle = custOrTitle(textField);
+
+		if (!textField.getText().equals("enter title id")) {
+
+			ArrayList<Object> temp = getTitle(Integer.parseInt(textField.getText()));
+
+			if (temp == null || temp.isEmpty()) {
+				Object[] btns = { "Ok" };
+				JOptionPane.showOptionDialog(null,
+						"Title Field " + fieldNumber + " Error.\nThere's no Title ID " + textField.getText()
+								+ " in the System.",
+						"Non-Existent ID.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
+						btns[0]);
+				return false;
+			} else {
+				titleList.add((Title) temp.get(0));
+				return true;
+			}
+		} else {
 			Object[] btns = { "Ok" };
 			JOptionPane.showOptionDialog(null,
-					custOrTitle + " Field " + fieldNumber + " Error.\nEnter an existing " + custOrTitle + " ID please.",
+					fieldNumber + custOrTitle + " Field Error.\nEnter an existing " + custOrTitle + " ID please.",
 					custOrTitle + " ID Error.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns,
 					btns[0]);
-			return;
+			return false;
 		}
 	}
 
 	/**
-	 * adds title to titleList
+	 * Get title by ID from DB
 	 * 
-	 * @param textField to check in DB
+	 * @param titleID to set the title retrieval
+	 * @return title of given ID
 	 */
-	public void validateTitle(JTextField textField) {
-
-		int fieldNumber = getFieldNumber(textField);
-
-		ArrayList<Object> temp = getTitle(Integer.parseInt(textField.getText()));
-
-		if (temp.isEmpty()) {
-			Object[] btns = { "Ok" };
-			JOptionPane.showOptionDialog(null,
-					"Title Field " + fieldNumber + " Error.\nThere's no Title ID " + textField.getText()
-							+ " in the System.",
-					"Non-Existent ID.", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
-			return;
-		} else {
-			titleList.add((Title) temp.get(0));
-		}
-	}
-
-	public ArrayList<Object> getTitle(int titleID) {
+	private ArrayList<Object> getTitle(int titleID) {
 
 		ArrayList<Object> UnknownTitleType = null;
 		try {
@@ -679,18 +906,27 @@ public class RentScreen implements FocusListener {
 			JOptionPane.showOptionDialog(null, "There's no Title ID " + titleID + " in the System.", "Non-Existent ID.",
 					JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, logoIcon, btns, btns[0]);
 		}
-
 		return UnknownTitleType;
 	}
 
-	public void buttons() {
+	/**
+	 * sets searchCustomer, searchTitle, cancel and confirm buttons
+	 */
+	private void buttons() {
 		setSearchCustomerBtn(35, 253);
 		setSearchTitleBtn(225, 253);
 		setCancelBtn(410, 253);
 		setConfirmBtn(595, 253);
 	}
 
-	public JLabel setTitleIcon(int x, int y) {
+	/**
+	 * Reusable method to instantiate
+	 * 
+	 * @param x axis to set
+	 * @param y axis to set
+	 * @return JLabel instantiated
+	 */
+	private JLabel setTitleIcon(int x, int y) {
 		JLabel titleIcon = new JLabel();
 		titleIcon.setIcon(new ImageIcon("img\\icons\\titleiconbluesmall.png"));
 		titleIcon.setBounds(x, y, 100, 100);
@@ -699,7 +935,14 @@ public class RentScreen implements FocusListener {
 		return titleIcon;
 	}
 
-	public JButton setRemoveBtn(int x, int y) {
+	/**
+	 * RemoveBtn instantiation
+	 * 
+	 * @param x axis to set
+	 * @param y axis to set
+	 * @return RemoveBtn instantiated
+	 */
+	private JButton setRemoveBtn(int x, int y) {
 		JButton btn = new JButton();
 		btn.setIcon(new ImageIcon("img\\btn\\removebtnsmall.png"));
 		btn.setBounds(x, y, 30, 30);
@@ -723,7 +966,10 @@ public class RentScreen implements FocusListener {
 		return btn;
 	}
 
-	public void validation() {
+	/**
+	 * Reusable method to repaint and validate the frame
+	 */
+	private void validation() {
 		rentScreen.repaint();
 		rentScreen.validate();
 	}

@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -29,7 +29,7 @@ import view.customer.SearchCustomerScreen;
 public class UpdateCustomerEnterIDScreen implements FocusListener {
 
 	private JFrame returnTitleScreen = new JFrame();
-	private KeyController listenerController = new KeyController(returnTitleScreen);
+	private ListenerController listenerController = new ListenerController(returnTitleScreen);
 	
 	private Customer customer = new Customer();
 	private MembershipCard card = new MembershipCard();
@@ -37,10 +37,12 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField customerIDtf;
+	private JButton confirmBtn;
 	
 	public UpdateCustomerEnterIDScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(confirmBtn);
 		validation();
 	}
 
@@ -171,6 +173,7 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 		customerIDtf.setBounds(380, 65, 250, 45);
 		customerIDtf.setBorder(null);
 		customerIDtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		customerIDtf.addKeyListener(listenerController);
 		backRectangle.add(customerIDtf);
 	}
 
@@ -203,7 +206,7 @@ public class UpdateCustomerEnterIDScreen implements FocusListener {
 			}
 		});
 		// ---------------------------CONFIRM BUTTON-------------------------------
-		JButton confirmBtn = new JButton();
+		confirmBtn = new JButton();
 		confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
 		confirmBtn.setBackground(backRectangle.getBackground());
 		confirmBtn.setBounds(515, 123, 170, 80);

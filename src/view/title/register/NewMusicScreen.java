@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.enums.Media;
@@ -28,7 +28,7 @@ import model.titles.MusicOrLive;
 public class NewMusicScreen implements FocusListener {
 
 	private JFrame newMusicScreen = new JFrame();
-	private KeyController listenerController = new KeyController(newMusicScreen);
+	private ListenerController listenerController = new ListenerController(newMusicScreen);
 
 	private MusicOrLive newMusic;
 
@@ -41,10 +41,13 @@ public class NewMusicScreen implements FocusListener {
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
 	private JComboBox<Media> mediaComboBox;
+	
+	private JButton createBtn;
 
 	public NewMusicScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(createBtn);
 		validation();
 	}
 
@@ -107,6 +110,7 @@ public class NewMusicScreen implements FocusListener {
 		musicnametf.setBounds(400, 65, 225, 45);
 		musicnametf.setBorder(null);
 		musicnametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		musicnametf.addKeyListener(listenerController);
 		backRectangle.add(musicnametf);
 
 		musicsingertf = new JTextField();
@@ -116,6 +120,7 @@ public class NewMusicScreen implements FocusListener {
 		musicsingertf.setBounds(400, 120, 225, 45);
 		musicsingertf.setBorder(null);
 		musicsingertf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		musicsingertf.addKeyListener(listenerController);
 		backRectangle.add(musicsingertf);
 
 		musicbandtf = new JTextField();
@@ -125,6 +130,7 @@ public class NewMusicScreen implements FocusListener {
 		musicbandtf.setBounds(400, 175, 225, 45);
 		musicbandtf.setBorder(null);
 		musicbandtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		musicbandtf.addKeyListener(listenerController);
 		backRectangle.add(musicbandtf);
 
 		musicgenretf = new JTextField();
@@ -134,6 +140,7 @@ public class NewMusicScreen implements FocusListener {
 		musicgenretf.setBounds(400, 230, 225, 45);
 		musicgenretf.setBorder(null);
 		musicgenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		musicgenretf.addKeyListener(listenerController);
 		backRectangle.add(musicgenretf);
 
 		yearofreleasetf = new JTextField();
@@ -143,6 +150,7 @@ public class NewMusicScreen implements FocusListener {
 		yearofreleasetf.setBounds(655, 65, 225, 45);
 		yearofreleasetf.setBorder(null);
 		yearofreleasetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		yearofreleasetf.addKeyListener(listenerController);
 		backRectangle.add(yearofreleasetf);
 
 		pricetf = new JTextField();
@@ -152,12 +160,14 @@ public class NewMusicScreen implements FocusListener {
 		pricetf.setBounds(655, 120, 225, 45);
 		pricetf.setBorder(null);
 		pricetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		pricetf.addKeyListener(listenerController);
 		backRectangle.add(pricetf);
 
 		Media[] mediaformats = Media.values();
 
 		mediaComboBox = new JComboBox<Media>(mediaformats);
 		mediaComboBox.setBounds(655, 175, 225, 45);
+		mediaComboBox.addKeyListener(listenerController);
 		backRectangle.add(mediaComboBox);
 
 	}
@@ -216,7 +226,7 @@ public class NewMusicScreen implements FocusListener {
 			}
 		});
 // ---------------------------CREATE BUTTON-------------------------------
-		JButton createBtn = new JButton();
+		createBtn = new JButton();
 		createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
 		createBtn.setBackground(backRectangle.getBackground());
 		createBtn.setBounds(632, 295, 230, 106);

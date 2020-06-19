@@ -18,19 +18,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.customer.Customer;
 import model.customer.MembershipCard;
 
 public class NewCustomerScreen implements FocusListener {
 
 	private JFrame newCustomerScreen = new JFrame();
-	private KeyController listenerController = new KeyController(newCustomerScreen);
+	private ListenerController listenerController = new ListenerController(newCustomerScreen);
 	
 	private JTextField nametf;
 	private JTextField emailtf;
 	private JTextField phonetf;
 
+	private JButton createBtn;
 	private Customer newCustomer;
 	private MembershipCard newMembershipCard;
 	
@@ -38,6 +39,7 @@ public class NewCustomerScreen implements FocusListener {
 		this.newMembershipCard = newMembershipCard;
 		setAttributes();
 		setComponents();
+		listenerController.getButton(createBtn);
 		validation();
 	}
 
@@ -108,6 +110,7 @@ public class NewCustomerScreen implements FocusListener {
 		nametf.setBounds(400, 150, 470, 45);
 		nametf.setBorder(null);
 		nametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		nametf.addKeyListener(listenerController);
 		backRectangle.add(nametf);
 
 		phonetf = new JTextField();
@@ -117,6 +120,7 @@ public class NewCustomerScreen implements FocusListener {
 		phonetf.setBounds(400, 210, 470, 45);
 		phonetf.setBorder(null);
 		phonetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		phonetf.addKeyListener(listenerController);
 		backRectangle.add(phonetf);
 
 		emailtf = new JTextField();
@@ -126,6 +130,7 @@ public class NewCustomerScreen implements FocusListener {
 		emailtf.setBounds(400, 270, 470, 45);
 		emailtf.setBorder(null);
 		emailtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		emailtf.addKeyListener(listenerController);
 		backRectangle.add(emailtf);
 
 	}
@@ -187,7 +192,7 @@ public class NewCustomerScreen implements FocusListener {
 			}
 		});
 //---------------------------CREATE BUTTON-------------------------------
-		JButton createBtn = new JButton();
+		createBtn = new JButton();
 		createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
 		createBtn.setBackground(backRectangle.getBackground());
 		createBtn.setBounds(632, 335, 230, 106);

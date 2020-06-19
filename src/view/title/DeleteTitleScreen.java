@@ -19,24 +19,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.titles.Title;
 
 public class DeleteTitleScreen implements FocusListener {
 
 	private JFrame deleteTitleScreen = new JFrame();
-	private KeyController listenerController = new KeyController(deleteTitleScreen);
+	private ListenerController listenerController = new ListenerController(deleteTitleScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
 	private JTextField titleIDtf;
+	private JButton deleteBtn;
 
 	private Title title = new Title(0);
 
 	public DeleteTitleScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(deleteBtn);
 		validation();
 	}
 
@@ -98,8 +100,8 @@ public class DeleteTitleScreen implements FocusListener {
 		titleIDtf.setBounds(570, 40, 250, 45);
 		titleIDtf.setBorder(null);
 		titleIDtf.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		titleIDtf.addKeyListener(listenerController);
 		backRectangle.add(titleIDtf);
-
 	}
 
 	public void closeBtn(JPanel backPanel) {
@@ -160,7 +162,7 @@ public class DeleteTitleScreen implements FocusListener {
 			}
 		});
 		// ---------------------------DELETE BUTTON-------------------------------
-		JButton deleteBtn = new JButton();
+		deleteBtn = new JButton();
 		deleteBtn.setIcon(new ImageIcon("img\\btn\\deletebtn.png"));
 		deleteBtn.setBackground(backRectangle.getBackground());
 		deleteBtn.setBounds(580, 120, 230, 106);

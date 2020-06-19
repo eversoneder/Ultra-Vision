@@ -23,7 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.Rent;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
@@ -33,7 +33,7 @@ import model.titles.Title;
 public class ViewRents implements FocusListener {
 
 	private JFrame viewRentsScreen = new JFrame();
-	private KeyController listenerController = new KeyController(viewRentsScreen);
+	private ListenerController listenerController = new ListenerController(viewRentsScreen);
 
 	private ArrayList<Customer> customerList = new ArrayList<>();
 	private ArrayList<Rent> rentList = new ArrayList<>();
@@ -52,6 +52,7 @@ public class ViewRents implements FocusListener {
 	public ViewRents() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(searchBtn);
 		validation();
 	}
 
@@ -101,6 +102,7 @@ public class ViewRents implements FocusListener {
 		searchRentstf.setBounds(205, 15, 495, 45);
 		searchRentstf.setBorder(null);
 		searchRentstf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		searchRentstf.addKeyListener(listenerController);
 		backRectangle.add(searchRentstf);
 
 		JPanel searchbarPanel = new JPanel();

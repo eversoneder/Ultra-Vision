@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.enums.AccessLevel;
 import model.enums.Media;
@@ -29,7 +29,7 @@ import model.titles.Title;
 public class NewBoxSetScreen implements FocusListener {
 
 	private JFrame newBoxSetScreen = new JFrame();
-	private KeyController listenerController = new KeyController(newBoxSetScreen);
+	private ListenerController listenerController = new ListenerController(newBoxSetScreen);
 
 	private BoxSet newBoxSet;
 
@@ -41,10 +41,13 @@ public class NewBoxSetScreen implements FocusListener {
 	private JTextField yearofreleasetf;
 	private JTextField pricetf;
 	private JComboBox<Media> mediaComboBox;
+	
+	private JButton createBtn;
 
 	public NewBoxSetScreen() {
 		setAttributes();
 		setComponents();
+		listenerController.getButton(createBtn);
 		validation();
 	}
 
@@ -108,6 +111,7 @@ public class NewBoxSetScreen implements FocusListener {
 		boxSetnametf.setBounds(400, 65, 225, 45);
 		boxSetnametf.setBorder(null);
 		boxSetnametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		boxSetnametf.addKeyListener(listenerController);
 		backRectangle.add(boxSetnametf);
 
 		numberoffilmstf = new JTextField();
@@ -117,6 +121,7 @@ public class NewBoxSetScreen implements FocusListener {
 		numberoffilmstf.setBounds(400, 120, 225, 45);
 		numberoffilmstf.setBorder(null);
 		numberoffilmstf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		numberoffilmstf.addKeyListener(listenerController);
 		backRectangle.add(numberoffilmstf);
 
 		boxsetgenretf = new JTextField();
@@ -126,6 +131,7 @@ public class NewBoxSetScreen implements FocusListener {
 		boxsetgenretf.setBounds(400, 175, 225, 45);
 		boxsetgenretf.setBorder(null);
 		boxsetgenretf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		boxsetgenretf.addKeyListener(listenerController);
 		backRectangle.add(boxsetgenretf);
 
 		yearofreleasetf = new JTextField();
@@ -135,6 +141,7 @@ public class NewBoxSetScreen implements FocusListener {
 		yearofreleasetf.setBounds(655, 65, 225, 45);
 		yearofreleasetf.setBorder(null);
 		yearofreleasetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		yearofreleasetf.addKeyListener(listenerController);
 		backRectangle.add(yearofreleasetf);
 
 		pricetf = new JTextField();
@@ -144,14 +151,15 @@ public class NewBoxSetScreen implements FocusListener {
 		pricetf.setBounds(655, 120, 225, 45);
 		pricetf.setBorder(null);
 		pricetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		pricetf.addKeyListener(listenerController);
 		backRectangle.add(pricetf);
 
 		Media[] mediaformats = Media.values();
 
 		mediaComboBox = new JComboBox<>(mediaformats);
 		mediaComboBox.setBounds(655, 175, 225, 45);
+		mediaComboBox.addKeyListener(listenerController);
 		backRectangle.add(mediaComboBox);
-
 	}
 
 	public void buttons(JPanel backRectangle, JPanel backPanel) {
@@ -208,7 +216,7 @@ public class NewBoxSetScreen implements FocusListener {
 			}
 		});
 // ---------------------------CREATE BUTTON-------------------------------
-		JButton createBtn = new JButton();
+		createBtn = new JButton();
 		createBtn.setIcon(new ImageIcon("img\\btn\\createbtn.png"));
 		createBtn.setBackground(backRectangle.getBackground());
 		createBtn.setBounds(632, 295, 230, 106);

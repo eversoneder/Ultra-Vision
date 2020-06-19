@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.UltraVisionManagementSystem;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -30,7 +30,7 @@ import model.enums.AccessLevel;
 public class UpdateCustomerScreen implements FocusListener {
 
 	private JFrame updateCustomerScreen = new JFrame();
-	private KeyController listenerController = new KeyController(updateCustomerScreen);
+	private ListenerController listenerController = new ListenerController(updateCustomerScreen);
 
 	private UltraVisionManagementSystem managementSystem = new UltraVisionManagementSystem(0);
 
@@ -44,6 +44,7 @@ public class UpdateCustomerScreen implements FocusListener {
 
 	private Customer customer;
 	private MembershipCard card;
+	private JButton confirmBtn;
 
 	public UpdateCustomerScreen(Customer customer, MembershipCard card) {
 		this.customer = customer;
@@ -51,6 +52,7 @@ public class UpdateCustomerScreen implements FocusListener {
 		oldPass = card.getPassword();
 		setAttributes();
 		setComponents();
+		listenerController.getButton(confirmBtn);
 		validation();
 	}
 
@@ -127,6 +129,7 @@ public class UpdateCustomerScreen implements FocusListener {
 		customerNametf.setBounds(350, 25, 390, 45);
 		customerNametf.setBorder(null);
 		customerNametf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		customerNametf.addKeyListener(listenerController);
 		backRectangle.add(customerNametf);
 
 		customerPhonetf = new JTextField();
@@ -136,6 +139,7 @@ public class UpdateCustomerScreen implements FocusListener {
 		customerPhonetf.setBounds(350, 85, 390, 45);
 		customerPhonetf.setBorder(null);
 		customerPhonetf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		customerPhonetf.addKeyListener(listenerController);
 		backRectangle.add(customerPhonetf);
 
 		customerEmailtf = new JTextField();
@@ -145,6 +149,7 @@ public class UpdateCustomerScreen implements FocusListener {
 		customerEmailtf.setBounds(350, 145, 390, 45);
 		customerEmailtf.setBorder(null);
 		customerEmailtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		customerEmailtf.addKeyListener(listenerController);
 		backRectangle.add(customerEmailtf);
 
 		customerPasswordtf = new JPasswordField();
@@ -154,6 +159,7 @@ public class UpdateCustomerScreen implements FocusListener {
 		customerPasswordtf.setBounds(350, 215, 390, 45);
 		customerPasswordtf.setBorder(null);
 		customerPasswordtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		customerPasswordtf.addKeyListener(listenerController);
 		backRectangle.add(customerPasswordtf);
 
 		if (!customerPasswordtf.hasFocus()) {
@@ -219,7 +225,7 @@ public class UpdateCustomerScreen implements FocusListener {
 			}
 		});
 		// ---------------------------CONFIRM BUTTON-------------------------------
-		JButton confirmBtn = new JButton();
+		confirmBtn = new JButton();
 		confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
 		confirmBtn.setBackground(backRectangle.getBackground());
 		confirmBtn.setBounds(550, 308, 170, 80);

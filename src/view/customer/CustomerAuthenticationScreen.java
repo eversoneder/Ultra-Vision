@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.Payment;
 import model.customer.Customer;
 import model.customer.MembershipCard;
@@ -30,7 +30,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	ImageIcon logoIcon = new ImageIcon("img\\icons\\logopane.png");
 
 	private JFrame authenticationScreen = new JFrame();
-	private KeyController listenerController = new KeyController(authenticationScreen);
+	private ListenerController listenerController = new ListenerController(authenticationScreen);
 
 	private MembershipCard card;
 	private Customer customer;
@@ -38,15 +38,16 @@ public class CustomerAuthenticationScreen implements FocusListener {
 	private ArrayList<Title> titleList;
 
 	private JPasswordField passwordtf;
+	private JButton confirmBtn;
 
 	public CustomerAuthenticationScreen(Customer customer, MembershipCard card, ArrayList<Title> titleList) {
 		this.customer = customer;
 		this.card = card;
 		this.titleList = titleList;
 
-//		unwrapTitle();
 		setAttributes();
 		setComponents();
+		listenerController.getButton(confirmBtn);
 		validation();
 	}
 
@@ -96,6 +97,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 		passwordtf.setBounds(320, 130, 335, 45);
 		passwordtf.setBorder(null);
 		passwordtf.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		passwordtf.addKeyListener(listenerController);
 		backPanel.add(passwordtf);
 
 		buttons(backPanel);
@@ -189,7 +191,7 @@ public class CustomerAuthenticationScreen implements FocusListener {
 			}
 		});
 		// ---------------------------CONFIRM BUTTON-------------------------------
-		JButton confirmBtn = new JButton();
+		confirmBtn = new JButton();
 		confirmBtn.setIcon(new ImageIcon("img\\btn\\confirmbtn.png"));
 		confirmBtn.setBackground(backPanel.getBackground());
 		confirmBtn.setBounds(495, 185, 170, 80);

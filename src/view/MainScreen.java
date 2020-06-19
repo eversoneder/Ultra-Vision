@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.KeyController;
+import controller.ListenerController;
 import view.customer.NewCustomerClassificationsScreen;
 import view.customer.DeleteCustomerScreen;
 import view.customer.SearchCustomerScreen;
@@ -28,7 +28,7 @@ public class MainScreen {
 	private JButton closeBtn;
 	private JFrame MainScreen = new JFrame();
 
-	private KeyController listenerController = new KeyController(MainScreen);
+	private ListenerController listenerController = new ListenerController(MainScreen);
 
 	public MainScreen() {
 		setAttributes();

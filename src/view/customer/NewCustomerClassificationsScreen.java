@@ -14,14 +14,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.KeyController;
+import controller.ListenerController;
 import model.customer.MembershipCard;
 import model.enums.AccessLevel;
 
 public class NewCustomerClassificationsScreen {
 
 	private JFrame customerClassifications = new JFrame();
-	private KeyController listenerController = new KeyController(customerClassifications);
+	private ListenerController listenerController = new ListenerController(customerClassifications);
 
 	public NewCustomerClassificationsScreen() {
 		setAttributes();
