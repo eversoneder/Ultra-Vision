@@ -1,0 +1,131 @@
+CREATE SCHEMA ultra_visiondb;
+USE ultra_visiondb;
+CREATE TABLE `customer` (
+  `customer_id` int NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(45) NOT NULL,
+  `customer_phone` bigint NOT NULL,
+  `customer_email` varchar(45) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+);
+CREATE TABLE `title_type` (
+  `title_type_id` int NOT NULL AUTO_INCREMENT,
+  `title_type` varchar(25) NOT NULL,
+  PRIMARY KEY (`title_type_id`)
+);
+INSERT INTO title_type (title_type) VALUES ('Music');
+INSERT INTO title_type (title_type) VALUES ('Live Concert');
+INSERT INTO title_type (title_type) VALUES ('Movie');
+INSERT INTO title_type (title_type) VALUES ('Box Set');
+CREATE TABLE `subscription` (
+  `subscription_id` int NOT NULL AUTO_INCREMENT,
+  `subscription_plan` varchar(2) NOT NULL,
+  PRIMARY KEY (`subscription_id`)
+);
+INSERT INTO subscription (subscription_plan) VALUES ('ML');
+INSERT INTO subscription (subscription_plan) VALUES ('VL');
+INSERT INTO subscription (subscription_plan) VALUES ('TV');
+INSERT INTO subscription (subscription_plan) VALUES ('PR');
+CREATE TABLE `disc_format` (
+  `disc_format_id` int NOT NULL AUTO_INCREMENT,
+  `disc_type` varchar(6) NOT NULL,
+  PRIMARY KEY (`disc_format_id`)
+);
+INSERT INTO disc_format (disc_type) VALUES ('CD');
+INSERT INTO disc_format (disc_type) VALUES ('DVD');
+INSERT INTO disc_format (disc_type) VALUES ('BLURAY');
+CREATE TABLE `title` (
+  `title_id` int NOT NULL AUTO_INCREMENT,
+  `title_type_id` int NOT NULL,
+  `disc_format_id` int NOT NULL,
+  `title_available` int NOT NULL,
+  `title_name` varchar(25) NOT NULL,
+  `title_price` decimal(5,2) NOT NULL,
+  `title_genre` varchar(25) NOT NULL,
+  `title_yor` int NOT NULL,
+  PRIMARY KEY (`title_id`),
+  KEY `title_ibfk_1` (`title_type_id`),
+  KEY `title_ibfk_2` (`disc_format_id`),
+  CONSTRAINT `title_ibfk_1` FOREIGN KEY (`title_type_id`) REFERENCES `title_type` (`title_type_id`),
+  CONSTRAINT `title_ibfk_2` FOREIGN KEY (`disc_format_id`) REFERENCES `disc_format` (`disc_format_id`)
+);
+
+CREATE TABLE `debit_or_credit_account` (
+  `account_id` int NOT NULL AUTO_INCREMENT,
+  `account_number` varchar(20) NOT NULL,
+  `account_balance` decimal(7,2) NOT NULL,
+  `customer_id` int NOT NULL,
+  PRIMARY KEY (`account_id`),
+  KEY `customer_id_idx` (`customer_id`),
+  CONSTRAINT `customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
+);
+CREATE TABLE `membership_card` (
+  `card_id` int NOT NULL AUTO_INCREMENT,
+  `card_password` int NOT NULL,
+  `card_ongoing_rents` int NOT NULL,
+  `card_free_rents` int NOT NULL,
+  `card_points` int NOT NULL,
+  `account_id` int NOT NULL,
+  `subscription_id` int NOT NULL,
+  PRIMARY KEY (`card_id`),
+  KEY `subscription_id_fk_idx` (`subscription_id`),
+  KEY `account_id_idx` (`account_id`),
+  CONSTRAINT `account_id` FOREIGN KEY (`account_id`) REFERENCES `debit_or_credit_account` (`account_id`),
+  CONSTRAINT `subscription_id_fk` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`subscription_id`)
+);
+CREATE TABLE `music` (
+  `music_id` int NOT NULL AUTO_INCREMENT,
+  `music_singer` varchar(25) DEFAULT NULL,
+  `music_band` varchar(25) DEFAULT NULL,
+  `subscription_id` int NOT NULL,
+  `title_id` int NOT NULL,
+  PRIMARY KEY (`music_id`),
+  KEY `subscription_id` (`subscription_id`),
+  KEY `title_id` (`title_id`),
+  CONSTRAINT `music_ibfk_1` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`subscription_id`),
+  CONSTRAINT `music_ibfk_2` FOREIGN KEY (`title_id`) REFERENCES `title` (`title_id`)
+);
+CREATE TABLE `movie` (
+  `movie_id` int NOT NULL AUTO_INCREMENT,
+  `movie_director` varchar(25) NOT NULL,
+  `title_id` int NOT NULL,
+  `subscription_id` int NOT NULL,
+  PRIMARY KEY (`movie_id`),
+  KEY `title_id_fk_idx` (`title_id`),
+  KEY `subscription_id_fk_mv_idx` (`subscription_id`),
+  CONSTRAINT `subscription_id_fk_mv` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`subscription_id`),
+  CONSTRAINT `title_id_fk` FOREIGN KEY (`title_id`) REFERENCES `title` (`title_id`)
+) ;
+CREATE TABLE `live_concert` (
+  `live_concert_id` int NOT NULL AUTO_INCREMENT,
+  `live_concert_singer` varchar(25) DEFAULT NULL,
+  `live_concert_band` varchar(25) DEFAULT NULL,
+  `title_id` int NOT NULL,
+  `subscription_id` int NOT NULL,
+  PRIMARY KEY (`live_concert_id`),
+  KEY `title_id_fk_lc_idx` (`title_id`),
+  KEY `subs_id_fk_lc_idx` (`subscription_id`),
+  CONSTRAINT `subs_id_fk_lc` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`subscription_id`),
+  CONSTRAINT `title_id_fk_lc` FOREIGN KEY (`title_id`) REFERENCES `title` (`title_id`)
+) ;
+CREATE TABLE `box_set` (
+  `box_set_id` int NOT NULL AUTO_INCREMENT,
+  `number_of_discs` int NOT NULL,
+  `title_id` int NOT NULL,
+  `subscription_id` int NOT NULL,
+  PRIMARY KEY (`box_set_id`),
+  KEY `title_id_fk_idx` (`title_id`),
+  KEY `subscription_id_fk_bs_idx` (`subscription_id`),
+  CONSTRAINT `subscription_id_fk_bs` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`subscription_id`),
+  CONSTRAINT `title_id_fk_bs` FOREIGN KEY (`title_id`) REFERENCES `title` (`title_id`)
+);
+CREATE TABLE `rent` (
+  `rent_id` int NOT NULL AUTO_INCREMENT,
+  `rent_start_date` varchar(35) NOT NULL,
+  `rent_return_date` varchar(35) NOT NULL,
+  `rent_price` decimal(7,2) NOT NULL,
+  `card_id` int NOT NULL,
+  `title_id` int NOT NULL,
+  PRIMARY KEY (`rent_id`),
+  CONSTRAINT `card_id_fk_r` FOREIGN KEY (`card_id`) REFERENCES `membership_card` (`card_id`),
+  CONSTRAINT `title_id_fk_r` FOREIGN KEY (`title_id`) REFERENCES `title` (`title_id`)
+);

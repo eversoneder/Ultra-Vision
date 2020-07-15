@@ -25,10 +25,6 @@ final class UltraVisionDB {
 	private String dbHost = "jdbc:mysql://localhost:3306/ultra_visiondb" + "?useSSL=false";
 	private String user = "root";
 	private String password = "pass1234!";
-	
-//	private String dbHost = "jdbc:mysql://apontejaj.com:3306/everson" + "?useSSL=false";
-//	private String user = "everson";
-//	private String password = "everson";
 
 	private Connection con = null;
 	private Statement st = null;
